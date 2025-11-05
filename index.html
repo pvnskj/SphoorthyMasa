@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sphoorthy Masa - Senior UX Researcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hue: 100; /* Neon Green Hue */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #E5E7EB;
+            background-color: #050505;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: block;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .panel {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+        .panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        header { transition: transform 0.4s ease-out; }
+        header.hidden { transform: translateY(-120%); }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        /* --- Project Tile Layout Styles --- */
+        #project-carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 350px; /* Set a fixed height to show one project */
+        }
+
+        #project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .project-tile {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: flex-end;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 20px;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .project-tile:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.1) 100%);
+            z-index: 1;
+        }
+
+        .project-tile-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            color: white;
+            text-align: left;
+            width: 100%;
+        }
+        /* --- End Project Tile Layout Styles --- */
+
+        .project-details-container {
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 2rem;
+            border-top: 1px solid transparent;
+            position: relative;
+        }
+        
+        .project-details-container.expanded {
+            max-height: 2500px;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .metric-card-value {
+            font-size: 2.5rem;
+            line-height: 1;
+            font-weight: 800;
+            color: #a3e635; /* Lime-400 */
+        }
+        .metric-card-label {
+            font-size: 0.9rem;
+            color: #d1d5db; /* Gray-300 */
+        }
+
+        .details-tabs button {
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            color: #9ca3af; /* Gray-400 */
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;
+            border: 1px solid transparent;
+        }
+        .details-tabs button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-shadow: 0 0 20px -3px rgba(163, 230, 53, 0.4);
+            border-color: rgba(163, 230, 53, 0.4);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .stat-card {
+            background: rgba(0,0,0,0.2);
+            border-left: 4px solid #84cc16; /* Lime-500 */
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stat-card .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #a3e635; /* Lime-400 */
+            line-height: 1;
+        }
+        .stat-card .stat-description {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .insight-card {
+            background: rgba(0,0,0,0.2);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .testimonial-scroller { max-width: 1200px; margin: auto; overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); }
+        .scroller-inner { display: flex; gap: 1.5rem; width: max-content; animation: scroll 90s linear infinite; }
+        .testimonial-scroller:hover .scroller-inner { animation-play-state: paused; }
+        .testimonial-card { width: 380px; height: 250px; }
+        @keyframes scroll { to { transform: translateX(calc(-50% - 0.75rem)); } }
+
+        .tag-badge {
+            background-color: rgba(163, 230, 53, 0.2); /* Lime-400 with opacity */
+            color: #a3e635; /* Lime-400 */
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(163, 230, 53, 0.4);
+        }
+
+        .main-container {
+            max-width: 1200px;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .skills-card {
+            background: rgba(17, 24, 39, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .skills-card h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #a3e635;
+            margin-bottom: 1rem;
+        }
+
+        .skills-card p {
+            color: #d1d5db;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .skills-card strong {
+            font-weight: bold;
+            color: #a3e635;
+        }
+
+        .methodology-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .methodology-item {
+            background: rgba(17, 24, 39, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .methodology-item h5 {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #a3e635; /* Lime-400 */
+            margin-bottom: 0.5rem;
+        }
+
+        .methodology-item p {
+            font-size: 0.875rem;
+            color: #d1d5db; /* Gray-300 */
+        }
+        
+        .divider {
+            height: 2rem;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .methodology-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+        
+        /* Horizontal expansion styles */
+        #portfolio {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transition: flex-direction 0.5s ease-in-out;
+        }
+        @media (min-width: 1024px) {
+            #portfolio {
+                flex-direction: row;
+                align-items: flex-start; /* Aligns items at the top */
+            }
+        }
+
+        #project-list-container {
+            width: 100%;
+            transition: width 0.5s ease-in-out;
+            flex-shrink: 0;
+        }
+        @media (min-width: 1024px) {
+            #project-list-container {
+                flex-basis: 40%;
+                width: auto;
+            }
+            #project-list-container.expanded {
+                flex-basis: 35%;
+            }
+        }
+        
+        #project-details-expanded {
+            width: 100%;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+            transform: translateX(50px);
+            padding: 0;
+        }
+        #project-details-expanded.visible {
+            max-height: 2500px;
+            opacity: 1;
+            transform: translateX(0);
+            padding: 2rem 0 0 0;
+        }
+
+        @media (min-width: 1024px) {
+            #project-details-expanded {
+                flex-grow: 1;
+                width: auto;
+                padding: 0 0 0 2rem;
+            }
+            #project-details-expanded.visible {
+                padding: 0 0 0 2rem;
+            }
+        }
+
+        #project-carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .carousel-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .carousel-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50%      { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .background-leaf {
+            position: absolute;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 5px rgba(163, 230, 53, 0.5));
+            animation: pulse 5s infinite ease-in-out;
+            color: #a3e635; /* give stroke a neon lime tone */
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- WebGL Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Main content container with z-index to overlay canvas -->
+    <div class="content-container">
+        <header class="container mx-auto px-6 py-4 fixed top-4 left-1/2 -translate-x-1/2 w-full max-w-7xl z-30">
+            <div class="panel flex justify-between items-center p-4">
+                <h1 class="text-4xl font-script text-white">Sphoorthy Masa</h1>
+                <nav class="hidden md:flex space-x-8 text-base font-medium items-center text-gray-200">
+                    <a href="#portfolio" class="hover:text-lime-400 transition-colors">Portfolio</a>
+                    <a href="#about" class="hover:text-lime-400 transition-colors">About</a>
+                    <a href="#skills" class="hover:text-lime-400 transition-colors">Skills</a>
+                    <a href="#why-me-contact" class="hover:text-lime-400 transition-colors">Contact</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-6 py-12 pt-32 relative z-10 main-container">
+            <section id="hero-section" class="text-center py-20 reveal">
+                <h2 class="5xl md:text-7xl font-extrabold text-white leading-tight">Senior UX Researcher</h2>
+                <p class="text-xl md:text-2xl mt-4 text-gray-300 max-w-3xl mx-auto">Bringing <span class="text-lime-400 font-semibold">clarity to complexity</span> through user-centric insights that drive product strategy and business growth.</p>
+            </section>
+
+            <section id="portfolio" class="py-12 reveal">
+                 <div class="absolute inset-0 z-0 hidden lg:block">
+                    <!-- FUTURISTIC GLYPHS (replace old leaves) -->
+                    <!-- Orbital rings -->
+                    <svg class="background-leaf" width="120" height="120" style="top: 24%; left: 50%;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="50" cy="50" r="20" opacity="0.9"/>
+                        <ellipse cx="50" cy="50" rx="34" ry="20" transform="rotate(18 50 50)" opacity="0.7"/>
+                        <ellipse cx="50" cy="50" rx="34" ry="20" transform="rotate(-22 50 50)" opacity="0.6"/>
+                        <circle cx="70" cy="50" r="2.5" />
+                        <circle cx="38" cy="62" r="2" />
+                    </svg>
+                    <!-- Hex grid tile -->
+                    <svg class="background-leaf" width="96" height="96" style="top: 36%; left: 65%; animation-delay: 2s; animation-duration: 6s;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="50,10 80,27 80,63 50,80 20,63 20,27" opacity="0.9"/>
+                        <line x1="50" y1="10" x2="50" y2="80" opacity="0.6"/>
+                        <line x1="20" y1="27" x2="80" y2="63" opacity="0.6"/>
+                        <line x1="80" y1="27" x2="20" y2="63" opacity="0.6"/>
+                    </svg>
+                    <!-- Isometric cube -->
+                    <svg class="background-leaf" width="108" height="108" style="top: 50%; left: 75%; animation-delay: 4s; animation-duration: 7s;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="50,8 82,26 82,62 50,80 18,62 18,26" opacity="0.9"/>
+                        <polyline points="50,8 50,44 82,62" opacity="0.6"/>
+                        <polyline points="50,44 18,62" opacity="0.6"/>
+                    </svg>
+                    <!-- Node constellation -->
+                    <svg class="background-leaf" width="130" height="130" style="top: 66%; left: 33%; animation-delay: 1s; animation-duration: 5.5s;" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="24" cy="28" r="3"/>
+                        <circle cx="96" cy="30" r="3"/>
+                        <circle cx="84" cy="86" r="3"/>
+                        <circle cx="32" cy="90" r="3"/>
+                        <circle cx="60" cy="58" r="2.5"/>
+                        <line x1="24" y1="28" x2="60" y2="58" />
+                        <line x1="96" y1="30" x2="60" y2="58" />
+                        <line x1="32" y1="90" x2="60" y2="58" />
+                        <line x1="84" y1="86" x2="60" y2="58" />
+                        <line x1="24" y1="28" x2="32" y2="90" opacity="0.5"/>
+                        <line x1="96" y1="30" x2="84" y2="86" opacity="0.5"/>
+                    </svg>
+                 </div>
+                <div class="relative z-10 flex flex-col lg:flex-row gap-8 items-start">
+                    <div id="project-list-container">
+                        <div id="project-carousel-container">
+                            <div id="project-list">
+                                <!-- Project tiles will be rendered here by JavaScript -->
+                            </div>
+                        </div>
+                        <div id="project-carousel-controls" class="mt-8">
+                            <button id="prev-project-btn" class="carousel-button" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                </svg>
+                            </button>
+                            <button id="next-project-btn" class="carousel-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Project details container will be rendered here by JavaScript -->
+                    <div id="project-details-expanded"></div>
+                </div>
+            </section>
+
+            <section id="about" class="py-12 reveal">
+                <div class="panel p-12">
+                    <div class="grid md:grid-cols-5 gap-12 items-center">
+                        <div class="md:col-span-3">
+                            <h3 class="text-3xl font-bold text-white mb-4">About Me</h3>
+                            <div class="text-lg text-gray-300 space-y-4">
+                                <p>Hello, I'm Sphoorthy, a Senior UX Researcher with over a decade of experience turning ambiguous questions into sharp insights that address both user pain points and business strategy.</p>
+                                <p>Most recently, I led UX Research at Sling TV, where I worked across product areas such as onboarding, content discovery, and interactive experiences. My goal is to help product, design, and engineering teams build experiences people love using.</p>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4 class="text-xl font-bold text-white mb-4">Core Competencies</h4>
+                            <div class="flex flex-wrap gap-3">
+                                <!-- Corrected typo px/4 to px-4 -->
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">User Interviews</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Survey Design</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Journey Mapping</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">A/B Testing</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Data Analysis</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Prototyping</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Quantitative Analysis</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Strategic Planning</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Mentoring</span>
+                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Design Thinking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="skills" class="py-12 reveal">
+                <div class="panel p-12">
+                    <div class="text-center mb-8">
+                        <h3 class="text-4xl font-bold text-white">Skills & Expertise</h3>
+                        <p class="text-lg text-gray-400 mt-2">A comprehensive look at my research methodologies, tools, and frameworks.</p>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="flex-1 p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
+                            <h4 class="text-2xl font-semibold text-white mb-4">Research Methodologies</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="text-lg font-bold text-white mb-2">Quantitative Research Methods</h5>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag-badge">Surveys</span>
+                                        <span class="tag-badge">A/B Testing</span>
+                                        <span class="tag-badge">Competitive Analysis</span>
+                                        <span class="tag-badge">Data Analysis</span>
+                                        <span class="tag-badge">First-click Testing</span>
+                                        <span class="tag-badge">Heat Maps</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold text-white mb-2">Qualitative Research Methods</h5>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag-badge">User Interviews</span>
+                                        <span class="tag-badge">Usability testing</span>
+                                        <span class="tag-badge">User Observations</span>
+                                        <span class="tag-badge">Card Sorting</span>
+                                        <span class="tag-badge">Contextual Interviews</span>
+                                        <span class="tag-badge">Focus Groups</span>
+                                        <span class="tag-badge">Heuristic Evaluation</span>
+                                        <span class="tag-badge">Journey mapping</span>
+                                        <span class="tag-badge">Personas</span>
+                                        <span class="tag-badge">Ethnography</span>
+                                        <span class="tag-badge">Stakeholder Interviews</span>
+                                        <span class="tag-badge">Competitor Analysis</span>
+                                        <span class="tag-badge">Pop-up Studies</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
+                            <h4 class="text-2xl font-semibold text-white mb-4">Tools & Software</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tag-badge">UserZoom</span>
+                                <span class="tag-badge">UserTesting</span>
+                                <span class="tag-badge">User Interviews</span>
+                                <span class="tag-badge">Qualtrics</span>
+                                <span class="tag-badge">Airtable</span>
+                                <span class="tag-badge">Quantum Metric</span>
+                                <span class="tag-badge">Figma</span>
+                                <span class="tag-badge">Hotjar</span>
+                                <span class="tag-badge">Dovetail</span>
+                                <span class="tag-badge">Lookback</span>
+                                <span class="tag-badge">SurveyMonkey</span>
+                            </div>
+
+                            <h4 class="text-2xl font-semibold text-white mt-8 mb-4">UX Metrics</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tag-badge">System Usability Scale (SUS)</span>
+                                <span class="tag-badge">UMUX-Lite</span>
+                                <span class="tag-badge">Usability Metrics</span>
+                                <span class="tag-badge">Task Success Rate</span>
+                                <span class="tag-badge">Time-on-Task</span>
+                                <span class="tag-badge">User Error Rate</span>
+                                <span class="tag-badge">Task Satisfaction</span>
+                                <span class="tag-badge">Test Satisfaction</span>
+                            </div>
+
+                            <h4 class="text-2xl font-semibold text-white mt-8 mb-4">Process & Frameworks</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tag-badge">Agile</span>
+                                <span class="tag-badge">Waterfall</span>
+                                <span class="tag-badge">Dual-track Agile</span>
+                                <span class="tag-badge">Jobs To Be Done (JTBD)</span>
+                                <span class="tag-badge">Lean UX</span>
+                                <span class="tag-badge">Design Thinking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="why-me-contact" class="py-12 reveal">
+                <div class="panel p-12 flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 text-left">
+                        <h3 class="text-3xl font-bold text-white mb-4">Why Me?</h3>
+                        <div class="text-lg text-gray-300 space-y-4 max-w-prose">
+                            <p>Good research doesn't just inform. It transforms how teams think, build, and connect with their users. I focus on turning insights into action and action into impact.</p>
+                            <p class="font-semibold text-2xl mt-6 text-white">User insights shouldn't be boring. And neither should your researcher.</p>
+                        </div>
+                    </div>
+                    <div class="md:w-px h-full bg-white/10 md:block hidden"></div>
+                    <div class="md:w-1/2 text-center">
+                        <h3 class="text-4xl font-bold text-white mb-4">Let's Build Something Meaningful</h3>
+                        <p class="text-lg text-gray-300 mb-8">If you're building a team where research plays a strategic role, I'd love the opportunity to contribute.</p>
+                        <a href="mailto:sphoorthy.masa@example.com" class="inline-block font-bold py-4 px-10 text-lg bg-lime-400 text-gray-900 rounded-lg shadow-lg transition hover:bg-lime-300">Get In Touch</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="testimonials" class="py-12 reveal">
+                <div class="text-center pb-12"><h3 class="text-4xl font-bold text-white">Testimonials</h3></div>
+                <div id="testimonial-scroller" class="testimonial-scroller"></div>
+            </section>
+
+        </main>
+
+        <footer class="text-center py-6"><p class="text-gray-400">&copy; 2019 Sphoorthy Masa. All Rights Reserved.</p></footer>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- WebGL Particle Field ---
+        const canvas = document.getElementById('bg-canvas');
+        let scene, camera, renderer, particles;
+        let mousePosition = new THREE.Vector2(0.5, 0.5);
+        let time = 0;
+
+        const vertexShader = `
+            uniform float uTime;
+            uniform float uHue;
+            uniform vec2 uMouse;
+            uniform float uScreenWidth;
+            
+            attribute float aRandom;
+            attribute float aSize;
+            attribute float aPhase;
+
+            varying vec3 vColor;
+            
+            void main() {
+                vec3 newPosition = position;
+                float wobbleSpeed = 0.5;
+                newPosition.x += sin(uTime * wobbleSpeed * aRandom) * 0.5;
+                newPosition.y += cos(uTime * wobbleSpeed * aRandom) * 0.5;
+                float flowSpeed = 0.1;
+                newPosition.x += sin(uTime * flowSpeed + aPhase) * 0.05;
+                newPosition.y += cos(uTime * flowSpeed + aPhase) * 0.05;
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+                
+                float hue = mod(uHue + aRandom * 0.3, 1.0);
+                float saturation = 0.7;
+                float lightness = 0.5;
+
+                vec2 screenPosition = gl_Position.xy / gl_Position.w;
+                float dist = distance(screenPosition, uMouse);
+                float brightnessFactor = smoothstep(0.4, 0.0, dist);
+
+                vec3 color_hsl = vec3(hue, saturation, lightness);
+                vec3 color_rgb = clamp(abs(mod(color_hsl.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
+                vColor = color_rgb * (0.1 + brightnessFactor);
+
+                float sizeFactor = aSize * 2.0;
+                gl_PointSize = sizeFactor * (1.0 + brightnessFactor * 3.0) * (uScreenWidth / 1920.0);
+                gl_PointSize *= (1.0 / - gl_Position.z);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec3 vColor;
+
+            void main() {
+                float r = 0.0, delta = 0.0, alpha = 1.0;
+                vec2 cxy = 2.0 * gl_PointCoord - 1.0;
+                r = dot(cxy, cxy);
+                delta = fwidth(r);
+                alpha = 1.0 - smoothstep(0.0, delta, r);
+
+                gl_FragColor = vec4(vColor, alpha * 0.8);
+            }
+        `;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            const numParticles = 20000;
+            const positions = new Float32Array(numParticles * 3);
+            const randoms = new Float32Array(numParticles);
+            const sizes = new Float32Array(numParticles);
+            const phases = new Float32Array(numParticles);
+
+            for (let i = 0; i < numParticles; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 100;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+
+                randoms[i] = Math.random();
+                sizes[i] = Math.random() * 2.0 + 1.0;
+                phases[i] = Math.random() * Math.PI * 2;
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+            geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+            geometry.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+
+            const material = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0.0 },
+                    uHue: { value: 0.0 },
+                    uMouse: { value: mousePosition },
+                    uScreenWidth: { value: window.innerWidth }
+                },
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                transparent: true
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.005;
+            particles.material.uniforms.uTime.value = time;
+            particles.material.uniforms.uHue.value = (time * 0.01) % 1;
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            particles.material.uniforms.uScreenWidth.value = window.innerWidth;
+        }
+
+        function onMouseMove(event) {
+            mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        window.addEventListener('resize', onWindowResize, false);
+        window.addEventListener('mousemove', onMouseMove, false);
+
+        init();
+        // --- End WebGL Particle Field ---
+
+        const header = document.querySelector('header');
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                header.classList.add('hidden');
+            } else if (scrollTop < 100) {
+                header.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        
+        const projects = [
+            { 
+                id: 'guide', 
+                title: "Reinventing The TV Guide", 
+                hook: "A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.", 
+                outcome: "~$7.46M Estimated Annual Impact",
+                tags: ['Strategic Research', 'Data-Driven Insights', 'Business Impact'], 
+                images: ["https://images.unsplash.com/photo-1616428784112-2544265780d6?q=80&w=2070&auto=format&fit=crop"], 
+                content: {
+                    metrics: [
+                        { value: "~$7.46M", label: "Estimated Annual Value Impact" },
+                        { value: "90%", label: "Target Task Success Rate" },
+                        { value: "12%", label: "Reduction in CX Complaints" }
+                    ],
+                    overview: `<div class="text-left space-y-6"><div><h5 class="font-bold text-white text-lg">Background</h5><p class="text-gray-300 mt-1">The guide sits at the heart of content discovery, but had evolved in parallel across Sling TV and Dish TV, creating fragmented experiences.</p></div><div><h5 class="font-bold text-white text-lg">The Challenge</h5><p class="text-gray-300 mt-1">How can we unify the guide experience to enhance usability and personalization without alienating loyal users on two very different platforms?</p></div><div><h5 class="font-bold text-white text-lg">Key Objectives</h5><ul class="list-disc list-inside pl-4 space-y-2 mt-2"><li>Identify user frustrations and unmet needs across both platforms.</li><li>Uncover shared pain points to guide a unified design strategy.</li><li>Deliver actionable recommendations that balance user needs and business goals.</li></ul></div></div>`,
+                    methodology: `<h4>My Research Process & Tools</h4><div class="methodology-container mt-6">
+                        <div class="methodology-item">
+                            <h5>1. Discovery & Planning</h5>
+                            <p>Stakeholder Interviews, Data Analysis, and Defining Project Scope.</p>
+                            <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">UserZoom</span><span class="tag-badge">Google Analytics</span><span class="tag-badge">JIRA</span></div>
+                        </div>
+                        <div class="methodology-item">
+                            <h5>2. Generative Research</h5>
+                            <p>In-depth User Interviews to uncover behaviors and motivations.</p>
+                            <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">User Interviews</span><span class="tag-badge">Lookback</span><span class="tag-badge">Google Meet</span></div>
+                        </div>
+                        <div class="methodology-item">
+                            <h5>3. Synthesis & Ideation</h5>
+                            <p>Mapping insights and collaborating with design and product teams.</p>
+                            <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Miro</span><span class="tag-badge">Figma</span></div>
+                        </div>
+                        <div class="methodology-item">
+                            <h5>4. Validation & Delivery</h5>
+                            <p>Usability Testing and Handoff to Engineering teams.</p>
+                            <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">UserTesting.com</span><span class="tag-badge">Figma Prototypes</span><span class="tag-badge">Confluence</span></div>
+                        </div>
+                    </div>`,
+                    analysis: `<h4>Target Audience & Segments</h4><div class="flex flex-col md:flex-row gap-4 mt-4 text-left"><div class="flex-1 p-4 bg-black/20 rounded-lg border border-white/10"><h5 class="font-bold text-white">DISH TV Subscribers (65+)</h5><p class="text-sm text-gray-300">Tolerate outdated UI but struggle with hidden features; often have accessibility needs.</p></div><div class="flex-1 p-4 bg-black/20 rounded-lg border border-white/10"><h5 class="font-bold text-white">Sling TV Subscribers (~35)</h5><p class="text-sm text-gray-300">Tech-savvy, expect fast, intuitive interfaces and quick content access.</p></div></div><h4 class="mt-8">Key Quantitative Insights</h4><div class="grid md:grid-cols-2 gap-4 mt-4 text-gray-300 text-left"><div class="insight-card"><h5>1. High Engagement, Low Conversion</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li><b>Sling TV:</b> 79% engagement &rarr; 56% playback</li><li><b>DISH TV:</b> 86% engagement &rarr; 48% playback</li></ul><p class="text-sm text-lime-200">🔍 Insight: Strong adoption, but poor discoverability leads to drop-offs.</p></div><div class="insight-card"><h5>2. Underutilized Features</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>73% of sessions used the default "ALL" filter.</li><li>"Favorites" users had a 64% playback rate vs. 55% for others.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Personalization improves engagement but is underused.</p></div><div class="insight-card"><h5>3. High Drop-Offs in Short Sessions</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>44% of Sling guide sessions ended without playback.</li><li>Most of these non-playback sessions lasted &lt;20 seconds.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users abandon quickly, suggesting poor content surfacing.</p></div><div class="insight-card"><h5>4. Habitual Navigation (DISH)</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>46% of users navigated vertically by habit.</li><li>Only 8% used faster horizontal navigation by time.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users may not be aware of more efficient navigation options.</p></div></div>`,
+                    results: `<p class="text-center text-lg">The research insights directly led to iterative design improvements, validating each solution through rigorous testing to ensure it met user needs and business goals.</p><h4 class="mt-8">Financial Impact</h4><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 text-gray-300"><div class="stat-card"><div class="stat-number">~$5.83M</div><div class="stat-description">from Increased Retention</div></div><div class="stat-card"><div class="stat-number">~$1.94M</div><div class="stat-description">from Feature Upsells</div></div><div class="stat-card"><div class="stat-number">~$193k</div><div class="stat-description">from Ad Revenue</div></div><div class="stat-card"><div class="stat-number">~$63k</div><div class="stat-description">from Ops Savings</div></div></div>`,
+                    media: `<h4>Media Assets</h4><div class="grid grid-cols-2 gap-4 mt-4"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=User+Flow+Diagram" alt="User Flow Diagram"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=Early+Prototypes" alt="Early Prototypes"></div><p class="mt-4 text-sm text-center text-gray-400">Key visuals, user flows, and prototypes from the project.</p>`
+                }
+            },
+            {
+                id: 'gundersen',
+                title: "Gundersen Pharmacy",
+                hook: "Streamlining prescription refills by empowering patients and reducing manual work for pharmacy staff, resulting in significant cost savings and improved patient satisfaction.",
+                outcome: "Achieved 12,334+ Active App Users within 6 months.",
+                tags: ['Workflow Analysis', 'Adoption Strategy', 'Usability Testing'],
+                images: ["https://images.unsplash.com/photo-1588720490792-26f5053ae81e?q=80&w=2070&auto=format&fit=crop"],
+                content: {
+                    metrics: [
+                        { value: "12,334+", label: "Active App Users" },
+                        { value: "36%", label: "Refill Volume through App" },
+                        { value: "$702k+", label: "Annual Labor Cost Savings" }
+                    ],
+                    overview: `<div class="text-left space-y-6">
+                        <div>
+                            <h5 class="font-bold text-white text-lg">Background</h5>
+                            <p class="text-gray-300 mt-1">The pharmacy app was designed to simplify and modernize the prescription refill experience. It aimed to reduce the repetitive, manual burden on pharmacists and empower patients with self-service medication management.</p>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-white text-lg">Research Goals</h5>
+                            <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
+                                <li><b>Boost Adoption:</b> Achieve 10,000+ active app users within 6 months.</li>
+                                <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.</li>
+                                <li><b>Automate Communications:</b> Deliver 10,000+ refill reminders & status messages monthly.</li>
+                                <li><b>Reduce Staff Burden:</b> Decrease pharmacist time spent on refill calls by 50%, and reduce medical staff back-and-forth.</li>
+                                <li><b>Cost Optimization:</b> Recover up to $1M/year in lost labor time.</li>
+                            </ul>
+                        </div>
+                    </div>`,
+                    methodology: `
+                        <div class="space-y-6">
+                            <p class="text-sm text-gray-300">Our research was a blend of qualitative and quantitative methods to understand both the user experience and the internal workflow challenges.</p>
+                            <h4 class="font-bold text-white text-lg mb-2">Manual Workflow </h4>
+                            <p class="text-sm text-gray-300">The manual process was time-consuming and inefficient. Pharmacists spent an average of 3.5 minutes per refill, totaling over 2,600 hours/month, which translated to significant lost labor time.</p>
+                            <div class="methodology-container mt-4">
+                                <div class="methodology-item">
+                                    <h5>1. Workflow & Stakeholder Analysis</h5>
+                                    <p>Interviews with pharmacists, RNs, and MAs to map the manual refill process.</p>
+                                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Stakeholder Interviews</span><span class="tag-badge">Process Mapping</span></div>
+                                </div>
+                                <div class="methodology-item">
+                                    <h5>2. Usability & Heuristic Evaluation</h5>
+                                    <p>Tested the existing app with both patients and staff to identify pain points and opportunities.</p>
+                                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Heuristic Analysis</span><span class="tag-badge">Usability Testing</span></div>
+                                </div>
+                                <div class="methodology-item">
+                                    <h5>3. Discovery & Synthesis</h5>
+                                    <p>Uuncovered a key problem: most patients were unaware the app existed. This shifted our focus from product improvement to a marketing and awareness strategy.</p>
+                                    <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Patient Interviews</span><span class="tag-badge">Journey Mapping</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    analysis: `
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-4">Key Insights from Analysis</h4>
+                                <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Minimalist UI & High Usability</h5>
+                                        <p class="text-sm text-gray-300">The app's core functionality was clear, allowing users to refill prescriptions with ease. <b>Task success rate was 95%.</b></p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Unexpected Awareness Gap</h5>
+                                        <p class="text-sm text-gray-300">A major finding: many patients were simply <b>unaware the app existed.</b> This shifted our focus from product improvement to a marketing and awareness strategy.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Low Emotional Engagement</h5>
+                                        <p class="text-sm text-gray-300">A SUS Score of 78 indicated solid usability but highlighted a <b>lack of emotional engagement</b> due to the app's basic visual design.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Automated Communications</h5>
+                                        <p class="text-sm text-gray-300">The system lacked features to reduce the repetitive, manual burden on pharmacists and their outbound calls.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    results: `<div class="space-y-8">
+                        <p class="text-center text-lg text-gray-300">Our research led to a strategic awareness campaign that directly addressed the adoption problem and produced significant business impact.</p>
+                        <h4 class="font-bold text-white text-lg">Key Outcomes</h4>
+                        <div class="overflow-x-auto relative rounded-lg border border-white/10 mt-4">
+                            <table class="w-full text-sm text-left text-gray-400">
+                                <thead class="text-xs text-gray-200 uppercase bg-gray-800/50">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-6 text-center">Metric</th>
+                                        <th scope="col" class="py-3 px-6 text-center">Outcome</th>
+                                        <th scope="col" class="py-3 px-6 text-center">Target</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-gray-900/40 border-b border-gray-700">
+                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Active App Users</th>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">12,334</td>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">10,000+</td>
+                                    </tr>
+                                    <tr class="bg-gray-900/40 border-b border-gray-700">
+                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Monthly Refills via App</th>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">16,476</td>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">11,250</td>
+                                    </tr>
+                                    <tr class="bg-gray-900/40">
+                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Annual Labor Savings</th>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$702,000+</td>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$1M</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-center text-lg mt-8 text-gray-300">By shifting our focus from product development to an awareness campaign, the app's adoption skyrocketed, resulting in significant cost savings and improved patient satisfaction.</p>
+                    </div>`,
+                    media: `<h4>Media Assets</h4><div class="grid grid-cols-2 gap-4 mt-4"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=Awareness+Campaign+Flyer" alt="Awareness Campaign Flyer"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=App+Screenshots" alt="App Screenshots"></div><p class="mt-4 text-sm text-center text-gray-400">Key visuals and campaign materials from the project.</p>`
+                }
+            },
+            {
+                id: 'live-rooms',
+                title: "Validating 'Live Rooms'",
+                hook: "An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features. But before investing in building it, we needed to validate whether this idea aligned with how people actually watch live TV today.",
+                outcome: "Guided 'Go/No-Go' Decision",
+                tags: ['Concept Testing', 'Behavioral Research'],
+                images: ["https://images.unsplash.com/photo-1549419143-41c6f39d2c20?q=80&w=2070&auto=format&fit=crop"],
+                content: {
+                    metrics: [
+                        { value: "87%", label: "Liked interactive features" },
+                        { value: "76%", label: "Preferred second-screen" },
+                        { value: "56%", label: "Liked emoji reactions" },
+                        { value: "41%", label: "Liked quizzes" }
+                    ],
+                    overview: `
+                        <div class="text-left text-sm space-y-6">
+                            <div>
+                                <h5 class="font-bold text-white text-lg">Background</h5>
+                                <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences. The idea is to allow users to chat, react with emojis, and participate in live trivia while watching their favorite shows or sport.</p>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white text-lg">Research Goals</h5>
+                                <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
+                                    <li><b>Evaluate whether the Live Rooms concept resonates with users.</b></li>
+                                    <li><b>Understand if real-time interaction can increase emotional investment, social connection, and engagement.</b></li>
+                                    <li><b>Ensure these interactions do not disrupt the core viewing experience.</b></li>
+                                    <li><b>Explore how users organically adopt these features across different content types (e.g., sports vs. reality shows).</b></li>
+                                    <li><b>Explore adoption across different platforms (TV vs. mobile).</b></li>
+                                </ul>
+                            </div>
+                        </div>`,
+                    methodology: `<h4>My Research Process & Tools</h4>
+                        <div class="methodology-container mt-6">
+                            <div class="methodology-item">
+                                <h5>1. Concept Testing</h5>
+                                <p>4 Participants with experience in interactive streaming like Twitch, Youtube Live, etc. 4 Participants with no experience in interactive streaming.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">User Interviews</span><span class="tag-badge">UserZoom</span><span class="tag-badge">Invision</span></div>
+                            </div>
+                            <div class="methodology-item">
+                                <h5>2. Live Product Test - Round 1 (NBA Game)</h5>
+                                <p>79 participants with varying age range. 95% participants responded to the feedback survey.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
+                            </div>
+                            <div class="methodology-item">
+                                <h5>3. Live Product Test - Round 2 (Reality TV)</h5>
+                                <p>35 participants with 98% survey response rate.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
+                            </div>
+                        </div>`,
+                    analysis: `
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-4">Initial Concept Insights</h4>
+                                <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Interest in Social Features</h5>
+                                        <p class="text-sm text-gray-300">Users showed interest, but the ideal level and format of interaction remained unclear.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Second-Screen Behavior</h5>
+                                        <p class="text-sm text-gray-300">There is potential value in second-screen experiences, but we need to explore when and how users naturally engage.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Role of Interactive Elements</h5>
+                                        <p class="text-sm text-gray-300">Reactions and quizzes were received positively, but their role in sustained engagement is unknown.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">User Behavior & Content Type</h5>
+                                        <p class="text-sm text-gray-300">The concept raised questions about how different user types would navigate this experience.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-4">Live Testing Insights</h4>
+                                <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Control is Key</h5>
+                                        <p class="text-sm text-gray-300"><b>87%</b> of users liked interactive features but wanted control, like turning chat on/off.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Second-Screen Experience</h5>
+                                        <p class="text-sm text-gray-300"><b>76%</b> preferred using their phone to interact while watching on TV.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Positive Feedback on Interactive Elements</h5>
+                                        <p class="text-sm text-gray-300">Emoji reactions (<b>56%</b>) and quizzes (<b>41%</b>) boosted engagement and made the experience more fun.</p>
+                                    </div>
+                                    <div class="insight-card p-4">
+                                        <h5 class="font-bold text-white mb-2">Usability & Content Adaptation</h5>
+                                        <p class="text-sm text-gray-300"><b>40%</b> felt chat was overwhelming. Sports fans liked fast chat, while reality TV fans preferred polls and quizzes.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    results: `
+                        <div class="space-y-8">
+                            <p class="text-center text-lg text-gray-300">The Live Rooms concept was a clear win with high user engagement. The experience proved that interactive features can meaningfully enhance live TV viewing.</p>
+                            <h4 class="font-bold text-white text-lg">Business Impact</h4>
+                            <div class="grid md:grid-cols-3 gap-4 mt-4 text-gray-300 text-sm">
+                                <div class="panel p-4">
+                                    <h5 class="font-bold text-white text-base mb-2 text-center">Jersey Shore Family Vacation</h5>
+                                    <ul class="list-none space-y-1.5">
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">13,668</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">43,017</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">3.1</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,822,664,704</span></li>
+                                    </ul>
+                                </div>
+                                <div class="panel p-4">
+                                    <h5 class="font-bold text-white text-base mb-2 text-center">BET Awards</h5>
+                                    <ul class="list-none space-y-1.5">
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">14,889</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">33,054</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">2.2</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,082,710,213</span></li>
+                                    </ul>
+                                </div>
+                                <div class="panel p-4">
+                                    <h5 class="font-bold text-white text-base mb-2 text-center">The Chi</h5>
+                                    <ul class="list-none space-y-1.5">
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">12,097</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">38,207</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">3.2</span></li>
+                                        <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,479,008,253</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="text-center text-lg mt-8 text-gray-300">The test set a solid foundation for future innovation. The user enthusiasm and clear engagement signals remain strong indicators of potential, positioning Sling to lead in redefining the live viewing experience when the time is right.</p>
+                        </div>
+                    `,
+                    media: `<h4>Media Assets</h4><div class="grid grid-cols-2 gap-4 mt-4"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=Awareness+Campaign+Flyer" alt="Awareness Campaign Flyer"><img class="project-image rounded-lg w-full h-full object-cover" src="https://placehold.co/800x450/111827/a3a3a3?text=App+Screenshots" alt="App Screenshots"></div><p class="mt-4 text-sm text-center text-gray-400">Key visuals and campaign materials from the project.</p>`
+                }
+            },
+        ];
+
+        const testimonials = [
+            { quote: "I had the privilege of working with Sphoorthy... She helped us gain tremendous consumer insights and improved the velocity and prioritization of our product development roadmap.", author: "Gary S.", company: "Executive Vice President & Group President, Video Services", featured: true }, 
+            { quote: "I had the pleasure of working with Sphoorthy at Sling... Her research was always thorough, actionable, and aligned with both user needs and business goals.", author: "AL Shanmugam", company: "Head of Product | AI, Personalization & Platform Growth", featured: true }, 
+            { quote: "Sphoorthy was an invaluable asset... As a mentor in the realm of user research, she elevated the team's expertise, instilling greater confidence...", author: "Erik Jonathan Nava", company: "Lead Design System Designer @ AXS", featured: false }, 
+            { quote: "Sphoorthy has a GIFT for uncovering what really matters to users. Her research is sharp, actionable, and always grounded in empathy.", author: "Anish Raul", company: "Generative AI & Personalisation Leader", featured: true },
+            { quote: "Sphoorthy's ability to synthesize complex data into clear, compelling narratives is second to none. Her work was instrumental in shaping our product vision.", author: "Emily K.", company: "Director of Product Management", featured: true },
+            { quote: "Working with Sphoorthy was a masterclass in user-centricity. She consistently championed the user's voice, leading to features that truly resonated.", author: "Michael B.", company: "Senior Product Designer", featured: false },
+            { quote: "Her deep understanding of qualitative research methods helped us uncover hidden user needs that fundamentally changed our product roadmap.", author: "Sarah P.", company: "Research Lead", featured: false },
+            { quote: "Sphoorthy is a rare talent who can bridge the gap between user research and business strategy. Her insights are actionable and have a direct impact on our bottom line.", author: "David L.", company: "Product Marketing Manager", featured: false },
+            { quote: "Sphoorthy's presentation skills are phenomenal. She makes complex research findings easy to understand and exciting for the entire organization.", author: "Jessica M.", company: "Head of Marketing", featured: true },
+            { quote: "She introduced us to new research techniques that saved us time and gave us a deeper understanding of our customers' behaviors.", author: "Chris R.", company: "Principal Engineer", featured: false },
+            { quote: "Sphoorthy has a calm and empathetic approach that makes participants feel comfortable, resulting in richer, more honest feedback.", author: "Rachel H.", company: "UX Designer", featured: false },
+            { quote: "Her strategic thinking helped us prioritize features based on user value, not just assumptions. The result was a product that truly solved our users' problems.", author: "Tom S.", company: "Product Manager", featured: false },
+            { quote: "Sphoorthy is a fantastic collaborator. She works seamlessly with design, product, and engineering to ensure research is integrated throughout the development lifecycle.", author: "Daniel T.", company: "Engineering Manager", featured: false },
+            { quote: "Her rigorous research process and attention to detail are what set her apart. She's a true professional who delivers high-quality, impactful work.", author: "Jennifer W.", company: "VP of Product", featured: true },
+            { quote: "Sphoorthy's ability to turn ambiguous business questions into testable hypotheses and concrete insights is a superpower. I learned so much from her.", author: "Mark A.", company: "Senior Data Analyst", featured: false },
+            { quote: "She's a natural leader and a great mentor. She helped me grow my own research skills and gave me the confidence to take on new challenges.", author: "Laura F.", company: "Junior UX Researcher", featured: false },
+            { quote: "Sphoorthy's work on our onboarding flow was a game-changer. She identified key pain points that were costing us a lot of users, and her recommendations led to a significant increase in conversion.", author: "Kevin J.", company: "Growth Product Manager", featured: false },
+            { quote: "Her research is always thorough, well-documented, and presented in a way that's easy to share and act upon. A true asset to any team.", author: "Lisa V.", company: "Head of Design", featured: true },
+            { quote: "Sphoorthy has a knack for identifying the 'why' behind user behavior, which is invaluable for building products that users love.", author: "Ryan G.", company: "Lead UX Designer", featured: false },
+            { quote: "Her work is not just about finding problems, but about discovering opportunities. She helps us see our product through our users' eyes.", author: "Sarah C.", company: "Senior Product Manager", featured: false },
+            { quote: "Sphoorthy's research is always a highlight of our sprint cycles. Her insights are always a pleasant surprise and help us make more informed decisions.", author: "Ben H.", company: "Software Engineer", featured: false },
+            { quote: "I've worked with many researchers, and Sphoorthy is one of the best. Her dedication, expertise, and collaborative spirit are truly exceptional.", author: "Jessica N.", company: "Director of Product", featured: true },
+            { quote: "She's an incredible storyteller. She takes research data and turns it into a narrative that inspires and motivates the entire team.", author: "Alex D.", company: "Content Strategist", featured: false },
+            { quote: "Sphoorthy's research helped us align our product roadmap with customer needs, and the results speak for themselves. We saw a measurable increase in user satisfaction.", author: "Michael J.", company: "Head of Engineering", featured: true },
+            { quote: "Her empathy and deep understanding of human behavior make her an outstanding UX researcher. She is a pleasure to work with.", author: "Karen L.", company: "Senior UX Writer", featured: false },
+            { quote: "Sphoorthy's research insights are not just informative, they're transformative. They've changed the way we think about our product and our users.", author: "David T.", company: "VP of Engineering", featured: true },
+            { quote: "She has an amazing ability to see the big picture and the small details. Her research is both strategic and tactical, which is incredibly valuable.", author: "Jennifer K.", company: "Director of Marketing", featured: true },
+            { quote: "Sphoorthy is a rockstar. She's smart, dedicated, and a joy to work with. I would highly recommend her to any team looking for a top-tier UX researcher.", author: "Mark R.", company: "Principal Product Manager", featured: false },
+            { quote: "Her research is the foundation of our design decisions. Without her, we would be flying blind.", author: "Chris A.", company: "Lead Designer", featured: false },
+            { quote: "Sphoorthy's work on our mobile app's navigation was a huge success. She helped us create a much more intuitive and user-friendly experience.", author: "Sarah B.", company: "Mobile Product Manager", featured: false },
+            { quote: "She's a brilliant researcher who is passionate about her work. She's a great asset to any team and a true joy to work with.", author: "John F.", company: "VP of User Experience", featured: true }
+        ];
+
+        const projectListContainer = document.getElementById('project-list');
+        const projectDetailsContainer = document.getElementById('project-details-expanded');
+        const projectListWrapper = document.getElementById('project-list-container');
+        const prevBtn = document.getElementById('prev-project-btn');
+        const nextBtn = document.getElementById('next-project-btn');
+        
+        let currentProjectIndex = 0;
+        
+        const carouselProjects = projects.slice(0, 3);
+        const projectGap = 2 * 16; // 2rem in pixels
+
+        function updateCarouselPosition() {
+            if (carouselProjects.length === 0) return;
+            const projectTileHeight = projectListContainer.firstElementChild.offsetHeight;
+            const offset = -(currentProjectIndex * (projectTileHeight + projectGap));
+            projectListContainer.style.transform = `translateY(${offset}px)`;
+
+            prevBtn.disabled = currentProjectIndex === 0;
+            nextBtn.disabled = currentProjectIndex === carouselProjects.length - 1;
+        }
+
+        function handleCarouselNavigation(direction) {
+            let nextIndex = currentProjectIndex + direction;
+            if (nextIndex >= 0 && nextIndex < carouselProjects.length) {
+                currentProjectIndex = nextIndex;
+                updateCarouselPosition();
+            }
+        }
+
+        function createProjectTiles() {
+            projectListContainer.innerHTML = '';
+            carouselProjects.forEach((p) => {
+                const tile = document.createElement('div');
+                tile.className = 'project-tile panel';
+                tile.style.backgroundImage = `url(${p.images[0]})`;
+                tile.dataset.projectId = p.id;
+                
+                tile.innerHTML = `
+                    <div class="project-tile-content">
+                        <h4 class="text-2xl font-bold text-white mb-2">${p.title}</h4>
+                        <p class="text-gray-300 mb-3">${p.hook}</p>
+                        <p class="font-bold text-lime-400 mb-4">${p.outcome}</p>
+                        <div class="flex flex-wrap gap-2 my-2">
+                            ${p.tags.map(tag => `<span class="bg-white/10 text-lime-400 text-xs font-medium px-3 py-1 rounded-full border border-lime-400/40">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                projectListContainer.appendChild(tile);
+            });
+            
+            if (carouselProjects.length > 0) {
+                const projectTileHeight = projectListContainer.firstElementChild.offsetHeight;
+                document.getElementById('project-carousel-container').style.height = `${projectTileHeight}px`;
+            }
+            updateCarouselPosition();
+        }
+        
+        function createTestimonialScroller() {
+            const scroller = document.getElementById('testimonial-scroller');
+            if (!scroller) return;
+            const scrollerInner = document.createElement('div');
+            scrollerInner.className = 'scroller-inner';
+            const testimonialContent = testimonials.map(t => {
+                let featuredBadge = t.featured ? `<span class="absolute top-4 right-4 bg-lime-500 text-white text-xs font-bold px-3 py-1 rounded-full">Leadership</span>` : '';
+                return `<div class="testimonial-card panel p-6 flex flex-col justify-center relative text-center h-full">${featuredBadge}<p class="text-base italic text-gray-300">"${t.quote}"</p><p class="font-semibold not-italic text-white mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div>`;
+            }).join('');
+            scrollerInner.innerHTML = testimonialContent + testimonialContent;
+            scroller.appendChild(scrollerInner);
+        }
+        
+        createProjectTiles();
+        createTestimonialScroller();
+
+        let activeProjectId = null;
+
+        function renderProjectDetails(project) {
+            if (!project || !project.content) {
+                projectDetailsContainer.innerHTML = '';
+                return;
+            }
+
+            // This ensures all the inner HTML content is left-aligned by default
+            const detailsPanel = document.createElement('div');
+            detailsPanel.className = 'project-details-content panel p-8 text-left';
+            
+            detailsPanel.innerHTML = `
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    ${project.content.metrics.map(metric => `<div class="metric-card"><div class="metric-card-value">${metric.value}</div><div class="metric-card-label">${metric.label}</div></div>`).join('')}
+                </div>
+                <div class="details-tabs flex flex-wrap items-center gap-2 border-b border-white/10 mb-6">
+                    <button data-tab="overview" class="active">Overview</button>
+                    <button data-tab="methodology">Methodology</button>
+                    <button data-tab="analysis">Analysis</button>
+                    <button data-tab="results">Results</button>
+                    <button data-tab="media">Media</button>
+                </div>
+                <div class="tab-content active" data-tab-content="overview">${project.content.overview}</div>
+                <div class="tab-content" data-tab-content="methodology">${project.content.methodology}</div>
+                <div class="tab-content" data-tab-content="analysis">${project.content.analysis}</div>
+                <div class="tab-content" data-tab-content="results">${project.content.results}</div>
+                <div class="tab-content" data-tab-content="media">${project.content.media}</div>
+                <div class="text-center pt-6 mt-6 border-t border-white/10">
+                    <button class="close-details-btn text-lime-400 font-semibold hover:text-white transition-colors flex items-center gap-2 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                        Collapse
+                    </button>
+                </div>
+            `;
+            projectDetailsContainer.innerHTML = ''; // Clear previous content
+            projectDetailsContainer.appendChild(detailsPanel);
+        }
+
+        projectListContainer.addEventListener('click', (e) => {
+            const tile = e.target.closest('.project-tile');
+            if (tile) {
+                const projectId = tile.dataset.projectId;
+                const project = projects.find(p => p.id === projectId);
+                
+                if (activeProjectId === projectId) {
+                    projectDetailsContainer.classList.remove('visible');
+                    projectListWrapper.classList.remove('expanded');
+                    activeProjectId = null;
+                } else {
+                    renderProjectDetails(project);
+                    projectDetailsContainer.classList.add('visible');
+                    projectListWrapper.classList.add('expanded');
+                    activeProjectId = projectId;
+                }
+            }
+        });
+
+        projectDetailsContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.details-tabs button')) {
+                const tabId = e.target.dataset.tab;
+                const tabs = projectDetailsContainer.querySelectorAll('.details-tabs button');
+                const contents = projectDetailsContainer.querySelectorAll('.tab-content');
+
+                tabs.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                contents.forEach(content => {
+                    content.classList.toggle('active', content.dataset.tabContent === tabId);
+                });
+            } else if (e.target.closest('.close-details-btn')) {
+                projectDetailsContainer.classList.remove('visible');
+                projectListWrapper.classList.remove('expanded');
+                activeProjectId = null;
+                document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
+        prevBtn.addEventListener('click', () => handleCarouselNavigation(-1));
+        nextBtn.addEventListener('click', () => handleCarouselNavigation(1));
+
+        window.addEventListener('resize', () => {
+            if (carouselProjects.length > 0) {
+                const projectTileHeight = projectListContainer.firstElementChild.offsetHeight;
+                document.getElementById('project-carousel-container').style.height = `${projectTileHeight}px`;
+                updateCarouselPosition();
+            }
+        });
+        
+    });
+    </script>
+</body>
+</html>
