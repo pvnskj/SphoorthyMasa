@@ -14,11 +14,17 @@
             --hue: 100; /* Neon Green Hue */
         }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #E5E7EB;
-            background-color: #EDEAE6;
-        }
+      body {
+  font-family: 'Inter', sans-serif;      /* keep your font */
+  color: #0f172a;                        /* readable on light */
+  background:
+    radial-gradient(1200px 800px at 10% -10%, rgba(173, 255, 216, .28), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(173, 216, 255, .30), transparent 60%),
+    radial-gradient(700px 500px at 50% 120%, rgba(255, 255, 255, .85), transparent 70%),
+    linear-gradient(135deg, #f9fbff 0%, #eef9ff 38%, #eafff3 72%, #ffffff 100%);
+  background-attachment: fixed;
+}
+
 /* --- Media carousel (Guide Media tab) --- */
 .media-carousel { position: relative; width: 100%; }
 .media-track {
@@ -424,6 +430,22 @@
             animation: pulse 5s infinite ease-in-out;
             color: #a3e635; /* give stroke a neon lime tone */
         }
+        :root { --grad-pos: 0%; }
+@keyframes sheen {
+  0% { --grad-pos: 0%; } 50% { --grad-pos: 100%; } 100% { --grad-pos: 0%; }
+}
+html::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0) calc(var(--grad-pos) - 20%),
+    rgba(255,255,255,0.35) var(--grad-pos),
+    rgba(255,255,255,0) calc(var(--grad-pos) + 20%)
+  );
+  mix-blend-mode: overlay;
+  animation: sheen 12s ease-in-out infinite;
+}
+
     </style>
 </head>
 <body class="antialiased">
