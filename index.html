@@ -825,11 +825,20 @@
                     results: `<p class="text-center text-lg">The research insights directly led to iterative design improvements, validating each solution through rigorous testing to ensure it met user needs and business goals.</p><h4 class="mt-8">Financial Impact</h4><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 text-gray-300"><div class="stat-card"><div class="stat-number">~$5.83M</div><div class="stat-description">from Increased Retention</div></div><div class="stat-card"><div class="stat-number">~$1.94M</div><div class="stat-description">from Feature Upsells</div></div><div class="stat-card"><div class="stat-number">~$193k</div><div class="stat-description">from Ad Revenue</div></div><div class="stat-card"><div class="stat-number">~$63k</div><div class="stat-description">from Ops Savings</div></div></div>`,
                     media: `
 <h4>Media Assets</h4>
-<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-  ${Array.from({length: 16}, (_, i) => `
-    <img class="project-image rounded-lg w-full h-full object-cover" src="images/Guide/${i+1}.png" alt="Guide ${i+1}">
-  `).join('')}
+
+<div class="media-carousel mt-4">
+  <button class="media-nav prev" aria-label="Previous">&#10094;</button>
+  <div class="media-track">
+    ${Array.from({length: 16}, (_, i) => `
+      <figure class="media-item">
+        <img class="media-img" src="images/Guide/${i+1}.png" alt="Guide ${i+1}">
+        <figcaption class="media-cap">Guide ${i+1}</figcaption>
+      </figure>
+    `).join('')}
+  </div>
+  <button class="media-nav next" aria-label="Next">&#10095;</button>
 </div>
+
 <p class="mt-4 text-sm text-center text-gray-400">Key visuals, user flows, and prototypes from the project.</p>
 `
   }
