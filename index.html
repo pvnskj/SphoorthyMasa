@@ -430,23 +430,9 @@
             animation: pulse 5s infinite ease-in-out;
             color: #a3e635; /* give stroke a neon lime tone */
         }
-        :root { --grad-pos: 0%; }
-@keyframes sheen {
-  0% { --grad-pos: 0%; } 50% { --grad-pos: 100%; } 100% { --grad-pos: 0%; }
-}
-html::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0) calc(var(--grad-pos) - 20%),
-    rgba(255,255,255,0.35) var(--grad-pos),
-    rgba(255,255,255,0) calc(var(--grad-pos) + 20%)
-  );
-  mix-blend-mode: overlay;
-  animation: sheen 12s ease-in-out infinite;
-}
 
     </style>
+
 </head>
 <body class="antialiased">
     <!-- WebGL Canvas Background -->
