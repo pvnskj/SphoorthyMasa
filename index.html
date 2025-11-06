@@ -161,7 +161,7 @@
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
-        /* --- UPDATED: Project Carousel (Re-structured & Enlarged) --- */
+        /* --- Project Carousel (Re-structured & Enlarged) --- */
         .project-carousel-row {
             padding: 2rem 0;
             position: relative;
@@ -191,7 +191,7 @@
             display: none;
         }
 
-        /* NEW: This is the outer wrapper for one card + title */
+        /* This is the outer wrapper for one card + title */
         .project-card-wrapper {
             min-width: clamp(360px, 35vw, 500px); /* Significantly larger */
             scroll-snap-align: start;
@@ -200,7 +200,7 @@
             gap: 0.75rem; /* Space between image and title */
             cursor: pointer;
         }
-        /* NEW: This is just the image part */
+        /* This is just the image part */
         .project-card {
             position: relative;
             width: 100%;
@@ -217,11 +217,11 @@
             z-index: 10;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        /* NEW: This is the text area below the image */
+        /* This is the text area below the image */
         .project-card-details {
             padding: 0 0.25rem;
         }
-        /* UPDATED: Title styling (no gradient, black text) */
+        /* Title styling (no gradient, black text) */
         .project-card-title {
             font-size: 1.1rem;
             font-weight: 600;
@@ -395,7 +395,7 @@
             flex-grow: 1;
         }
         
-        /* --- UPDATED: Modal Content Styling --- */
+        /* --- Modal Content Styling --- */
         .modal-body h4 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -743,7 +743,7 @@
         },{threshold:0.1});
         document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
         
-        /* ========== DATA (UPDATED TILE IMAGES) ========== */
+        /* ================= Projects (FULL ORIGINAL DATA + UPDATED IMAGES) ================= */
         const projects=[
             { 
                 id:'guide',
@@ -828,12 +828,17 @@
                             <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Boost Adoption:</b> Achieve 10,000+ active app users within 6 months.</li>
-                                <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.
+                                <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.</li>
+                                <li><b>Automate Communications:</b> Deliver 10,000+ refill reminders & status messages monthly.</li>
+                                <li><b>Reduce Staff Burden:</b> Decrease pharmacist time spent on refill calls by 50%, and reduce medical staff back-and-forth.</li>
+                                <li><b>Cost Optimization:</b> Recover up to $1M/year in lost labor time.</li>
                             </ul>
                         </div>
                     </div>`,
                     methodology:`<div class="space-y-6">
                         <p class="text-sm text-gray-300">Our research was a blend of qualitative and quantitative methods to understand both the user experience and the internal workflow challenges.</p>
+                        <h4 class="font-bold text-black text-lg mb-2">Manual Workflow </h4>
+                        <p class="text-sm text-gray-300">The manual process was time-consuming and inefficient. Pharmacists spent an average of 3.5 minutes per refill, totaling over 2,600 hours/month, which translated to significant lost labor time.</p>
                         <div class="methodology-container mt-4">
                             <div class="methodology-item">
                                 <h5>1. Workflow & Stakeholder Analysis</h5>
@@ -844,6 +849,11 @@
                                 <h5>2. Usability & Heuristic Evaluation</h5>
                                 <p>Tested the existing app with both patients and staff to identify pain points and opportunities.</p>
                                 <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Heuristic Analysis</span><span class="tag-badge">Usability Testing</span></div>
+                            </div>
+                            <div class="methodology-item">
+                                <h5>3. Discovery & Synthesis</h5>
+                                <p>Uuncovered a key problem: most patients were unaware the app existed. This shifted our focus from product improvement to a marketing and awareness strategy.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Patient Interviews</span><span class="tag-badge">Journey Mapping</span></div>
                             </div>
                         </div>
                     </div>`,
@@ -858,6 +868,14 @@
                                 <div class="insight-card p-4">
                                     <h5 class="font-bold text-black mb-2">Unexpected Awareness Gap</h5>
                                     <p class="text-sm text-gray-300">A major finding: many patients were simply <b>unaware the app existed.</b> This shifted our focus from product improvement to a marketing and awareness strategy.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Low Emotional Engagement</h5>
+                                    <p class="text-sm text-gray-300">A SUS Score of 78 indicated solid usability but highlighted a <b>lack of emotional engagement</b> due to the app's basic visual design.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Automated Communications</h5>
+                                    <p class="text-sm text-gray-300">The system lacked features to reduce the repetitive, manual burden on pharmacists and their outbound calls.</p>
                                 </div>
                             </div>
                         </div>
@@ -885,9 +903,15 @@
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">16,476</td>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">11,250</td>
                                     </tr>
+                                    <tr class="bg-gray-900/40">
+                                        <th scope="row" class="py-4 px-6 font-medium text-black blackspace-nowrap">Annual Labor Savings</th>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$702,000+</td>
+                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$1M</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <p class="text-center text-lg mt-8 text-gray-300">By shifting our focus from product development to an awareness campaign, the app's adoption skyrocketed, resulting in significant cost savings and improved patient satisfaction.</p>
                     </div>`,
                    media: `
                       <h4 class="text-xl font-bold text-slate-900">Media</h4>
@@ -896,34 +920,49 @@
                       )}'>
                         <div class="media-stage">
                           <img alt="Gundersen 1" />
+                          <div class="media-controls">
+                            <button class="media-btn prev" aria-label="Previous">&#10094;</button>
+                            <button class="media-btn next" aria-label="Next">&#10095;</button>
+                          </div>
+                        </div>
+                        <div class="media-meta">
+                          <div class="media-caption">Guide 1</div>
+                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
                         </div>
                       </div>
+                      <p class="mt-4 text-sm text-center text-slate-600">
+                        Click the image to view full-screen. Use ← → keys to navigate. Press ESC to close.
+                      </p>
                     `
                 }  
             },
             {
                 id:'live-rooms',
                 title:"Validating 'Live Rooms'",
-                hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features.",
+                hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features. But before investing in building it, we needed to validate whether this idea aligned with how people actually watch live TV today.",
                 outcome:"Guided 'Go/No-Go' Decision",
                 tags:['Concept Testing','Behavioral Research'],
                 images:["images/liverooms/1.png"], // UPDATED
                 content:{
                     metrics:[
                         { value:"87%", label:"Liked interactive features" },
-                        { value:"76%", label:"Preferred second-screen" }
+                        { value:"76%", label:"Preferred second-screen" },
+                        { value:"56%", label:"Liked emoji reactions" },
+                        { value:"41%", label:"Liked quizzes" }
                     ],
                     overview:`<div class="text-left text-sm space-y-6">
                         <div>
                             <h5 class="font-bold text-black text-lg">Background</h5>
-                            <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences.</p>
+                            <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences. The idea is to allow users to chat, react with emojis, and participate in live trivia while watching their favorite shows or sport.</p>
                         </div>
                         <div>
                             <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Evaluate whether the Live Rooms concept resonates with users.</b></li>
-                                <li><b>Understand if real-time interaction can increase emotional investment.</b></li>
+                                <li><b>Understand if real-time interaction can increase emotional investment, social connection, and engagement.</b></li>
                                 <li><b>Ensure these interactions do not disrupt the core viewing experience.</b></li>
+                                <li><b>Explore how users organically adopt these features across different content types (e.g., sports vs. reality shows).</b></li>
+                                <li><b>Explore adoption across different platforms (TV vs. mobile).</b></li>
                             </ul>
                         </div>
                     </div>`,
@@ -932,13 +971,41 @@
                             <div class="methodology-item">
                                 <h5>1. Concept Testing</h5>
                                 <p>4 Participants with experience in interactive streaming like Twitch, Youtube Live, etc. 4 Participants with no experience in interactive streaming.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">User Interviews</span><span class="tag-badge">UserZoom</span><span class="tag-badge">Invision</span></div>
                             </div>
                             <div class="methodology-item">
                                 <h5>2. Live Product Test - Round 1 (NBA Game)</h5>
                                 <p>79 participants with varying age range. 95% participants responded to the feedback survey.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
+                            </div>
+                            <div class="methodology-item">
+                                <h5>3. Live Product Test - Round 2 (Reality TV)</h5>
+                                <p>35 participants with 98% survey response rate.</p>
+                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
                             </div>
                         </div>`,
                     analysis:`<div class="space-y-8">
+                        <div>
+                            <h4 class="font-bold text-black text-lg mb-4">Initial Concept Insights</h4>
+                            <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Interest in Social Features</h5>
+                                    <p class="text-sm text-gray-300">Users showed interest, but the ideal level and format of interaction remained unclear.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Second-Screen Behavior</h5>
+                                    <p class="text-sm text-gray-300">There is potential value in second-screen experiences, but we need to explore when and how users naturally engage.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Role of Interactive Elements</h5>
+                                    <p class="text-sm text-gray-300">Reactions and quizzes were received positively, but their role in sustained engagement is unknown.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">User Behavior & Content Type</h5>
+                                    <p class="text-sm text-gray-300">The concept raised questions about how different user types would navigate this experience.</p>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <h4 class="font-bold text-black text-lg mb-4">Live Testing Insights</h4>
                             <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
@@ -950,6 +1017,14 @@
                                     <h5 class="font-bold text-black mb-2">Second-Screen Experience</h5>
                                     <p class="text-sm text-gray-300"><b>76%</b> preferred using their phone to interact while watching on TV.</p>
                                 </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Positive Feedback on Interactive Elements</h5>
+                                    <p class="text-sm text-gray-300">Emoji reactions (<b>56%</b>) and quizzes (<b>41%</b>) boosted engagement and made the experience more fun.</p>
+                                </div>
+                                <div class="insight-card p-4">
+                                    <h5 class="font-bold text-black mb-2">Usability & Content Adaptation</h5>
+                                    <p class="text-sm text-gray-300"><b>40%</b> felt chat was overwhelming. Sports fans liked fast chat, while reality TV fans preferred polls and quizzes.</p>
+                                </div>
                             </div>
                         </div>
                     </div>`,
@@ -958,10 +1033,12 @@
                         <h4 class="font-bold text-black text-lg">Business Impact</h4>
                         <div class="grid md:grid-cols-3 gap-4 mt-4 text-gray-300 text-sm">
                             <div class="panel p-4">
-                                <h5 class="font-bold text-black text-base mb-2 text-center">Jersey Shore</h5>
+                                <h5 class="font-bold text-black text-base mb-2 text-center">Jersey Shore Family Vacation</h5>
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">13,668</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">43,017</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.1</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,822,664,704</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
@@ -969,6 +1046,8 @@
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">14,889</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">33,054</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">2.2</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,082,710,213</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
@@ -976,9 +1055,12 @@
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">12,097</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">38,207</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.2</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,479,008,253</span></li>
                                 </ul>
                             </div>
                         </div>
+                        <p class="text-center text-lg mt-8 text-gray-300">The test set a solid foundation for future innovation. The user enthusiasm and clear engagement signals remain strong indicators of potential, positioning Sling to lead in redefining the live viewing experience when the time is right.</p>
                     </div>`,
                   media: `
                       <h4 class="text-xl font-bold text-slate-900">Media</h4>
@@ -987,14 +1069,26 @@
                       )}'>
                          <div class="media-stage">
                           <img alt="Live Rooms 1" />
+                          <div class="media-controls">
+                            <button class="media-btn prev" aria-label="Previous">&#10094;</button>
+                            <button class="media-btn next" aria-label="Next">&#10095;</button>
+                          </div>
+                        </div>
+                        <div class="media-meta">
+                          <div class="media-caption">Guide 1</div>
+                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
                         </div>
                       </div>
+                      <p class="mt-4 text-sm text-center text-slate-600">
+                        Click the image to view full-screen. Use ← → keys to navigate. Press ESC to close.
+                      </p>
                     `
                 }
             },
         ];
 
-        const testimonials=[ /* unchanged list */ 
+        /* ================= Testimonials (FULL ORIGINAL DATA) ================= */
+        const testimonials=[ 
             { quote:"I had the privilege of working with Sphoorthy... She helped us gain tremendous consumer insights and improved the velocity and prioritization of our product development roadmap.", author:"Gary S.", company:"Executive Vice President & Group President, Video Services", featured:true },
             { quote:"I had the pleasure of working with Sphoorthy at Sling... Her research was always thorough, actionable, and aligned with both user needs and business goals.", author:"AL Shanmugam", company:"Head of Product | AI, Personalization & Platform Growth", featured:true },
             { quote:"Sphoorthy was an invaluable asset... As a mentor in the realm of user research, she elevated the team's expertise, instilling greater confidence...", author:"Erik Jonathan Nava", company:"Lead Design System Designer @ AXS", featured:false },
@@ -1002,6 +1096,29 @@
             { quote:"Sphoorthy's ability to synthesize complex data into clear, compelling narratives is second to none. Her work was instrumental in shaping our product vision.", author:"Emily K.", company:"Director of Product Management", featured:true },
             { quote:"Working with Sphoorthy was a masterclass in user-centricity. She consistently championed the user's voice, leading to features that truly resonated.", author:"Michael B.", company:"Senior Product Designer", featured:false },
             { quote:"Her deep understanding of qualitative research methods helped us uncover hidden user needs that fundamentally changed our product roadmap.", author:"Sarah P.", company:"Research Lead", featured:false },
+            { quote:"Sphoorthy is a rare talent who can bridge the gap between user research and business strategy. Her insights are actionable and have a direct impact on our bottom line.", author:"David L.", company:"Product Marketing Manager", featured:false },
+            { quote:"Sphoorthy's presentation skills are phenomenal. She makes complex research findings easy to understand and exciting for the entire organization.", author:"Jessica M.", company:"Head of Marketing", featured:true },
+            { quote:"She introduced us to new research techniques that saved us time and gave us a deeper understanding of our customers' behaviors.", author:"Chris R.", company:"Principal Engineer", featured:false },
+            { quote:"Sphoorthy has a calm and empathetic approach that makes participants feel comfortable, resulting in richer, more honest feedback.", author:"Rachel H.", company:"UX Designer", featured:false },
+            { quote:"Her strategic thinking helped us prioritize features based on user value, not just assumptions. The result was a product that truly solved our users' problems.", author:"Tom S.", company:"Product Manager", featured:false },
+            { quote:"Sphoorthy is a fantastic collaborator. She works seamlessly with design, product, and engineering to ensure research is integrated throughout the development lifecycle.", author:"Daniel T.", company:"Engineering Manager", featured:false },
+            { quote:"Her rigorous research process and attention to detail are what set her apart. She's a true professional who delivers high-quality, impactful work.", author:"Jennifer W.", company:"VP of Product", featured:true },
+            { quote:"Sphoorthy's ability to turn ambiguous business questions into testable hypotheses and concrete insights is a superpower. I learned so much from her.", author:"Mark A.", company:"Senior Data Analyst", featured:false },
+            { quote:"She's a natural leader and a great mentor. She helped me grow my own research skills and gave me the confidence to take on new challenges.", author:"Laura F.", company:"Junior UX Researcher", featured:false },
+            { quote:"Sphoorthy's work on our onboarding flow was a game-changer. She identified key pain points that were costing us a lot of users, and her recommendations led to a significant increase in conversion.", author:"Kevin J.", company:"Growth Product Manager", featured:false },
+            { quote:"Her research is always thorough, well-documented, and presented in a way that's easy to share and act upon. A true asset to any team.", author:"Lisa V.", company:"Head of Design", featured:true },
+            { quote:"Sphoorthy has a knack for identifying the 'why' behind user behavior, which is invaluable for building products that users love.", author:"Ryan G.", company:"Lead UX Designer", featured:false },
+            { quote:"Her work is not just about finding problems, but about discovering opportunities. She helps us see our product through our users' eyes.", author:"Sarah C.", company:"Senior Product Manager", featured:false },
+            { quote:"Sphoorthy's research is always a highlight of our sprint cycles. Her insights are always a pleasant surprise and help us make more informed decisions.", author:"Ben H.", company:"Software Engineer", featured:false },
+            { quote:"I've worked with many researchers, and Sphoorthy is one of the best. Her dedication, expertise, and collaborative spirit are truly exceptional.", author:"Jessica N.", company:"Director of Product", featured:true },
+            { quote:"She's an incredible storyteller. She takes research data and turns it into a narrative that inspires and motivates the entire team.", author:"Alex D.", company:"Content Strategist", featured:false },
+            { quote:"Sphoorthy's research helped us align our product roadmap with customer needs, and the results speak for themselves. We saw a measurable increase in user satisfaction.", author:"Michael J.", company:"Head of Engineering", featured:true },
+            { quote:"Her empathy and deep understanding of human behavior make her an outstanding UX researcher. She is a pleasure to work with.", author:"Karen L.", company:"Senior UX Writer", featured:false },
+            { quote:"Sphoorthy's research insights are not just informative, they're transformative. They've changed the way we think about our product and our users.", author:"David T.", company:"VP of Engineering", featured:true },
+            { quote:"She has an amazing ability to see the big picture and the small details. Her research is both strategic and tactical, which is incredibly valuable.", author:"Jennifer K.", company:"Director of Marketing", featured:true },
+            { quote:"Sphoorthy is a rockstar. She's smart, dedicated, and a joy to work with. I would highly recommend her to any team looking for a top-tier UX researcher.", author:"Mark R.", company:"Principal Product Manager", featured:false },
+            { quote:"Her research is the foundation of our design decisions. Without her, we would be flying blind.", author:"Chris A.", company:"Lead Designer", featured:false },
+            { quote:"Sphoorthy's work on our mobile app's navigation was a huge success. She helped us create a much more intuitive and user-friendly experience.", author:"Sarah B.", company:"Mobile Product Manager", featured:false }
         ];
 
         /* ========== Netflix Theme JS ========== */
@@ -1019,10 +1136,8 @@
             const featuredProject = projects[0];
             if (!hero || !featuredProject) return;
             
-            // UPDATED: Set static background image
             hero.style.backgroundImage = "url('images/Guide/7.png')";
             
-            // Populate content
             const h2 = hero.querySelector('.hero-content h2');
             const p = hero.querySelector('.hero-content p');
             const btn = hero.querySelector('.hero-buttons .btn-primary');
@@ -1044,11 +1159,10 @@
             let allCarouselsHtml = '';
 
             categories.forEach(cat => {
-                // UPDATED: HTML structure for card + title below
                 const cardsHtml = cat.list.map(project => `
                     <div class="project-card-wrapper" role="button" tabindex="0" data-project-id="${project.id}">
                         <div class="project-card" style="background-image: url(${project.images[0]})">
-                            </div>
+                        </div>
                         <div class="project-card-details">
                             <h4 class="project-card-title">${project.title}</h4>
                         </div>
@@ -1161,7 +1275,7 @@
                 openProjectModal(e.currentTarget.dataset.projectId);
             });
 
-            // UPDATED: Project card click listener
+            // Project card click listener
             document.getElementById('project-carousels-container').addEventListener('click', (e) => {
                 const cardWrapper = e.target.closest('.project-card-wrapper');
                 if (cardWrapper) {
