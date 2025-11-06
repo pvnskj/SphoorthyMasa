@@ -711,8 +711,7 @@
                 </div>
         </div>
     </div>
-    
-    <script>
+   <script>
     document.addEventListener('DOMContentLoaded', function() {
         /* ========== Header Scroll Effect ========== */
         const header=document.querySelector('header');
@@ -738,6 +737,7 @@
                 hook:"A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.",
                 outcome:"~$7.46M Estimated Annual Impact",
                 tags:['Strategic Research','Data-Driven Insights','Business Impact'],
+                // UPDATED: Using high-resolution image to prevent blur
                 images:["https://images.unsplash.com/photo-1616428784112-2544265780d6?q=80&w=2070&auto=format&fit=crop"],
                 content:{
                     metrics:[
@@ -1293,7 +1293,7 @@
             inner.className='scroller-inner';
             const html=testimonials.map(t=>{
                 const badge=t.featured?`<span class="absolute top-4 right-4 text-white text-xs font-bold px-3 py-1 rounded-full" style="background-color: var(--color-primary);">Leadership</span>`:'';
-                // UPDATED: Added author-info wrapper
+                // UPDATED: Added author-info wrapper and fixed classes
                 return `<div class="testimonial-card panel">${badge}<p class="text-base italic text-gray-300">"${t.quote}"</p><div class="author-info"><p class="font-semibold not-italic text-black mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div></div>`;
             }).join('');
             inner.innerHTML=html+html;
@@ -1412,6 +1412,9 @@
         initOtherJS();
 
     });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
