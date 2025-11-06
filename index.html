@@ -81,20 +81,22 @@
             background-color: rgba(0,0,0,0.05);
         }
 
-        /* --- UPDATED: Hero Billboard --- */
+        /* --- UPDATED: Hero Billboard (Static Image) --- */
         #hero-billboard {
             position: relative;
             width: 100%;
             height: 80vh;
             min-height: 500px;
             max-height: 800px;
-            display: flex; /* Changed */
+            display: flex;
             align-items: center;
-            padding: 0; /* Changed */
-            overflow: hidden; /* Added */
+            padding: 0;
+            overflow: hidden;
             background-color: #000; /* Fallback */
+            background-size: cover;
+            background-position: center 30%;
         }
-        .hero-bottom-gradient { /* Replaces ::before */
+        .hero-bottom-gradient {
             content: '';
             position: absolute;
             bottom: 0;
@@ -106,18 +108,19 @@
             pointer-events: none;
         }
         .hero-content-wrapper {
-            width: 45%;
+            width: 50%; /* Wider text area */
             position: relative;
-            z-index: 4; /* Above gradient */
+            z-index: 4;
             padding: 0 5%;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: linear-gradient(to right, var(--color-bg) 20%, transparent 100%); /* Fade in text side */
+            /* Updated gradient for better text legibility */
+            background: linear-gradient(to right, var(--color-bg) 25%, rgba(245,245,245,0.7) 60%, transparent 100%);
         }
         .hero-content {
-            max-width: 600px; /* Max width for text */
+            max-width: 600px;
         }
         
         .hero-content h2 {
@@ -160,64 +163,8 @@
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
-        /* --- NEW: Hero Image Carousel --- */
-        .hero-carousel-wrapper {
-            width: 55%;
-            height: 100%;
-            position: absolute; /* Position it *behind* the text gradient */
-            right: 0;
-            top: 0;
-            z-index: 1;
-        }
-        .hero-carousel-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-carousel-track {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        .hero-carousel-track > div { /* Slide */
-            flex-shrink: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .hero-carousel-track > div.active {
-            opacity: 1;
-            z-index: 2;
-        }
-        .hero-carousel-dots {
-            position: absolute;
-            bottom: 2.5rem; /* Raised to be above gradient */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.5rem;
-            z-index: 5; /* Above gradient */
-        }
-        .hero-carousel-dots .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .hero-carousel-dots .dot.active {
-            background: #ffffff;
-        }
+        /* --- REMOVED: Hero Image Carousel --- */
+        .hero-carousel-wrapper { display: none; }
         
         /* --- UPDATED: Project Carousel (Wider Cards) --- */
         .project-carousel-row {
@@ -229,7 +176,7 @@
             font-weight: 700;
             color: var(--color-text-primary);
             margin-bottom: 1rem;
-            padding: 0 3.5%; /* Match track padding */
+            padding: 0 2.5%; /* Reduced padding */
         }
         .project-track-container {
             position: relative;
@@ -241,19 +188,18 @@
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 3.5%; /* Reduced padding */
-            /* Hide scrollbar */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
+            padding: 0.5rem 2.5%; /* Reduced padding */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .project-track::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
 
         .project-card {
             position: relative;
             /* UPDATED: Expanded card width */
-            min-width: clamp(300px, 30vw, 480px);
+            min-width: clamp(320px, 32vw, 520px);
             aspect-ratio: 16/9;
             border-radius: 8px;
             overflow: hidden;
@@ -300,8 +246,8 @@
         .project-carousel-row:hover .carousel-nav { opacity: 1; }
         .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.05); }
         .carousel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        .carousel-nav.prev { left: 1%; } /* Adjusted position */
-        .carousel-nav.next { right: 1%; } /* Adjusted position */
+        .carousel-nav.prev { left: 1%; }
+        .carousel-nav.next { right: 1%; }
 
         /* --- Content Sections (Replaces .panel) --- */
         .content-section {
@@ -372,7 +318,6 @@
             border: 1px solid var(--color-border);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        /* Re-theme old .panel styles used by testimonials */
         .panel {
             background: var(--color-surface);
             border-radius: 12px;
@@ -390,7 +335,7 @@
             position: fixed;
             inset: 0;
             z-index: 999;
-            display: none; /* Hidden by default */
+            display: none;
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -446,7 +391,96 @@
             flex-grow: 1;
         }
         
-        /* Re-theme modal components */
+        /* --- NEW: Modal Content Styling --- */
+        .modal-body h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .modal-body h4:first-child {
+            margin-top: 0;
+        }
+        .modal-body h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .modal-body p {
+            color: var(--color-text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .modal-body ul {
+            list-style-type: disc;
+            margin-left: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .modal-body .methodology-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .modal-body .methodology-item,
+        .modal-body .insight-card {
+            background: #fafafa;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        .modal-body .stat-card {
+            background: #fafafa;
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .modal-body .stat-card .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            line-height: 1;
+        }
+        .modal-body .stat-card .stat-description {
+            font-size: .875rem;
+            margin-top: .5rem;
+            color: var(--color-text-secondary);
+        }
+        .modal-body .bg-black\/20 {
+            background: #fafafa;
+            border: 1px solid var(--color-border);
+        }
+        .modal-body .text-lime-200 { /* Override old class */
+            color: #777;
+            font-style: italic;
+        }
+        .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .modal-body th, .modal-body td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            text-align: left;
+            color: var(--color-text-secondary);
+        }
+        .modal-body th {
+            background-color: #fafafa;
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+        .modal-body .font-bold.text-lime-400 {
+            color: var(--color-primary) !important;
+            font-weight: 600;
+        }
+        /* --- End Modal Content Styling --- */
+
         .metric-card {
             background: #fafafa;
             border: 1px solid var(--color-border);
@@ -482,24 +516,6 @@
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: contentFadeIn .5s ease; }
-
-        .methodology-item {
-            background: #fafafa;
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-        }
-        .methodology-item h5 { color: var(--color-text-primary); }
-        
-        .stat-card {
-            background: #fafafa;
-            border-left: 4px solid var(--color-primary);
-            border: 1px solid var(--color-border);
-        }
-        .stat-card .stat-number { color: var(--color-primary); }
-        .insight-card {
-            background: #fafafa;
-            border: 1px solid var(--color-border);
-        }
         
         /* --- Animation & Utility --- */
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -511,7 +527,7 @@
 
         .main-container{max-width:1400px; margin: 0 auto;}
         
-        /* Keep original media carousel styles for "Guide" project */
+        /* Media carousel styles (for inside modal) */
         .media-carousel{position:relative;width:100%}
         .media-track{display:flex;gap:.75rem;overflow-x:auto;padding:.5rem 2.75rem;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,transparent 0,#000 32px,#000 calc(100% - 32px),transparent 100%);overscroll-behavior-x:contain}
         .media-item{position:relative;min-width:clamp(220px,28vw,380px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;scroll-snap-align:center;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.06);transition:transform .25s ease,box-shadow .25s ease}
@@ -546,6 +562,7 @@
     </style>
 </head>
 <body class="antialiased">
+
     <div class="content-container">
         <header>
             <div class="header-inner">
@@ -570,15 +587,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
                                 View Details
                             </button>
-                            </div>
-                    </div>
-                </div>
-                <div class="hero-carousel-wrapper">
-                    <div class="hero-carousel-container reveal">
-                         <div class="hero-carousel-track">
-                            </div>
-                         <div class="hero-carousel-dots">
-                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-bottom-gradient"></div>
@@ -714,8 +723,6 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        /* ========== REMOVED: WebGL Background ========== */
-
         /* ========== Header Scroll Effect ========== */
         const header=document.querySelector('header');
         let lastScrollTop=0;
@@ -732,7 +739,7 @@
         },{threshold:0.1});
         document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
         
-        /* ========== DATA (Unchanged) ========== */
+        /* ========== DATA (UPDATED TILE IMAGES) ========== */
         const projects=[
             { 
                 id:'guide',
@@ -740,7 +747,7 @@
                 hook:"A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.",
                 outcome:"~$7.46M Estimated Annual Impact",
                 tags:['Strategic Research','Data-Driven Insights','Business Impact'],
-                images:["https://images.unsplash.com/photo-1616428784112-2544265780d6?q=80&w=2070&auto=format&fit=crop"],
+                images:["images/Guide/7.png"], // UPDATED
                 content:{
                     metrics:[
                         {value:"~$7.46M",label:"Estimated Annual Value Impact"},
@@ -801,7 +808,7 @@
                 hook:"Streamlining prescription refills by empowering patients and reducing manual work for pharmacy staff, resulting in significant cost savings and improved patient satisfaction.",
                 outcome:"Achieved 12,334+ Active App Users within 6 months.",
                 tags:['Workflow Analysis','Adoption Strategy','Usability Testing'],
-                images:["https://images.unsplash.com/photo-1588720490792-26f5053ae81e?q=80&w=2070&auto=format&fit=crop"],
+                images:["images/Gundersen/6.png"], // UPDATED
                 content:{
                     metrics:[
                         { value:"12,334+", label:"Active App Users" },
@@ -817,7 +824,7 @@
                             <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Boost Adoption:</b> Achieve 10,000+ active app users within 6 months.</li>
-                                <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.</li>
+                                <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.
                             </ul>
                         </div>
                     </div>`,
@@ -896,7 +903,7 @@
                 hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features.",
                 outcome:"Guided 'Go/No-Go' Decision",
                 tags:['Concept Testing','Behavioral Research'],
-                images:["https://images.unsplash.com/photo-1549419143-41c6f39d2c20?q=80&w=2070&auto=format&fit=crop"],
+                images:["images/liverooms/1.png"], // UPDATED
                 content:{
                     metrics:[
                         { value:"87%", label:"Liked interactive features" },
@@ -993,30 +1000,24 @@
             { quote:"Her deep understanding of qualitative research methods helped us uncover hidden user needs that fundamentally changed our product roadmap.", author:"Sarah P.", company:"Research Lead", featured:false },
         ];
 
-        /* ========== NEW: Netflix Theme JS ========== */
-
-        // State for Hero Carousel
-        let heroCarouselInterval;
-        let heroCurrentIndex = 0;
-        let heroSlides = [];
-        let heroDots = [];
+        /* ========== Netflix Theme JS ========== */
 
         function initNetflixTheme() {
             createHeroBillboard();
-            createHeroCarousel(); // NEW
+            // createHeroCarousel(); // REMOVED
             createProjectCarousels();
             createTestimonialScroller();
             initModalControls();
         }
 
-        /** 1. Create Hero Billboard (Text) */
+        /** 1. Create Hero Billboard (Text + Static Image) */
         function createHeroBillboard() {
             const hero = document.getElementById('hero-billboard');
             const featuredProject = projects[0];
             if (!hero || !featuredProject) return;
             
-            // Set main background image as fallback
-            hero.style.backgroundImage = `url(${featuredProject.images[0]})`;
+            // UPDATED: Set static background image
+            hero.style.backgroundImage = "url('images/Guide/7.png')";
             
             // Populate content
             const h2 = hero.querySelector('.hero-content h2');
@@ -1028,75 +1029,7 @@
             btn.dataset.projectId = featuredProject.id;
         }
         
-        /** 2. NEW: Create Hero Image Carousel */
-        function createHeroCarousel() {
-            const featuredProject = projects[0];
-            const track = document.querySelector('.hero-carousel-track');
-            const dotsContainer = document.querySelector('.hero-carousel-dots');
-            if (!featuredProject || !track || !dotsContainer) return;
-
-            // Hacky way to get the JSON string from the media HTML string
-            const mediaHtml = featuredProject.content.media;
-            const parser = new DOMParser();
-            const mediaDoc = parser.parseFromString(mediaHtml, 'text/html');
-            const mediaViewer = mediaDoc.querySelector('.media-viewer');
-            const mediaImages = JSON.parse(mediaViewer.getAttribute('data-media') || '[]');
-
-            if (mediaImages.length === 0) return;
-
-            // Populate slides and dots
-            mediaImages.forEach((imgSrc, index) => {
-                const slide = document.createElement('div');
-                slide.style.backgroundImage = `url(${imgSrc})`;
-                if (index === 0) slide.classList.add('active');
-                track.appendChild(slide);
-                
-                const dot = document.createElement('button');
-                dot.className = 'dot';
-                if (index === 0) dot.classList.add('active');
-                dot.dataset.index = index;
-                dotsContainer.appendChild(dot);
-            });
-
-            heroSlides = Array.from(track.children);
-            heroDots = Array.from(dotsContainer.children);
-
-            // Add dot click listeners
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    const index = parseInt(e.target.dataset.index, 10);
-                    setHeroSlide(index);
-                    resetHeroCarouselInterval();
-                }
-            });
-
-            // Start auto-advance
-            startHeroCarouselInterval();
-        }
-        
-        function setHeroSlide(index) {
-            heroSlides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            heroDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            heroCurrentIndex = index;
-        }
-
-        function nextHeroSlide() {
-            const nextIndex = (heroCurrentIndex + 1) % heroSlides.length;
-            setHeroSlide(nextIndex);
-        }
-        
-        function startHeroCarouselInterval() {
-            heroCarouselInterval = setInterval(nextHeroSlide, 5000); // 5 seconds
-        }
-        
-        function resetHeroCarouselInterval() {
-            clearInterval(heroCarouselInterval);
-            startHeroCarouselInterval();
-        }
+        /** 2. REMOVED: Hero Image Carousel */
 
         /** 3. Create Project Carousels */
         function createProjectCarousels() {
@@ -1110,6 +1043,7 @@
             let allCarouselsHtml = '';
 
             categories.forEach(cat => {
+                // UPDATED: Uses project.images[0] which is now the correct tile image
                 const cardsHtml = cat.list.map(project => `
                     <div class="project-card" style="background-image: url(${project.images[0]})" data-project-id="${project.id}" role="button" tabindex="0">
                         <div class="project-card-title">${project.title}</div>
@@ -1140,10 +1074,10 @@
                 const prevBtn = carousel.querySelector('.carousel-nav.prev');
                 const nextBtn = carousel.querySelector('.carousel-nav.next');
                 
-                if (!track || !prevBtn || !nextBtn) return;
+                if (!track || !prevBtn || !nextBtn || !track.firstElementChild) return; // Added check for first element
 
                 const cardWidth = track.firstElementChild.offsetWidth;
-                const scrollAmount = cardWidth * 2; // Scroll by 2 cards
+                const scrollAmount = cardWidth * 2;
 
                 prevBtn.addEventListener('click', () => {
                     track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -1188,7 +1122,6 @@
             document.body.style.overflow = 'hidden';
 
             initModalTabs(modalBody);
-            // Check if media content exists before trying to init the viewer
             if (project.content.media && modalBody.querySelector('[data-tab-content="media"] .media-viewer')) {
                 initMediaViewer(modalBody.querySelector('[data-tab-content="media"]'));
             }
@@ -1247,7 +1180,7 @@
             });
         }
 
-        /** 6. Testimonial Scroller (Unchanged) */
+        /** 6. Testimonial Scroller */
         function createTestimonialScroller(){
             const scroller=document.getElementById('testimonial-scroller');
             if(!scroller) return;
@@ -1261,11 +1194,10 @@
             scroller.appendChild(inner);
         }
 
-        /* ========== Lightbox Logic (Unchanged - for Media tab) ========== */
+        /* ========== Lightbox Logic (for Media tab) ========== */
         function initMediaViewer(root){
             const wrap=root.querySelector('.media-viewer');
             if(!wrap) return;
-            // Gracefully handle if data-media is missing
             const mediaData = wrap.getAttribute('data-media');
             if (!mediaData) return;
             const images=JSON.parse(mediaData);
@@ -1277,19 +1209,20 @@
             const curEl=wrap.querySelector('.media-pager .cur');
             const totalEl=wrap.querySelector('.media-pager .total');
 
-            // Handle cases where media might be empty
             if (images.length === 0) {
                 wrap.innerHTML = "<p>No media available for this project.</p>";
                 return;
             }
 
             let idx=0;
-            totalEl.textContent=String(images.length);
+            if(totalEl) totalEl.textContent=String(images.length);
 
             const setIndex=(i)=>{
                 idx=Math.max(0,Math.min(images.length-1,i));
-                stageImg.src=images[idx];
-                stageImg.alt=`Guide ${idx+1}`;
+                if(stageImg) {
+                    stageImg.src=images[idx];
+                    stageImg.alt=`Guide ${idx+1}`;
+                }
                 if(capEl) capEl.textContent=`Guide ${idx+1}`;
                 if(curEl) curEl.textContent=String(idx+1);
                 if(prevBtn) prevBtn.disabled=(idx===0);
