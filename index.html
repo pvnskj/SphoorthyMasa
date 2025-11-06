@@ -60,7 +60,6 @@
             margin: 0 auto;
         }
         
-        /* UPDATED: Removed calligraphy font */
         .header-logo {
             font-family:'Inter',sans-serif;
             font-size: 1.75rem;
@@ -81,7 +80,7 @@
             background-color: rgba(0,0,0,0.05);
         }
 
-        /* --- UPDATED: Hero Billboard (Static Image) --- */
+        /* --- Hero Billboard (Static Image) --- */
         #hero-billboard {
             position: relative;
             width: 100%;
@@ -92,7 +91,7 @@
             align-items: center;
             padding: 0;
             overflow: hidden;
-            background-color: #000; /* Fallback */
+            background-color: #000;
             background-size: cover;
             background-position: center 30%;
         }
@@ -108,7 +107,7 @@
             pointer-events: none;
         }
         .hero-content-wrapper {
-            width: 50%; /* Wider text area */
+            width: 50%;
             position: relative;
             z-index: 4;
             padding: 0 5%;
@@ -116,7 +115,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* Updated gradient for better text legibility */
             background: linear-gradient(to right, var(--color-bg) 25%, rgba(245,245,245,0.7) 60%, transparent 100%);
         }
         .hero-content {
@@ -163,10 +161,7 @@
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
-        /* --- REMOVED: Hero Image Carousel --- */
-        .hero-carousel-wrapper { display: none; }
-        
-        /* --- UPDATED: Project Carousel (Wider Cards) --- */
+        /* --- UPDATED: Project Carousel (Re-structured & Enlarged) --- */
         .project-carousel-row {
             padding: 2rem 0;
             position: relative;
@@ -176,19 +171,19 @@
             font-weight: 700;
             color: var(--color-text-primary);
             margin-bottom: 1rem;
-            padding: 0 2.5%; /* Reduced padding */
+            padding: 0 1.5rem; /* Tighter padding */
         }
         .project-track-container {
             position: relative;
         }
         .project-track {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem; /* Increased gap */
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 2.5%; /* Reduced padding */
+            padding: 0.5rem 1.5rem; /* Tighter padding */
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -196,38 +191,47 @@
             display: none;
         }
 
+        /* NEW: This is the outer wrapper for one card + title */
+        .project-card-wrapper {
+            min-width: clamp(360px, 35vw, 500px); /* Significantly larger */
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* Space between image and title */
+            cursor: pointer;
+        }
+        /* NEW: This is just the image part */
         .project-card {
             position: relative;
-            /* UPDATED: Expanded card width */
-            min-width: clamp(320px, 32vw, 520px);
+            width: 100%;
             aspect-ratio: 16/9;
             border-radius: 8px;
             overflow: hidden;
-            scroll-snap-align: start;
             background-size: cover;
             background-position: center;
-            cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .project-card:hover {
+        /* Apply hover to image when hovering wrapper */
+        .project-card-wrapper:hover .project-card { 
             transform: scale(1.05);
             z-index: 10;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        /* NEW: This is the text area below the image */
+        .project-card-details {
+            padding: 0 0.25rem;
+        }
+        /* UPDATED: Title styling (no gradient, black text) */
         .project-card-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem 1rem 1rem;
             font-size: 1.1rem;
             font-weight: 600;
-            color: white;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--color-text-primary);
+            line-height: 1.3;
         }
+        
         .carousel-nav {
             position: absolute;
-            top: 50%;
+            top: 45%; /* Adjusted for new structure */
             transform: translateY(-50%);
             width: 42px;
             height: 42px;
@@ -246,10 +250,10 @@
         .project-carousel-row:hover .carousel-nav { opacity: 1; }
         .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.05); }
         .carousel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        .carousel-nav.prev { left: 1%; }
-        .carousel-nav.next { right: 1%; }
+        .carousel-nav.prev { left: 0.5rem; }
+        .carousel-nav.next { right: 0.5rem; }
 
-        /* --- Content Sections (Replaces .panel) --- */
+        /* --- Content Sections --- */
         .content-section {
             padding: 3rem 5%;
             max-width: 1400px;
@@ -391,7 +395,7 @@
             flex-grow: 1;
         }
         
-        /* --- NEW: Modal Content Styling --- */
+        /* --- UPDATED: Modal Content Styling --- */
         .modal-body h4 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -1004,7 +1008,6 @@
 
         function initNetflixTheme() {
             createHeroBillboard();
-            // createHeroCarousel(); // REMOVED
             createProjectCarousels();
             createTestimonialScroller();
             initModalControls();
@@ -1029,9 +1032,7 @@
             btn.dataset.projectId = featuredProject.id;
         }
         
-        /** 2. REMOVED: Hero Image Carousel */
-
-        /** 3. Create Project Carousels */
+        /** 2. Create Project Carousels */
         function createProjectCarousels() {
             const container = document.getElementById('project-carousels-container');
             if (!container) return;
@@ -1043,10 +1044,14 @@
             let allCarouselsHtml = '';
 
             categories.forEach(cat => {
-                // UPDATED: Uses project.images[0] which is now the correct tile image
+                // UPDATED: HTML structure for card + title below
                 const cardsHtml = cat.list.map(project => `
-                    <div class="project-card" style="background-image: url(${project.images[0]})" data-project-id="${project.id}" role="button" tabindex="0">
-                        <div class="project-card-title">${project.title}</div>
+                    <div class="project-card-wrapper" role="button" tabindex="0" data-project-id="${project.id}">
+                        <div class="project-card" style="background-image: url(${project.images[0]})">
+                            </div>
+                        <div class="project-card-details">
+                            <h4 class="project-card-title">${project.title}</h4>
+                        </div>
                     </div>
                 `).join('');
 
@@ -1066,7 +1071,7 @@
             initCarouselControls();
         }
 
-        /** 4. Generic Carousel Controls */
+        /** 3. Generic Carousel Controls */
         function initCarouselControls() {
             const allCarousels = document.querySelectorAll('.project-carousel-row');
             allCarousels.forEach(carousel => {
@@ -1074,10 +1079,10 @@
                 const prevBtn = carousel.querySelector('.carousel-nav.prev');
                 const nextBtn = carousel.querySelector('.carousel-nav.next');
                 
-                if (!track || !prevBtn || !nextBtn || !track.firstElementChild) return; // Added check for first element
+                if (!track || !prevBtn || !nextBtn || !track.firstElementChild) return; 
 
                 const cardWidth = track.firstElementChild.offsetWidth;
-                const scrollAmount = cardWidth * 2;
+                const scrollAmount = cardWidth * 2; 
 
                 prevBtn.addEventListener('click', () => {
                     track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -1088,7 +1093,7 @@
             });
         }
 
-        /** 5. Modal Logic */
+        /** 4. Modal Logic */
         const modal = document.getElementById('project-modal');
         const modalBody = modal.querySelector('.modal-body');
         const modalTitle = modal.querySelector('.modal-header h3');
@@ -1156,11 +1161,11 @@
                 openProjectModal(e.currentTarget.dataset.projectId);
             });
 
-            // Project card clicks
+            // UPDATED: Project card click listener
             document.getElementById('project-carousels-container').addEventListener('click', (e) => {
-                const card = e.target.closest('.project-card');
-                if (card) {
-                    openProjectModal(card.dataset.projectId);
+                const cardWrapper = e.target.closest('.project-card-wrapper');
+                if (cardWrapper) {
+                    openProjectModal(cardWrapper.dataset.projectId);
                 }
             });
 
@@ -1180,7 +1185,7 @@
             });
         }
 
-        /** 6. Testimonial Scroller */
+        /** 5. Testimonial Scroller */
         function createTestimonialScroller(){
             const scroller=document.getElementById('testimonial-scroller');
             if(!scroller) return;
