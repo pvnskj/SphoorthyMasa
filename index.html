@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- NEW: "Netflix Light" Theme Palette --- */
+        /* --- "Netflix Light" Theme Palette --- */
         :root {
           --color-bg: #f5f5f5;
           --color-surface: #ffffff;
@@ -27,9 +27,7 @@
           position: relative;
         }
         
-        /* Remove old grain effect */
         body::before { display: none; }
-        /* Hide old canvas */
         #bg-canvas { display: none; }
 
         .content-container{
@@ -39,7 +37,7 @@
           overflow-x: hidden;
         }
 
-        /* --- NEW: Header --- */
+        /* --- Header --- */
         header{
           position: fixed;
           top: 0;
@@ -61,12 +59,16 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-        .font-script, .header-logo {
-            font-family:'Great Vibes',cursive;
-            font-size: 2.25rem;
+        
+        /* UPDATED: Removed calligraphy font */
+        .header-logo {
+            font-family:'Inter',sans-serif;
+            font-size: 1.75rem;
             color: var(--color-primary);
-            font-weight: 500;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
+        
         header nav a {
             color: var(--color-text-primary);
             font-weight: 600;
@@ -79,21 +81,20 @@
             background-color: rgba(0,0,0,0.05);
         }
 
-        /* --- NEW: Hero Billboard --- */
+        /* --- UPDATED: Hero Billboard --- */
         #hero-billboard {
             position: relative;
             width: 100%;
             height: 80vh;
             min-height: 500px;
             max-height: 800px;
-            background-size: cover;
-            background-position: center 30%;
-            display: flex;
+            display: flex; /* Changed */
             align-items: center;
-            padding: 0 5%;
+            padding: 0; /* Changed */
+            overflow: hidden; /* Added */
+            background-color: #000; /* Fallback */
         }
-        /* Gradient fade to bg */
-        #hero-billboard::before {
+        .hero-bottom-gradient { /* Replaces ::before */
             content: '';
             position: absolute;
             bottom: 0;
@@ -101,25 +102,34 @@
             right: 0;
             height: 100%;
             background: linear-gradient(to top, var(--color-bg) 5%, transparent 40%);
-            z-index: 1;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .hero-content-wrapper {
+            width: 45%;
+            position: relative;
+            z-index: 4; /* Above gradient */
+            padding: 0 5%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(to right, var(--color-bg) 20%, transparent 100%); /* Fade in text side */
         }
         .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 45%;
+            max-width: 600px; /* Max width for text */
         }
+        
         .hero-content h2 {
             font-size: clamp(2rem, 5vw, 4rem);
             font-weight: 800;
             color: var(--color-text-primary);
             line-height: 1.1;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.7);
         }
         .hero-content p {
             font-size: clamp(1rem, 1.5vw, 1.25rem);
             color: var(--color-text-secondary);
             margin-top: 1rem;
-            text-shadow: 0 1px 5px rgba(255,255,255,0.5);
             max-width: 600px;
         }
         .hero-buttons {
@@ -149,17 +159,67 @@
             transform: scale(1.03);
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
-        .btn-secondary {
-            background-color: rgba(70, 70, 70, 0.7);
-            color: white;
-            backdrop-filter: blur(5px);
+        
+        /* --- NEW: Hero Image Carousel --- */
+        .hero-carousel-wrapper {
+            width: 55%;
+            height: 100%;
+            position: absolute; /* Position it *behind* the text gradient */
+            right: 0;
+            top: 0;
+            z-index: 1;
         }
-        .btn-secondary:hover {
-            background-color: rgba(40, 40, 40, 0.8);
-            transform: scale(1.03);
+        .hero-carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .hero-carousel-track > div { /* Slide */
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .hero-carousel-track > div.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        .hero-carousel-dots {
+            position: absolute;
+            bottom: 2.5rem; /* Raised to be above gradient */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 5; /* Above gradient */
+        }
+        .hero-carousel-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .hero-carousel-dots .dot.active {
+            background: #ffffff;
         }
         
-        /* --- NEW: Project Carousel (Replaces old list) --- */
+        /* --- UPDATED: Project Carousel (Wider Cards) --- */
         .project-carousel-row {
             padding: 2rem 0;
             position: relative;
@@ -169,7 +229,7 @@
             font-weight: 700;
             color: var(--color-text-primary);
             margin-bottom: 1rem;
-            padding: 0 5%;
+            padding: 0 3.5%; /* Match track padding */
         }
         .project-track-container {
             position: relative;
@@ -181,7 +241,7 @@
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 5%;
+            padding: 0.5rem 3.5%; /* Reduced padding */
             /* Hide scrollbar */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none;  /* IE and Edge */
@@ -192,7 +252,8 @@
 
         .project-card {
             position: relative;
-            min-width: clamp(280px, 30vw, 400px);
+            /* UPDATED: Expanded card width */
+            min-width: clamp(300px, 30vw, 480px);
             aspect-ratio: 16/9;
             border-radius: 8px;
             overflow: hidden;
@@ -239,10 +300,10 @@
         .project-carousel-row:hover .carousel-nav { opacity: 1; }
         .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.05); }
         .carousel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        .carousel-nav.prev { left: 1.5%; }
-        .carousel-nav.next { right: 1.5%; }
+        .carousel-nav.prev { left: 1%; } /* Adjusted position */
+        .carousel-nav.next { right: 1%; } /* Adjusted position */
 
-        /* --- NEW: Content Sections (Replaces .panel) --- */
+        /* --- Content Sections (Replaces .panel) --- */
         .content-section {
             padding: 3rem 5%;
             max-width: 1400px;
@@ -297,10 +358,11 @@
         }
         
         /* Re-theme Testimonials */
-        .testimonial-scroller {
-            max-width: 100%;
-            margin-top: 2rem;
-        }
+        .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
+        .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
+        .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
+        @keyframes scroll{to{transform:translateX(calc(-50% - .75rem))}}
+        
         .testimonial-card {
             width: 380px;
             height: auto;
@@ -323,7 +385,7 @@
         .text-gray-300, .text-gray-400 { color: var(--color-text-secondary) !important; }
         .text-lime-400 { color: var(--color-primary) !important; }
 
-        /* --- NEW: Project Modal (Replaces .project-details-expanded) --- */
+        /* --- Project Modal --- */
         #project-modal {
             position: fixed;
             inset: 0;
@@ -455,7 +517,7 @@
         .media-item{position:relative;min-width:clamp(220px,28vw,380px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;scroll-snap-align:center;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.06);transition:transform .25s ease,box-shadow .25s ease}
         .media-item:hover{transform:scale(1.06);z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.18)}
         .media-img{width:100%;height:100%;object-fit:cover;display:block}
-        .media-cap{position:absolute;left:10px;bottom:10px;padding:6px 10px;font-size:12px;color:#0f172a;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.08);border-radius:9999px;backdrop-filter:blur(6px) saturate(140%)}
+        .media-cap{position:absolute;left:10px;bottom:10px;padding:6px 10px;font-size:12px;color:#0f172a;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.08);border-radius:999px;backdrop-filter:blur(6px) saturate(140%)}
         .media-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,0.7);color:#0f172a;border:1px solid rgba(0,0,0,0.1);cursor:pointer;z-index:5;transition:background .2s ease,transform .2s ease;backdrop-filter:blur(8px) saturate(160%)}
         .media-nav:hover{background:rgba(255,255,255,0.9);transform:translateY(-50%) scale(1.05)}
         .media-nav:disabled{opacity:.45;cursor:not-allowed}
@@ -481,12 +543,6 @@
         .lightbox-topbar{display:flex;justify-content:space-between;align-items:center;color:#e5e7eb;font-size:.95rem}
         .lightbox-topbar .close{width:42px;height:42px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,.88);color:#0f172a;border:1px solid rgba(0,0,0,.12);cursor:pointer;transition:transform .15s ease,background .15s ease}
         .lightbox-topbar .close:hover{transform:scale(1.06);background:#fff}
-
-        /* Keep old testimonial styles */
-        .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
-        .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
-        .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
-        @keyframes scroll{to{transform:translateX(calc(-50% - .75rem))}}
     </style>
 </head>
 <body class="antialiased">
@@ -505,20 +561,27 @@
 
         <main>
             <section id="hero-billboard">
-                <div class="hero-content reveal">
-                    <h2>Reinventing The TV Guide</h2>
-                    <p>A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.</p>
-                    <div class="hero-buttons">
-                        <button class="btn btn-primary" data-project-id="guide">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                            View Details
-                        </button>
-                        <a href="#why-me-contact" class="btn btn-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
-                            Get In Touch
-                        </a>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content reveal">
+                        <h2>Reinventing The TV Guide</h2>
+                        <p>A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" data-project-id="guide">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                                View Details
+                            </button>
+                            </div>
                     </div>
                 </div>
+                <div class="hero-carousel-wrapper">
+                    <div class="hero-carousel-container reveal">
+                         <div class="hero-carousel-track">
+                            </div>
+                         <div class="hero-carousel-dots">
+                            </div>
+                    </div>
+                </div>
+                <div class="hero-bottom-gradient"></div>
             </section>
 
             <section id="portfolio" class="reveal">
@@ -755,16 +818,11 @@
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Boost Adoption:</b> Achieve 10,000+ active app users within 6 months.</li>
                                 <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.</li>
-                                <li><b>Automate Communications:</b> Deliver 10,000+ refill reminders & status messages monthly.</li>
-                                <li><b>Reduce Staff Burden:</b> Decrease pharmacist time spent on refill calls by 50%, and reduce medical staff back-and-forth.</li>
-                                <li><b>Cost Optimization:</b> Recover up to $1M/year in lost labor time.</li>
                             </ul>
                         </div>
                     </div>`,
                     methodology:`<div class="space-y-6">
                         <p class="text-sm text-gray-300">Our research was a blend of qualitative and quantitative methods to understand both the user experience and the internal workflow challenges.</p>
-                        <h4 class="font-bold text-black text-lg mb-2">Manual Workflow </h4>
-                        <p class="text-sm text-gray-300">The manual process was time-consuming and inefficient. Pharmacists spent an average of 3.5 minutes per refill, totaling over 2,600 hours/month, which translated to significant lost labor time.</p>
                         <div class="methodology-container mt-4">
                             <div class="methodology-item">
                                 <h5>1. Workflow & Stakeholder Analysis</h5>
@@ -775,11 +833,6 @@
                                 <h5>2. Usability & Heuristic Evaluation</h5>
                                 <p>Tested the existing app with both patients and staff to identify pain points and opportunities.</p>
                                 <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Heuristic Analysis</span><span class="tag-badge">Usability Testing</span></div>
-                            </div>
-                            <div class="methodology-item">
-                                <h5>3. Discovery & Synthesis</h5>
-                                <p>Uuncovered a key problem: most patients were unaware the app existed. This shifted our focus from product improvement to a marketing and awareness strategy.</p>
-                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">Patient Interviews</span><span class="tag-badge">Journey Mapping</span></div>
                             </div>
                         </div>
                     </div>`,
@@ -794,14 +847,6 @@
                                 <div class="insight-card p-4">
                                     <h5 class="font-bold text-black mb-2">Unexpected Awareness Gap</h5>
                                     <p class="text-sm text-gray-300">A major finding: many patients were simply <b>unaware the app existed.</b> This shifted our focus from product improvement to a marketing and awareness strategy.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Low Emotional Engagement</h5>
-                                    <p class="text-sm text-gray-300">A SUS Score of 78 indicated solid usability but highlighted a <b>lack of emotional engagement</b> due to the app's basic visual design.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Automated Communications</h5>
-                                    <p class="text-sm text-gray-300">The system lacked features to reduce the repetitive, manual burden on pharmacists and their outbound calls.</p>
                                 </div>
                             </div>
                         </div>
@@ -829,15 +874,9 @@
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">16,476</td>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">11,250</td>
                                     </tr>
-                                    <tr class="bg-gray-900/40">
-                                        <th scope="row" class="py-4 px-6 font-medium text-black blackspace-nowrap">Annual Labor Savings</th>
-                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$702,000+</td>
-                                        <td class="py-4 px-6 text-center font-bold text-lime-400">$1M</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-center text-lg mt-8 text-gray-300">By shifting our focus from product development to an awareness campaign, the app's adoption skyrocketed, resulting in significant cost savings and improved patient satisfaction.</p>
                     </div>`,
                    media: `
                       <h4 class="text-xl font-bold text-slate-900">Media</h4>
@@ -846,49 +885,34 @@
                       )}'>
                         <div class="media-stage">
                           <img alt="Gundersen 1" />
-                          <div class="media-controls">
-                            <button class="media-btn prev" aria-label="Previous">&#10094;</button>
-                            <button class="media-btn next" aria-label="Next">&#10095;</button>
-                          </div>
-                        </div>
-                        <div class="media-meta">
-                          <div class="media-caption">Guide 1</div>
-                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
                         </div>
                       </div>
-                      <p class="mt-4 text-sm text-center text-slate-600">
-                        Click the image to view full-screen. Use ← → keys to navigate. Press ESC to close.
-                      </p>
                     `
                 }  
             },
             {
                 id:'live-rooms',
                 title:"Validating 'Live Rooms'",
-                hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features. But before investing in building it, we needed to validate whether this idea aligned with how people actually watch live TV today.",
+                hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features.",
                 outcome:"Guided 'Go/No-Go' Decision",
                 tags:['Concept Testing','Behavioral Research'],
                 images:["https://images.unsplash.com/photo-1549419143-41c6f39d2c20?q=80&w=2070&auto=format&fit=crop"],
                 content:{
                     metrics:[
                         { value:"87%", label:"Liked interactive features" },
-                        { value:"76%", label:"Preferred second-screen" },
-                        { value:"56%", label:"Liked emoji reactions" },
-                        { value:"41%", label:"Liked quizzes" }
+                        { value:"76%", label:"Preferred second-screen" }
                     ],
                     overview:`<div class="text-left text-sm space-y-6">
                         <div>
                             <h5 class="font-bold text-black text-lg">Background</h5>
-                            <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences. The idea is to allow users to chat, react with emojis, and participate in live trivia while watching their favorite shows or sport.</p>
+                            <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences.</p>
                         </div>
                         <div>
                             <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Evaluate whether the Live Rooms concept resonates with users.</b></li>
-                                <li><b>Understand if real-time interaction can increase emotional investment, social connection, and engagement.</b></li>
+                                <li><b>Understand if real-time interaction can increase emotional investment.</b></li>
                                 <li><b>Ensure these interactions do not disrupt the core viewing experience.</b></li>
-                                <li><b>Explore how users organically adopt these features across different content types (e.g., sports vs. reality shows).</b></li>
-                                <li><b>Explore adoption across different platforms (TV vs. mobile).</b></li>
                             </ul>
                         </div>
                     </div>`,
@@ -897,41 +921,13 @@
                             <div class="methodology-item">
                                 <h5>1. Concept Testing</h5>
                                 <p>4 Participants with experience in interactive streaming like Twitch, Youtube Live, etc. 4 Participants with no experience in interactive streaming.</p>
-                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">User Interviews</span><span class="tag-badge">UserZoom</span><span class="tag-badge">Invision</span></div>
                             </div>
                             <div class="methodology-item">
                                 <h5>2. Live Product Test - Round 1 (NBA Game)</h5>
                                 <p>79 participants with varying age range. 95% participants responded to the feedback survey.</p>
-                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
-                            </div>
-                            <div class="methodology-item">
-                                <h5>3. Live Product Test - Round 2 (Reality TV)</h5>
-                                <p>35 participants with 98% survey response rate.</p>
-                                <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">LiveLike</span><span class="tag-badge">UserZoom</span></div>
                             </div>
                         </div>`,
                     analysis:`<div class="space-y-8">
-                        <div>
-                            <h4 class="font-bold text-black text-lg mb-4">Initial Concept Insights</h4>
-                            <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Interest in Social Features</h5>
-                                    <p class="text-sm text-gray-300">Users showed interest, but the ideal level and format of interaction remained unclear.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Second-Screen Behavior</h5>
-                                    <p class="text-sm text-gray-300">There is potential value in second-screen experiences, but we need to explore when and how users naturally engage.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Role of Interactive Elements</h5>
-                                    <p class="text-sm text-gray-300">Reactions and quizzes were received positively, but their role in sustained engagement is unknown.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">User Behavior & Content Type</h5>
-                                    <p class="text-sm text-gray-300">The concept raised questions about how different user types would navigate this experience.</p>
-                                </div>
-                            </div>
-                        </div>
                         <div>
                             <h4 class="font-bold text-black text-lg mb-4">Live Testing Insights</h4>
                             <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
@@ -943,14 +939,6 @@
                                     <h5 class="font-bold text-black mb-2">Second-Screen Experience</h5>
                                     <p class="text-sm text-gray-300"><b>76%</b> preferred using their phone to interact while watching on TV.</p>
                                 </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Positive Feedback on Interactive Elements</h5>
-                                    <p class="text-sm text-gray-300">Emoji reactions (<b>56%</b>) and quizzes (<b>41%</b>) boosted engagement and made the experience more fun.</p>
-                                </div>
-                                <div class="insight-card p-4">
-                                    <h5 class="font-bold text-black mb-2">Usability & Content Adaptation</h5>
-                                    <p class="text-sm text-gray-300"><b>40%</b> felt chat was overwhelming. Sports fans liked fast chat, while reality TV fans preferred polls and quizzes.</p>
-                                </div>
                             </div>
                         </div>
                     </div>`,
@@ -959,12 +947,10 @@
                         <h4 class="font-bold text-black text-lg">Business Impact</h4>
                         <div class="grid md:grid-cols-3 gap-4 mt-4 text-gray-300 text-sm">
                             <div class="panel p-4">
-                                <h5 class="font-bold text-black text-base mb-2 text-center">Jersey Shore Family Vacation</h5>
+                                <h5 class="font-bold text-black text-base mb-2 text-center">Jersey Shore</h5>
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">13,668</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">43,017</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.1</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1.82B</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
@@ -972,8 +958,6 @@
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">14,889</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">33,054</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">2.2</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1.08B</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
@@ -981,33 +965,19 @@
                                 <ul class="list-none space-y-1.5">
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">12,097</span></li>
                                     <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">38,207</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.2</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1.47B</span></li>
                                 </ul>
                             </div>
                         </div>
-                        <p class="text-center text-lg mt-8 text-gray-300">The test set a solid foundation for future innovation. The user enthusiasm and clear engagement signals remain strong indicators of potential, positioning Sling to lead in redefining the live viewing experience when the time is right.</p>
                     </div>`,
                   media: `
                       <h4 class="text-xl font-bold text-slate-900">Media</h4>
                       <div class="media-viewer mt-3" data-media='${JSON.stringify(
                         Array.from({length:8},(_,i)=>`images/liverooms/${i+1}.png`)
                       )}'>
-                        <div class="media-stage">
+                         <div class="media-stage">
                           <img alt="Live Rooms 1" />
-                          <div class="media-controls">
-                            <button class="media-btn prev" aria-label="Previous">&#10094;</button>
-                            <button class="media-btn next" aria-label="Next">&#10095;</button>
-                          </div>
-                        </div>
-                        <div class="media-meta">
-                          <div class="media-caption">Guide 1</div>
-                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
                         </div>
                       </div>
-                      <p class="mt-4 text-sm text-center text-slate-600">
-                        Click the image to view full-screen. Use ← → keys to navigate. Press ESC to close.
-                      </p>
                     `
                 }
             },
@@ -1025,22 +995,30 @@
 
         /* ========== NEW: Netflix Theme JS ========== */
 
+        // State for Hero Carousel
+        let heroCarouselInterval;
+        let heroCurrentIndex = 0;
+        let heroSlides = [];
+        let heroDots = [];
+
         function initNetflixTheme() {
             createHeroBillboard();
+            createHeroCarousel(); // NEW
             createProjectCarousels();
-            createTestimonialScroller(); // This function is kept from old code
+            createTestimonialScroller();
             initModalControls();
         }
 
-        /** 1. Create Hero Billboard */
+        /** 1. Create Hero Billboard (Text) */
         function createHeroBillboard() {
             const hero = document.getElementById('hero-billboard');
             const featuredProject = projects[0];
             if (!hero || !featuredProject) return;
-
+            
+            // Set main background image as fallback
             hero.style.backgroundImage = `url(${featuredProject.images[0]})`;
             
-            // Populate content (assuming structure from new HTML)
+            // Populate content
             const h2 = hero.querySelector('.hero-content h2');
             const p = hero.querySelector('.hero-content p');
             const btn = hero.querySelector('.hero-buttons .btn-primary');
@@ -1049,13 +1027,82 @@
             p.textContent = featuredProject.hook;
             btn.dataset.projectId = featuredProject.id;
         }
+        
+        /** 2. NEW: Create Hero Image Carousel */
+        function createHeroCarousel() {
+            const featuredProject = projects[0];
+            const track = document.querySelector('.hero-carousel-track');
+            const dotsContainer = document.querySelector('.hero-carousel-dots');
+            if (!featuredProject || !track || !dotsContainer) return;
 
-        /** 2. Create Project Carousels */
+            // Hacky way to get the JSON string from the media HTML string
+            const mediaHtml = featuredProject.content.media;
+            const parser = new DOMParser();
+            const mediaDoc = parser.parseFromString(mediaHtml, 'text/html');
+            const mediaViewer = mediaDoc.querySelector('.media-viewer');
+            const mediaImages = JSON.parse(mediaViewer.getAttribute('data-media') || '[]');
+
+            if (mediaImages.length === 0) return;
+
+            // Populate slides and dots
+            mediaImages.forEach((imgSrc, index) => {
+                const slide = document.createElement('div');
+                slide.style.backgroundImage = `url(${imgSrc})`;
+                if (index === 0) slide.classList.add('active');
+                track.appendChild(slide);
+                
+                const dot = document.createElement('button');
+                dot.className = 'dot';
+                if (index === 0) dot.classList.add('active');
+                dot.dataset.index = index;
+                dotsContainer.appendChild(dot);
+            });
+
+            heroSlides = Array.from(track.children);
+            heroDots = Array.from(dotsContainer.children);
+
+            // Add dot click listeners
+            dotsContainer.addEventListener('click', e => {
+                if (e.target.matches('.dot')) {
+                    const index = parseInt(e.target.dataset.index, 10);
+                    setHeroSlide(index);
+                    resetHeroCarouselInterval();
+                }
+            });
+
+            // Start auto-advance
+            startHeroCarouselInterval();
+        }
+        
+        function setHeroSlide(index) {
+            heroSlides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            heroCurrentIndex = index;
+        }
+
+        function nextHeroSlide() {
+            const nextIndex = (heroCurrentIndex + 1) % heroSlides.length;
+            setHeroSlide(nextIndex);
+        }
+        
+        function startHeroCarouselInterval() {
+            heroCarouselInterval = setInterval(nextHeroSlide, 5000); // 5 seconds
+        }
+        
+        function resetHeroCarouselInterval() {
+            clearInterval(heroCarouselInterval);
+            startHeroCarouselInterval();
+        }
+
+        /** 3. Create Project Carousels */
         function createProjectCarousels() {
             const container = document.getElementById('project-carousels-container');
             if (!container) return;
 
-            // In a real app, you might have multiple categories
             const categories = [
                 { title: "Case Studies", list: projects }
             ];
@@ -1082,10 +1129,10 @@
             });
 
             container.innerHTML = allCarouselsHtml;
-            initCarouselControls(); // Attach listeners to the new carousels
+            initCarouselControls();
         }
 
-        /** 3. Generic Carousel Controls */
+        /** 4. Generic Carousel Controls */
         function initCarouselControls() {
             const allCarousels = document.querySelectorAll('.project-carousel-row');
             allCarousels.forEach(carousel => {
@@ -1107,7 +1154,7 @@
             });
         }
 
-        /** 4. Modal Logic */
+        /** 5. Modal Logic */
         const modal = document.getElementById('project-modal');
         const modalBody = modal.querySelector('.modal-body');
         const modalTitle = modal.querySelector('.modal-header h3');
@@ -1119,7 +1166,6 @@
 
             modalTitle.textContent = project.title;
             
-            // Build modal content
             modalBody.innerHTML = `
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     ${project.content.metrics.map(m=>`<div class="metric-card"><div class="metric-card-value">${m.value}</div><div class="metric-card-label">${m.label}</div></div>`).join('')}
@@ -1139,11 +1185,11 @@
             `;
             
             modal.classList.add('open');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden';
 
-            // IMPORTANT: Init tab logic and media viewer *after* content is in the DOM
             initModalTabs(modalBody);
-            if (project.content.media) {
+            // Check if media content exists before trying to init the viewer
+            if (project.content.media && modalBody.querySelector('[data-tab-content="media"] .media-viewer')) {
                 initMediaViewer(modalBody.querySelector('[data-tab-content="media"]'));
             }
         }
@@ -1151,7 +1197,7 @@
         function closeModal() {
             modal.classList.remove('open');
             document.body.style.overflow = 'auto';
-            modalBody.innerHTML = ''; // Clear content
+            modalBody.innerHTML = '';
         }
 
         function initModalTabs(modalElement) {
@@ -1193,9 +1239,15 @@
                     closeModal();
                 }
             });
+            // Close on 'Escape' key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('open')) {
+                    closeModal();
+                }
+            });
         }
 
-        /** 5. Testimonial Scroller (Unchanged) */
+        /** 6. Testimonial Scroller (Unchanged) */
         function createTestimonialScroller(){
             const scroller=document.getElementById('testimonial-scroller');
             if(!scroller) return;
@@ -1213,13 +1265,23 @@
         function initMediaViewer(root){
             const wrap=root.querySelector('.media-viewer');
             if(!wrap) return;
-            const images=JSON.parse(wrap.getAttribute('data-media')||'[]');
+            // Gracefully handle if data-media is missing
+            const mediaData = wrap.getAttribute('data-media');
+            if (!mediaData) return;
+            const images=JSON.parse(mediaData);
+            
             const stageImg=wrap.querySelector('.media-stage img');
             const prevBtn=wrap.querySelector('.media-btn.prev');
             const nextBtn=wrap.querySelector('.media-btn.next');
             const capEl=wrap.querySelector('.media-caption');
             const curEl=wrap.querySelector('.media-pager .cur');
             const totalEl=wrap.querySelector('.media-pager .total');
+
+            // Handle cases where media might be empty
+            if (images.length === 0) {
+                wrap.innerHTML = "<p>No media available for this project.</p>";
+                return;
+            }
 
             let idx=0;
             totalEl.textContent=String(images.length);
@@ -1228,17 +1290,17 @@
                 idx=Math.max(0,Math.min(images.length-1,i));
                 stageImg.src=images[idx];
                 stageImg.alt=`Guide ${idx+1}`;
-                capEl.textContent=`Guide ${idx+1}`;
-                curEl.textContent=String(idx+1);
-                prevBtn.disabled=(idx===0);
-                nextBtn.disabled=(idx===images.length-1);
+                if(capEl) capEl.textContent=`Guide ${idx+1}`;
+                if(curEl) curEl.textContent=String(idx+1);
+                if(prevBtn) prevBtn.disabled=(idx===0);
+                if(nextBtn) nextBtn.disabled=(idx===images.length-1);
             };
             const goPrev=()=>setIndex(idx-1);
             const goNext=()=>setIndex(idx+1);
 
-            prevBtn.addEventListener('click',goPrev);
-            nextBtn.addEventListener('click',goNext);
-            stageImg.addEventListener('click',()=>openLightbox(images,idx,setIndex));
+            if(prevBtn) prevBtn.addEventListener('click',goPrev);
+            if(nextBtn) nextBtn.addEventListener('click',goNext);
+            if(stageImg) stageImg.addEventListener('click',()=>openLightbox(images,idx,setIndex));
 
             setIndex(0);
         }
