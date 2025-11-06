@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- "Netflix Light" Theme Palette --- */
+        /* --- "Netflix Light" Theme Palette (Kept for consistency) --- */
         :root {
           --color-bg: #f5f5f5;
           --color-surface: #ffffff;
-          --color-primary: #E50914; /* Netflix Red */
+          --color-primary: #E50914; /* Red Accent */
           --color-primary-hover: #f40612;
           --color-text-primary: #141414;
           --color-text-secondary: #5a5a5a;
@@ -80,47 +80,36 @@
             background-color: rgba(0,0,0,0.05);
         }
 
-        /* --- Hero Billboard (Static Image) --- */
-        #hero-billboard {
-            position: relative;
+        /* --- NEW: Hero Carousel (Replaces Billboard) --- */
+        #hero-carousel {
             width: 100%;
-            height: 80vh;
-            min-height: 500px;
-            max-height: 800px;
-            display: flex;
-            align-items: center;
-            padding: 0;
-            overflow: hidden;
-            background-color: #000;
-            background-size: cover;
-            background-position: center 30%;
-        }
-        .hero-bottom-gradient {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(to top, var(--color-bg) 5%, transparent 40%);
-            z-index: 3;
-            pointer-events: none;
-        }
-        .hero-content-wrapper {
-            width: 50%;
+            padding-top: 80px; /* Header height */
             position: relative;
-            z-index: 4;
-            padding: 0 5%;
-            height: 100%;
+            overflow: hidden;
+        }
+        .hero-track {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(to right, var(--color-bg) 25%, rgba(245,245,245,0.7) 60%, transparent 100%);
+            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
         }
-        .hero-content {
-            max-width: 600px;
+        .hero-slide {
+            width: 100%;
+            flex-shrink: 0;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            align-items: center;
+            height: 80vh; /* Full viewport height */
+            min-height: 600px;
+            max-height: 750px;
+            padding: 2rem 5%;
+            gap: 2rem;
         }
-        
+        @media (min-width: 768px) {
+            .hero-slide {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 4rem;
+            }
+        }
+
         .hero-content h2 {
             font-size: clamp(2rem, 5vw, 4rem);
             font-weight: 800;
@@ -161,98 +150,44 @@
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
-        /* --- Project Carousel (Re-structured & Enlarged) --- */
-        .project-carousel-row {
-            padding: 2rem 0;
-            position: relative;
-        }
-        .carousel-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--color-text-primary);
-            margin-bottom: 1rem;
-            padding: 0 1.5rem; /* Tighter padding */
-        }
-        .project-track-container {
-            position: relative;
-        }
-        .project-track {
-            display: flex;
-            gap: 1rem; /* Increased gap */
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 1.5rem; /* Tighter padding */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .project-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* This is the outer wrapper for one card + title */
-        .project-card-wrapper {
-            min-width: clamp(360px, 35vw, 500px); /* Significantly larger */
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem; /* Space between image and title */
-            cursor: pointer;
-        }
-        /* This is just the image part */
-        .project-card {
-            position: relative;
+        .hero-image-container {
             width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 8px;
+            height: 100%;
+            border-radius: 12px;
             overflow: hidden;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        /* Apply hover to image when hovering wrapper */
-        .project-card-wrapper:hover .project-card { 
-            transform: scale(1.05);
-            z-index: 10;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        /* This is the text area below the image */
-        .project-card-details {
-            padding: 0 0.25rem;
-        }
-        /* Title styling (no gradient, black text) */
-        .project-card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--color-text-primary);
-            line-height: 1.3;
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
-        .carousel-nav {
+        .hero-nav-dots {
             position: absolute;
-            top: 45%; /* Adjusted for new structure */
-            transform: translateY(-50%);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--color-text-primary);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
             z-index: 5;
-            transition: all .2s ease;
-            opacity: 0;
         }
-        .project-carousel-row:hover .carousel-nav { opacity: 1; }
-        .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.05); }
-        .carousel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        .carousel-nav.prev { left: 0.5rem; }
-        .carousel-nav.next { right: 0.5rem; }
-
+        .hero-nav-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .hero-nav-dots .dot.active {
+            background: var(--color-text-primary);
+            transform: scale(1.1);
+        }
+        
+        /* --- REMOVED: Project Carousel Section --- */
+        #portfolio { display: none; }
+        
         /* --- Content Sections --- */
         .content-section {
             padding: 3rem 5%;
@@ -572,33 +507,19 @@
             <div class="header-inner">
                 <a href="#" class="header-logo">Sphoorthy Masa</a>
                 <nav class="hidden md:flex space-x-6 text-base font-medium items-center">
-                    <a href="#portfolio">Portfolio</a>
                     <a href="#about">About</a>
                     <a href="#skills">Skills</a>
+                    <a href="#testimonials">Testimonials</a>
                     <a href="#why-me-contact">Contact</a>
                 </nav>
             </div>
         </header>
 
         <main>
-            <section id="hero-billboard">
-                <div class="hero-content-wrapper">
-                    <div class="hero-content reveal">
-                        <h2>Reinventing The TV Guide</h2>
-                        <p>A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.</p>
-                        <div class="hero-buttons">
-                            <button class="btn btn-primary" data-project-id="guide">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                                View Details
-                            </button>
-                        </div>
+            <section id="hero-carousel" class="reveal">
+                <div class="hero-track">
                     </div>
-                </div>
-                <div class="hero-bottom-gradient"></div>
-            </section>
-
-            <section id="portfolio" class="reveal">
-                <div id="project-carousels-container">
+                <div class="hero-nav-dots">
                     </div>
             </section>
 
@@ -751,7 +672,7 @@
                 hook:"A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.",
                 outcome:"~$7.46M Estimated Annual Impact",
                 tags:['Strategic Research','Data-Driven Insights','Business Impact'],
-                images:["images/Guide/7.png"], // UPDATED
+                images:["images/Guide/7.png"], // Main tile image
                 content:{
                     metrics:[
                         {value:"~$7.46M",label:"Estimated Annual Value Impact"},
@@ -812,7 +733,7 @@
                 hook:"Streamlining prescription refills by empowering patients and reducing manual work for pharmacy staff, resulting in significant cost savings and improved patient satisfaction.",
                 outcome:"Achieved 12,334+ Active App Users within 6 months.",
                 tags:['Workflow Analysis','Adoption Strategy','Usability Testing'],
-                images:["images/Gundersen/6.png"], // UPDATED
+                images:["images/Gundersen/6.png"], // Main tile image
                 content:{
                     metrics:[
                         { value:"12,334+", label:"Active App Users" },
@@ -927,7 +848,7 @@
                         </div>
                         <div class="media-meta">
                           <div class="media-caption">Guide 1</div>
-                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
+                          <div class="media-pager"><span class="cur">1</span> / <span class="total">6</span></div>
                         </div>
                       </div>
                       <p class="mt-4 text-sm text-center text-slate-600">
@@ -942,7 +863,7 @@
                 hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features. But before investing in building it, we needed to validate whether this idea aligned with how people actually watch live TV today.",
                 outcome:"Guided 'Go/No-Go' Decision",
                 tags:['Concept Testing','Behavioral Research'],
-                images:["images/liverooms/1.png"], // UPDATED
+                images:["images/liverooms/1.png"], // Main tile image
                 content:{
                     metrics:[
                         { value:"87%", label:"Liked interactive features" },
@@ -1076,7 +997,7 @@
                         </div>
                         <div class="media-meta">
                           <div class="media-caption">Guide 1</div>
-                          <div class="media-pager"><span class="cur">1</span> / <span class="total">16</span></div>
+                          <div class="media-pager"><span class="cur">1</span> / <span class="total">8</span></div>
                         </div>
                       </div>
                       <p class="mt-4 text-sm text-center text-slate-600">
@@ -1121,93 +1042,96 @@
             { quote:"Sphoorthy's work on our mobile app's navigation was a huge success. She helped us create a much more intuitive and user-friendly experience.", author:"Sarah B.", company:"Mobile Product Manager", featured:false }
         ];
 
-        /* ========== Netflix Theme JS ========== */
+        /* ========== NEW Hero Carousel JS ========== */
 
-        function initNetflixTheme() {
-            createHeroBillboard();
-            createProjectCarousels();
+        const heroTrack = document.querySelector('.hero-track');
+        const dotsContainer = document.querySelector('.hero-nav-dots');
+        let heroCurrentIndex = 0;
+        let heroSlides = [];
+        let heroDots = [];
+        let heroCarouselInterval;
+
+        function initHeroCarousel() {
+            if (!heroTrack || !dotsContainer) return;
+
+            // 1. Create slides from project data
+            const projectsToShow = projects.slice(0, 3);
+            projectsToShow.forEach((project, index) => {
+                // Create Slide
+                const slide = document.createElement('div');
+                slide.className = 'hero-slide';
+                slide.innerHTML = `
+                    <div class="hero-content">
+                        <h2>${project.title}</h2>
+                        <p>${project.hook}</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" data-project-id="${project.id}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hero-image-container">
+                        <img src="${project.images[0]}" alt="${project.title} screenshot">
+                    </div>
+                `;
+                heroTrack.appendChild(slide);
+
+                // Create Dot
+                const dot = document.createElement('button');
+                dot.className = 'dot';
+                dot.dataset.index = index;
+                if (index === 0) dot.classList.add('active');
+                dotsContainer.appendChild(dot);
+            });
+
+            heroSlides = Array.from(heroTrack.children);
+            heroDots = Array.from(dotsContainer.children);
+
+            // 2. Add Dot click listeners
+            dotsContainer.addEventListener('click', e => {
+                if (e.target.matches('.dot')) {
+                    const index = parseInt(e.target.dataset.index, 10);
+                    setHeroSlide(index);
+                    resetHeroCarouselInterval();
+                }
+            });
+
+            // 3. Start auto-advance
+            startHeroCarouselInterval();
+        }
+        
+        function setHeroSlide(index) {
+            heroTrack.style.transform = `translateX(-${index * 100}%)`;
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            heroCurrentIndex = index;
+        }
+
+        function nextHeroSlide() {
+            const nextIndex = (heroCurrentIndex + 1) % heroSlides.length;
+            setHeroSlide(nextIndex);
+        }
+        
+        function startHeroCarouselInterval() {
+            heroCarouselInterval = setInterval(nextHeroSlide, 7000); // 7 seconds
+        }
+        
+        function resetHeroCarouselInterval() {
+            clearInterval(heroCarouselInterval);
+            startHeroCarouselInterval();
+        }
+
+
+        /* ========== Other JS (Modal, Testimonials, etc.) ========== */
+        
+        function initOtherJS() {
             createTestimonialScroller();
             initModalControls();
         }
-
-        /** 1. Create Hero Billboard (Text + Static Image) */
-        function createHeroBillboard() {
-            const hero = document.getElementById('hero-billboard');
-            const featuredProject = projects[0];
-            if (!hero || !featuredProject) return;
-            
-            hero.style.backgroundImage = "url('images/Guide/7.png')";
-            
-            const h2 = hero.querySelector('.hero-content h2');
-            const p = hero.querySelector('.hero-content p');
-            const btn = hero.querySelector('.hero-buttons .btn-primary');
-
-            h2.textContent = featuredProject.title;
-            p.textContent = featuredProject.hook;
-            btn.dataset.projectId = featuredProject.id;
-        }
         
-        /** 2. Create Project Carousels */
-        function createProjectCarousels() {
-            const container = document.getElementById('project-carousels-container');
-            if (!container) return;
-
-            const categories = [
-                { title: "Case Studies", list: projects }
-            ];
-
-            let allCarouselsHtml = '';
-
-            categories.forEach(cat => {
-                const cardsHtml = cat.list.map(project => `
-                    <div class="project-card-wrapper" role="button" tabindex="0" data-project-id="${project.id}">
-                        <div class="project-card" style="background-image: url(${project.images[0]})">
-                        </div>
-                        <div class="project-card-details">
-                            <h4 class="project-card-title">${project.title}</h4>
-                        </div>
-                    </div>
-                `).join('');
-
-                allCarouselsHtml += `
-                    <div class="project-carousel-row">
-                        <h3 class="carousel-title">${cat.title}</h3>
-                        <div class="project-track-container">
-                            <div class="project-track">${cardsHtml}</div>
-                            <button class="carousel-nav prev" aria-label="Previous">&#10094;</button>
-                            <button class="carousel-nav next" aria-label="Next">&#10095;</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = allCarouselsHtml;
-            initCarouselControls();
-        }
-
-        /** 3. Generic Carousel Controls */
-        function initCarouselControls() {
-            const allCarousels = document.querySelectorAll('.project-carousel-row');
-            allCarousels.forEach(carousel => {
-                const track = carousel.querySelector('.project-track');
-                const prevBtn = carousel.querySelector('.carousel-nav.prev');
-                const nextBtn = carousel.querySelector('.carousel-nav.next');
-                
-                if (!track || !prevBtn || !nextBtn || !track.firstElementChild) return; 
-
-                const cardWidth = track.firstElementChild.offsetWidth;
-                const scrollAmount = cardWidth * 2; 
-
-                prevBtn.addEventListener('click', () => {
-                    track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                });
-                nextBtn.addEventListener('click', () => {
-                    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                });
-            });
-        }
-
-        /** 4. Modal Logic */
+        /** Modal Logic */
         const modal = document.getElementById('project-modal');
         const modalBody = modal.querySelector('.modal-body');
         const modalTitle = modal.querySelector('.modal-header h3');
@@ -1270,16 +1194,11 @@
         }
         
         function initModalControls() {
-            // Hero button
-            document.querySelector('#hero-billboard .btn-primary').addEventListener('click', (e) => {
-                openProjectModal(e.currentTarget.dataset.projectId);
-            });
-
-            // Project card click listener
-            document.getElementById('project-carousels-container').addEventListener('click', (e) => {
-                const cardWrapper = e.target.closest('.project-card-wrapper');
-                if (cardWrapper) {
-                    openProjectModal(cardWrapper.dataset.projectId);
+            // Hero button clicks (must use event delegation)
+            heroTrack.addEventListener('click', (e) => {
+                const button = e.target.closest('.btn-primary');
+                if (button) {
+                    openProjectModal(button.dataset.projectId);
                 }
             });
 
@@ -1299,7 +1218,7 @@
             });
         }
 
-        /** 5. Testimonial Scroller */
+        /** Testimonial Scroller */
         function createTestimonialScroller(){
             const scroller=document.getElementById('testimonial-scroller');
             if(!scroller) return;
@@ -1421,7 +1340,8 @@
         }
 
         /* ========== Kick it off ========== */
-        initNetflixTheme();
+        initHeroCarousel();
+        initOtherJS();
 
     });
     </script>
