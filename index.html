@@ -388,103 +388,139 @@ body::before{
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        /* ========== WebGL Background (unchanged) ========== */
-        const canvas = document.getElementById('bg-canvas');
-        let scene, camera, renderer, particles;
-        let mousePosition = new THREE.Vector2(0.5, 0.5);
-        let time = 0;
+        /* ========== WebGL Background (Aurora — safe drop-in) ========== */
+const canvas = document.getElementById('bg-canvas');
+let scene, camera, renderer;        // reuses your names
+let mesh, start = performance.now();
 
-        const vertexShader = `
-            uniform float uTime; uniform float uHue; uniform vec2 uMouse; uniform float uScreenWidth;
-            attribute float aRandom; attribute float aSize; attribute float aPhase;
-            varying vec3 vColor;
-            void main(){
-                vec3 newPosition=position;
-                float wobbleSpeed=0.5;
-                newPosition.x+=sin(uTime*wobbleSpeed*aRandom)*0.5;
-                newPosition.y+=cos(uTime*wobbleSpeed*aRandom)*0.5;
-                float flowSpeed=0.1;
-                newPosition.x+=sin(uTime*flowSpeed+aPhase)*0.05;
-                newPosition.y+=cos(uTime*flowSpeed+aPhase)*0.05;
-                gl_Position=projectionMatrix*modelViewMatrix*vec4(newPosition,1.0);
-                float hue=mod(uHue+aRandom*0.3,1.0);
-                float saturation=0.7; float lightness=0.5;
-                vec2 screenPosition=gl_Position.xy/gl_Position.w;
-                float dist=distance(screenPosition,uMouse);
-                float brightnessFactor=smoothstep(0.4,0.0,dist);
-                vec3 color_hsl=vec3(hue,saturation,lightness);
-                vec3 color_rgb=clamp(abs(mod(color_hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0);
-                vColor=color_rgb*(0.1+brightnessFactor);
-                float sizeFactor=aSize*2.0;
-                gl_PointSize=sizeFactor*(1.0+brightnessFactor*3.0)*(uScreenWidth/1920.0);
-                gl_PointSize*= (1.0 / - gl_Position.z);
-            }`;
+const auroraUniforms = {
+  uTime:        { value: 0.0 },
+  uResolution:  { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+  uQuietCenter: { value: new THREE.Vector2(0.0, 0.15) }, // -1..1 screen space
+  uQuietRadius: { value: 0.55 },
+  uTintA:       { value: new THREE.Color(0x22d3ee) },    // cyan
+  uTintB:       { value: new THREE.Color(0xa78bfa) },    // violet
+  uBase:        { value: new THREE.Color(0x0a0f1e) }     // deep navy
+};
 
-        const fragmentShader = `
-            varying vec3 vColor;
-            void main(){
-                float r=0.0,delta=0.0,alpha=1.0;
-                vec2 cxy=2.0*gl_PointCoord-1.0;
-                r=dot(cxy,cxy);
-                delta=fwidth(r);
-                alpha=1.0-smoothstep(0.0,delta,r);
-                gl_FragColor=vec4(vColor,alpha*0.8);
-            }`;
+const vsh = `
+  varying vec2 vUv;
+  void main(){
+    vUv = uv;
+    gl_Position = vec4(position, 1.0);
+  }
+`;
 
-        function init(){
-            scene=new THREE.Scene();
-            camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
-            camera.position.z=50;
-            renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-            renderer.setSize(window.innerWidth,window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            const numParticles=20000;
-            const positions=new Float32Array(numParticles*3);
-            const randoms=new Float32Array(numParticles);
-            const sizes=new Float32Array(numParticles);
-            const phases=new Float32Array(numParticles);
-            for(let i=0;i<numParticles;i++){
-                positions[i*3]=(Math.random()-0.5)*100;
-                positions[i*3+1]=(Math.random()-0.5)*100;
-                positions[i*3+2]=(Math.random()-0.5)*100;
-                randoms[i]=Math.random();
-                sizes[i]=Math.random()*2.0+1.0;
-                phases[i]=Math.random()*Math.PI*2;
-            }
-            const geometry=new THREE.BufferGeometry();
-            geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
-            geometry.setAttribute('aRandom',new THREE.BufferAttribute(randoms,1));
-            geometry.setAttribute('aSize',new THREE.BufferAttribute(sizes,1));
-            geometry.setAttribute('aPhase',new THREE.BufferAttribute(phases,1));
-            const material=new THREE.ShaderMaterial({
-                uniforms:{uTime:{value:0.0},uHue:{value:0.0},uMouse:{value:mousePosition},uScreenWidth:{value:window.innerWidth}},
-                vertexShader,fragmentShader,transparent:true
-            });
-            particles=new THREE.Points(geometry,material);
-            scene.add(particles);
-            animate();
-        }
-        function animate(){
-            requestAnimationFrame(animate);
-            time+=0.005;
-            particles.material.uniforms.uTime.value=time;
-            particles.material.uniforms.uHue.value=(time*0.01)%1;
-            renderer.render(scene,camera);
-        }
-        function onWindowResize(){
-            camera.aspect=window.innerWidth/window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth,window.innerHeight);
-            particles.material.uniforms.uScreenWidth.value=window.innerWidth;
-        }
-        function onMouseMove(e){
-            mousePosition.x=(e.clientX/window.innerWidth)*2-1;
-            mousePosition.y=-(e.clientY/window.innerHeight)*2+1;
-        }
-        window.addEventListener('resize',onWindowResize,false);
-        window.addEventListener('mousemove',onMouseMove,false);
-        init();
-        /* ========== End WebGL ========== */
+const fsh = `
+  precision highp float;
+  varying vec2 vUv;
+  uniform float uTime;
+  uniform vec2  uResolution;
+  uniform vec2  uQuietCenter; // -1..1
+  uniform float uQuietRadius;
+  uniform vec3  uTintA, uTintB, uBase;
+
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
+  float noise(vec2 p){
+    vec2 i = floor(p), f = fract(p);
+    float a = hash(i);
+    float b = hash(i + vec2(1.0,0.0));
+    float c = hash(i + vec2(0.0,1.0));
+    float d = hash(i + vec2(1.0,1.0));
+    vec2 u = f*f*(3.0-2.0*f);
+    return mix(a,b,u.x) + (c-a)*u.y*(1.0-u.x) + (d-b)*u.x*u.y;
+  }
+  float fbm(vec2 p){
+    float v=0.0, a=0.5;
+    for(int i=0;i<5;i++){ v += a*noise(p); p *= 2.0; a *= 0.5; }
+    return v;
+  }
+
+  void main(){
+    vec2 uv = vUv;
+    vec2 s = uv*2.0 - 1.0; // screen -1..1
+
+    float t = uTime * 0.06;
+    mat2 R = mat2(cos(0.25), -sin(0.25), sin(0.25), cos(0.25));
+
+    vec2 p1 = R * (uv * vec2(3.2, 1.8) + vec2(0.0,  t));
+    vec2 p2 = R * (uv * vec2(2.0, 2.6) - vec2(0.0,  t*0.8));
+
+    float a1 = fbm(p1);
+    float a2 = fbm(p2 + 3.14159);
+
+    float band1 = smoothstep(0.35, 0.85, a1 + 0.15*sin(uv.y*8.0 - t*3.0));
+    float band2 = smoothstep(0.30, 0.90, a2 + 0.10*cos(uv.x*10.0 + t*2.5));
+
+    vec3 col = uBase;
+    col = mix(col, uTintA, band1 * 0.55);
+    col = mix(col, uTintB, band2 * 0.55);
+
+    float vig = smoothstep(1.2, 0.2, length(s));
+    col *= mix(0.85, 1.0, vig);
+
+    float d = distance(s, uQuietCenter);
+    float quiet = smoothstep(uQuietRadius, uQuietRadius*0.6, d); // 0 center -> 1 edge
+    col = mix(col * 0.28, col, quiet);
+
+    gl_FragColor = vec4(col, clamp(0.9 * quiet, 0.0, 0.9));
+  }
+`;
+
+function initAurora(){
+  scene = new THREE.Scene();
+  camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const geo = new THREE.PlaneGeometry(2,2);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: auroraUniforms,
+    vertexShader: vsh,
+    fragmentShader: fsh,
+    transparent: true,
+    depthTest: false
+  });
+
+  mesh = new THREE.Mesh(geo, mat);
+  scene.add(mesh);
+
+  onResizeAurora();
+  updateQuietZone();
+  requestAnimationFrame(loopAurora);
+
+  window.addEventListener('resize', onResizeAurora, false);
+  window.addEventListener('scroll', updateQuietZone, { passive:true });
+}
+
+function loopAurora(){
+  auroraUniforms.uTime.value = (performance.now() - start) * 0.001;
+  renderer.render(scene, camera);
+  requestAnimationFrame(loopAurora);
+}
+
+function onResizeAurora(){
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h);
+  auroraUniforms.uResolution.value.set(w, h);
+  updateQuietZone();
+}
+
+function updateQuietZone(){
+  const hero = document.getElementById('hero-section');
+  if(!hero) return;
+  const r = hero.getBoundingClientRect();
+  const cx = (r.left + r.width/2) / window.innerWidth;
+  const cy = (r.top + r.height*0.42) / window.innerHeight;
+  const sx = cx*2 - 1, sy = (1.0 - cy)*2 - 1;
+  auroraUniforms.uQuietCenter.value.set(sx, sy);
+  const rad = Math.max(r.width/window.innerWidth, r.height/window.innerHeight) * 0.75;
+  auroraUniforms.uQuietRadius.value = Math.min(0.8, Math.max(0.25, rad));
+}
+
+initAurora();
+/* ========== End WebGL ========== */
 
         const header=document.querySelector('header');
         let lastScrollTop=0;
