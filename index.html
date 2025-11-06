@@ -94,7 +94,7 @@ body::before{
         .project-tile{position:relative;cursor:pointer;overflow:hidden;background-size:cover;background-position:center;height:350px;display:flex;align-items:flex-end;transition:transform .3s ease-in-out,box-shadow .3s ease-in-out;border-radius:20px;flex-shrink:0;width:100%}
         .project-tile:hover{transform:translateY(-8px);box-shadow:0 10px 40px rgba(0,0,0,0.5)}
         .project-tile::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(5,5,5,0.9) 0%,rgba(5,5,5,0.1) 100%);z-index:1}
-        .project-tile-content{position:relative;z-index:2;padding:2rem;color:white;text-align:left;width:100%}
+        .project-tile-content{position:relative;z-index:2;padding:2rem;color:black;text-align:left;width:100%}
 
         .project-details-container{overflow:hidden;transition:max-height .7s ease-in-out,padding .5s ease-in-out;padding:0 2rem;border-top:1px solid transparent;position:relative}
         .project-details-container.expanded{max-height:2500px;padding:2rem;border-top:1px solid rgba(255,255,255,0.1)}
@@ -104,7 +104,7 @@ body::before{
         .metric-card-label{font-size:.9rem;color:#d1d5db}
 
         .details-tabs button{padding:.5rem 1rem;font-weight:600;color:#9ca3af;border-radius:8px;transition:background-color .3s,color .3s,box-shadow .3s,border-color .3s;border:1px solid transparent}
-        .details-tabs button.active{background-color:rgba(255,255,255,0.1);color:white;box-shadow:0 0 20px -3px rgba(163,230,53,0.4);border-color:rgba(163,230,53,0.4)}
+        .details-tabs button.active{background-color:rgba(255,255,255,0.1);color:black;box-shadow:0 0 20px -3px rgba(163,230,53,0.4);border-color:rgba(163,230,53,0.4)}
         .tab-content{display:none}
         .tab-content.active{display:block;animation:fadeIn .5s ease}
         @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -115,7 +115,7 @@ body::before{
 
         .insight-card{background:rgba(0,0,0,0.2);padding:1rem 1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.1)}
 
-        .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,white 20%,white 80%,transparent);mask:linear-gradient(90deg,transparent,white 20%,white 80%,transparent)}
+        .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
         .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
         .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
         .testimonial-card{width:380px;height:250px}
@@ -157,7 +157,7 @@ body::before{
         }
 
         #project-carousel-controls{display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:1rem}
-        .carousel-button{background:rgba(255,255,255,0.1);color:white;padding:.5rem;border-radius:9999px;cursor:pointer;transition:background-color .3s}
+        .carousel-button{background:rgba(255,255,255,0.1);color:black;padding:.5rem;border-radius:9999px;cursor:pointer;transition:background-color .3s}
         .carousel-button:hover{background:rgba(255,255,255,0.2)}
         .carousel-button:disabled{opacity:.4;cursor:not-allowed;background-color:rgba(255,255,255,0.1)}
 
@@ -172,7 +172,7 @@ body::before{
     <div class="content-container">
         <header class="container mx-auto px-6 py-4 fixed top-4 left-1/2 -translate-x-1/2 w-full max-w-7xl z-30">
             <div class="panel flex justify-between items-center p-4">
-                <h1 class="text-4xl font-script text-white">Sphoorthy Masa</h1>
+                <h1 class="text-4xl font-script text-black">Sphoorthy Masa</h1>
                 <nav class="hidden md:flex space-x-8 text-base font-medium items-center text-gray-200">
                     <a href="#portfolio" class="hover:text-lime-400 transition-colors">Portfolio</a>
                     <a href="#about" class="hover:text-lime-400 transition-colors">About</a>
@@ -184,7 +184,7 @@ body::before{
 
         <main class="container mx-auto px-6 py-12 pt-32 relative z-10 main-container">
             <section id="hero-section" class="text-center py-20 reveal">
-                <h2 class="5xl md:text-7xl font-extrabold text-white leading-tight">Senior UX Researcher</h2>
+                <h2 class="5xl md:text-7xl font-extrabold text-black leading-tight">Senior UX Researcher</h2>
                 <p class="text-xl md:text-2xl mt-4 text-gray-300 max-w-3xl mx-auto">Bringing <span class="text-lime-400 font-semibold">clarity to complexity</span> through user-centric insights that drive product strategy and business growth.</p>
             </section>
 
@@ -249,27 +249,27 @@ body::before{
                 <div class="panel p-12">
                     <div class="grid md:grid-cols-5 gap-12 items-center">
                         <div class="md:col-span-3">
-                            <h3 class="text-3xl font-bold text-white mb-4">About Me</h3>
+                            <h3 class="text-3xl font-bold text-black mb-4">About Me</h3>
                             <div class="text-lg text-gray-300 space-y-4">
                                 <p>Hello, I'm Sphoorthy, a Senior UX Researcher with over a decade of experience turning ambiguous questions into sharp insights that address both user pain points and business strategy.</p>
                                 <p>Most recently, I led UX Research at Sling TV, where I worked across product areas such as onboarding, content discovery, and interactive experiences. My goal is to help product, design, and engineering teams build experiences people love using.</p>
                             </div>
                         </div>
                         <div class="md:col-span-2">
-                            <h4 class="text-xl font-bold text-white mb-4">Core Competencies</h4>
+                            <h4 class="text-xl font-bold text-black mb-4">Core Competencies</h4>
                             <div class="flex flex-wrap gap-3">
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">User Interviews</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Survey Design</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Journey Mapping</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">A/B Testing</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Data Analysis</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Prototyping</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Quantitative Analysis</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Strategic Planning</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Mentoring</span>
-                                <span class="bg-white/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Design Thinking</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">User Interviews</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Survey Design</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Journey Mapping</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">A/B Testing</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Data Analysis</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Prototyping</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Quantitative Analysis</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Strategic Planning</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Mentoring</span>
+                                <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Design Thinking</span>
                             </div>
                         </div>
                     </div>
@@ -279,15 +279,15 @@ body::before{
             <section id="skills" class="py-12 reveal">
                 <div class="panel p-12">
                     <div class="text-center mb-8">
-                        <h3 class="text-4xl font-bold text-white">Skills & Expertise</h3>
+                        <h3 class="text-4xl font-bold text-black">Skills & Expertise</h3>
                         <p class="text-lg text-gray-400 mt-2">A comprehensive look at my research methodologies, tools, and frameworks.</p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="flex-1 p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
-                            <h4 class="text-2xl font-semibold text-white mb-4">Research Methodologies</h4>
+                            <h4 class="text-2xl font-semibold text-black mb-4">Research Methodologies</h4>
                             <div class="space-y-4">
                                 <div>
-                                    <h5 class="text-lg font-bold text-white mb-2">Quantitative Research Methods</h5>
+                                    <h5 class="text-lg font-bold text-black mb-2">Quantitative Research Methods</h5>
                                     <div class="flex flex-wrap gap-2">
                                         <span class="tag-badge">Surveys</span>
                                         <span class="tag-badge">A/B Testing</span>
@@ -298,7 +298,7 @@ body::before{
                                     </div>
                                 </div>
                                 <div>
-                                    <h5 class="text-lg font-bold text-white mb-2">Qualitative Research Methods</h5>
+                                    <h5 class="text-lg font-bold text-black mb-2">Qualitative Research Methods</h5>
                                     <div class="flex flex-wrap gap-2">
                                         <span class="tag-badge">User Interviews</span>
                                         <span class="tag-badge">Usability testing</span>
@@ -318,7 +318,7 @@ body::before{
                             </div>
                         </div>
                         <div class="flex-1 p-6 bg-gray-800/50 rounded-xl border border-gray-700/50">
-                            <h4 class="text-2xl font-semibold text-white mb-4">Tools & Software</h4>
+                            <h4 class="text-2xl font-semibold text-black mb-4">Tools & Software</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span class="tag-badge">UserZoom</span>
                                 <span class="tag-badge">UserTesting</span>
@@ -333,7 +333,7 @@ body::before{
                                 <span class="tag-badge">SurveyMonkey</span>
                             </div>
 
-                            <h4 class="text-2xl font-semibold text-white mt-8 mb-4">UX Metrics</h4>
+                            <h4 class="text-2xl font-semibold text-black mt-8 mb-4">UX Metrics</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span class="tag-badge">System Usability Scale (SUS)</span>
                                 <span class="tag-badge">UMUX-Lite</span>
@@ -345,7 +345,7 @@ body::before{
                                 <span class="tag-badge">Test Satisfaction</span>
                             </div>
 
-                            <h4 class="text-2xl font-semibold text-white mt-8 mb-4">Process & Frameworks</h4>
+                            <h4 class="text-2xl font-semibold text-black mt-8 mb-4">Process & Frameworks</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span class="tag-badge">Agile</span>
                                 <span class="tag-badge">Waterfall</span>
@@ -362,15 +362,15 @@ body::before{
             <section id="why-me-contact" class="py-12 reveal">
                 <div class="panel p-12 flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/2 text-left">
-                        <h3 class="text-3xl font-bold text-white mb-4">Why Me?</h3>
+                        <h3 class="text-3xl font-bold text-black mb-4">Why Me?</h3>
                         <div class="text-lg text-gray-300 space-y-4 max-w-prose">
                             <p>Good research doesn't just inform. It transforms how teams think, build, and connect with their users. I focus on turning insights into action and action into impact.</p>
-                            <p class="font-semibold text-2xl mt-6 text-white">User insights shouldn't be boring. And neither should your researcher.</p>
+                            <p class="font-semibold text-2xl mt-6 text-black">User insights shouldn't be boring. And neither should your researcher.</p>
                         </div>
                     </div>
-                    <div class="md:w-px h-full bg-white/10 md:block hidden"></div>
+                    <div class="md:w-px h-full bg-black/10 md:block hidden"></div>
                     <div class="md:w-1/2 text-center">
-                        <h3 class="text-4xl font-bold text-white mb-4">Let's Build Something Meaningful</h3>
+                        <h3 class="text-4xl font-bold text-black mb-4">Let's Build Something Meaningful</h3>
                         <p class="text-lg text-gray-300 mb-8">If you're building a team where research plays a strategic role, I'd love the opportunity to contribute.</p>
                         <a href="mailto:sphoorthy.masa@example.com" class="inline-block font-bold py-4 px-10 text-lg bg-lime-400 text-gray-900 rounded-lg shadow-lg transition hover:bg-lime-300">Get In Touch</a>
                     </div>
@@ -378,7 +378,7 @@ body::before{
             </section>
             
             <section id="testimonials" class="py-12 reveal">
-                <div class="text-center pb-12"><h3 class="text-4xl font-bold text-white">Testimonials</h3></div>
+                <div class="text-center pb-12"><h3 class="text-4xl font-bold text-black">Testimonials</h3></div>
                 <div id="testimonial-scroller" class="testimonial-scroller"></div>
             </section>
         </main>
@@ -515,7 +515,7 @@ body::before{
                         {value:"90%",label:"Target Task Success Rate"},
                         {value:"12%",label:"Reduction in CX Complaints"}
                     ],
-                    overview:`<div class="text-left space-y-6"><div><h5 class="font-bold text-white text-lg">Background</h5><p class="text-gray-300 mt-1">The guide sits at the heart of content discovery, but had evolved in parallel across Sling TV and Dish TV, creating fragmented experiences.</p></div><div><h5 class="font-bold text-white text-lg">The Challenge</h5><p class="text-gray-300 mt-1">How can we unify the guide experience to enhance usability and personalization without alienating loyal users on two very different platforms?</p></div><div><h5 class="font-bold text-white text-lg">Key Objectives</h5><ul class="list-disc list-inside pl-4 space-y-2 mt-2"><li>Identify user frustrations and unmet needs across both platforms.</li><li>Uncover shared pain points to guide a unified design strategy.</li><li>Deliver actionable recommendations that balance user needs and business goals.</li></ul></div></div>`,
+                    overview:`<div class="text-left space-y-6"><div><h5 class="font-bold text-black text-lg">Background</h5><p class="text-gray-300 mt-1">The guide sits at the heart of content discovery, but had evolved in parallel across Sling TV and Dish TV, creating fragmented experiences.</p></div><div><h5 class="font-bold text-black text-lg">The Challenge</h5><p class="text-gray-300 mt-1">How can we unify the guide experience to enhance usability and personalization without alienating loyal users on two very different platforms?</p></div><div><h5 class="font-bold text-black text-lg">Key Objectives</h5><ul class="list-disc list-inside pl-4 space-y-2 mt-2"><li>Identify user frustrations and unmet needs across both platforms.</li><li>Uncover shared pain points to guide a unified design strategy.</li><li>Deliver actionable recommendations that balance user needs and business goals.</li></ul></div></div>`,
                     methodology:`<h4>My Research Process & Tools</h4><div class="methodology-container mt-6">
                         <div class="methodology-item">
                             <h5>1. Discovery & Planning</h5>
@@ -538,7 +538,7 @@ body::before{
                             <div class="mt-4 flex flex-wrap gap-2"><span class="tag-badge">UserTesting.com</span><span class="tag-badge">Figma Prototypes</span><span class="tag-badge">Confluence</span></div>
                         </div>
                     </div>`,
-                    analysis:`<h4>Target Audience & Segments</h4><div class="flex flex-col md:flex-row gap-4 mt-4 text-left"><div class="flex-1 p-4 bg-black/20 rounded-lg border border-white/10"><h5 class="font-bold text-white">DISH TV Subscribers (65+)</h5><p class="text-sm text-gray-300">Tolerate outdated UI but struggle with hidden features; often have accessibility needs.</p></div><div class="flex-1 p-4 bg-black/20 rounded-lg border border-white/10"><h5 class="font-bold text-white">Sling TV Subscribers (~35)</h5><p class="text-sm text-gray-300">Tech-savvy, expect fast, intuitive interfaces and quick content access.</p></div></div><h4 class="mt-8">Key Quantitative Insights</h4><div class="grid md:grid-cols-2 gap-4 mt-4 text-gray-300 text-left"><div class="insight-card"><h5>1. High Engagement, Low Conversion</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li><b>Sling TV:</b> 79% engagement &rarr; 56% playback</li><li><b>DISH TV:</b> 86% engagement &rarr; 48% playback</li></ul><p class="text-sm text-lime-200">🔍 Insight: Strong adoption, but poor discoverability leads to drop-offs.</p></div><div class="insight-card"><h5>2. Underutilized Features</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>73% of sessions used the default "ALL" filter.</li><li>"Favorites" users had a 64% playback rate vs. 55% for others.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Personalization improves engagement but is underused.</p></div><div class="insight-card"><h5>3. High Drop-Offs in Short Sessions</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>44% of Sling guide sessions ended without playback.</li><li>Most of these non-playback sessions lasted &lt;20 seconds.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users abandon quickly, suggesting poor content surfacing.</p></div><div class="insight-card"><h5>4. Habitual Navigation (DISH)</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>46% of users navigated vertically by habit.</li><li>Only 8% used faster horizontal navigation by time.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users may not be aware of more efficient navigation options.</p></div></div>`,
+                    analysis:`<h4>Target Audience & Segments</h4><div class="flex flex-col md:flex-row gap-4 mt-4 text-left"><div class="flex-1 p-4 bg-black/20 rounded-lg border border-black/10"><h5 class="font-bold text-black">DISH TV Subscribers (65+)</h5><p class="text-sm text-gray-300">Tolerate outdated UI but struggle with hidden features; often have accessibility needs.</p></div><div class="flex-1 p-4 bg-black/20 rounded-lg border border-black/10"><h5 class="font-bold text-black">Sling TV Subscribers (~35)</h5><p class="text-sm text-gray-300">Tech-savvy, expect fast, intuitive interfaces and quick content access.</p></div></div><h4 class="mt-8">Key Quantitative Insights</h4><div class="grid md:grid-cols-2 gap-4 mt-4 text-gray-300 text-left"><div class="insight-card"><h5>1. High Engagement, Low Conversion</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li><b>Sling TV:</b> 79% engagement &rarr; 56% playback</li><li><b>DISH TV:</b> 86% engagement &rarr; 48% playback</li></ul><p class="text-sm text-lime-200">🔍 Insight: Strong adoption, but poor discoverability leads to drop-offs.</p></div><div class="insight-card"><h5>2. Underutilized Features</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>73% of sessions used the default "ALL" filter.</li><li>"Favorites" users had a 64% playback rate vs. 55% for others.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Personalization improves engagement but is underused.</p></div><div class="insight-card"><h5>3. High Drop-Offs in Short Sessions</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>44% of Sling guide sessions ended without playback.</li><li>Most of these non-playback sessions lasted &lt;20 seconds.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users abandon quickly, suggesting poor content surfacing.</p></div><div class="insight-card"><h5>4. Habitual Navigation (DISH)</h5><ul class="text-sm list-disc list-inside my-2 space-y-1"><li>46% of users navigated vertically by habit.</li><li>Only 8% used faster horizontal navigation by time.</li></ul><p class="text-sm text-lime-200">🔍 Insight: Users may not be aware of more efficient navigation options.</p></div></div>`,
                     results:`<p class="text-center text-lg">The research insights directly led to iterative design improvements, validating each solution through rigorous testing to ensure it met user needs and business goals.</p><h4 class="mt-8">Financial Impact</h4><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 text-gray-300"><div class="stat-card"><div class="stat-number">~$5.83M</div><div class="stat-description">from Increased Retention</div></div><div class="stat-card"><div class="stat-number">~$1.94M</div><div class="stat-description">from Feature Upsells</div></div><div class="stat-card"><div class="stat-number">~$193k</div><div class="stat-description">from Ad Revenue</div></div><div class="stat-card"><div class="stat-number">~$63k</div><div class="stat-description">from Ops Savings</div></div></div>`,
                     /* >>> NEW single-image stage + lightbox <<< */
                     media: `
@@ -579,11 +579,11 @@ body::before{
                     ],
                     overview:`<div class="text-left space-y-6">
                         <div>
-                            <h5 class="font-bold text-white text-lg">Background</h5>
+                            <h5 class="font-bold text-black text-lg">Background</h5>
                             <p class="text-gray-300 mt-1">The pharmacy app was designed to simplify and modernize the prescription refill experience. It aimed to reduce the repetitive, manual burden on pharmacists and empower patients with self-service medication management.</p>
                         </div>
                         <div>
-                            <h5 class="font-bold text-white text-lg">Research Goals</h5>
+                            <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Boost Adoption:</b> Achieve 10,000+ active app users within 6 months.</li>
                                 <li><b>Drive Prescription Orders:</b> Convert 25% of monthly refills (11,250 orders) through the app.</li>
@@ -595,7 +595,7 @@ body::before{
                     </div>`,
                     methodology:`<div class="space-y-6">
                         <p class="text-sm text-gray-300">Our research was a blend of qualitative and quantitative methods to understand both the user experience and the internal workflow challenges.</p>
-                        <h4 class="font-bold text-white text-lg mb-2">Manual Workflow </h4>
+                        <h4 class="font-bold text-black text-lg mb-2">Manual Workflow </h4>
                         <p class="text-sm text-gray-300">The manual process was time-consuming and inefficient. Pharmacists spent an average of 3.5 minutes per refill, totaling over 2,600 hours/month, which translated to significant lost labor time.</p>
                         <div class="methodology-container mt-4">
                             <div class="methodology-item">
@@ -617,22 +617,22 @@ body::before{
                     </div>`,
                     analysis:`<div class="space-y-8">
                         <div>
-                            <h4 class="font-bold text-white text-lg mb-4">Key Insights from Analysis</h4>
+                            <h4 class="font-bold text-black text-lg mb-4">Key Insights from Analysis</h4>
                             <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Minimalist UI & High Usability</h5>
+                                    <h5 class="font-bold text-black mb-2">Minimalist UI & High Usability</h5>
                                     <p class="text-sm text-gray-300">The app's core functionality was clear, allowing users to refill prescriptions with ease. <b>Task success rate was 95%.</b></p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Unexpected Awareness Gap</h5>
+                                    <h5 class="font-bold text-black mb-2">Unexpected Awareness Gap</h5>
                                     <p class="text-sm text-gray-300">A major finding: many patients were simply <b>unaware the app existed.</b> This shifted our focus from product improvement to a marketing and awareness strategy.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Low Emotional Engagement</h5>
+                                    <h5 class="font-bold text-black mb-2">Low Emotional Engagement</h5>
                                     <p class="text-sm text-gray-300">A SUS Score of 78 indicated solid usability but highlighted a <b>lack of emotional engagement</b> due to the app's basic visual design.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Automated Communications</h5>
+                                    <h5 class="font-bold text-black mb-2">Automated Communications</h5>
                                     <p class="text-sm text-gray-300">The system lacked features to reduce the repetitive, manual burden on pharmacists and their outbound calls.</p>
                                 </div>
                             </div>
@@ -640,8 +640,8 @@ body::before{
                     </div>`,
                     results:`<div class="space-y-8">
                         <p class="text-center text-lg text-gray-300">Our research led to a strategic awareness campaign that directly addressed the adoption problem and produced significant business impact.</p>
-                        <h4 class="font-bold text-white text-lg">Key Outcomes</h4>
-                        <div class="overflow-x-auto relative rounded-lg border border-white/10 mt-4">
+                        <h4 class="font-bold text-black text-lg">Key Outcomes</h4>
+                        <div class="overflow-x-auto relative rounded-lg border border-black/10 mt-4">
                             <table class="w-full text-sm text-left text-gray-400">
                                 <thead class="text-xs text-gray-2 00 uppercase bg-gray-800/50">
                                     <tr>
@@ -652,17 +652,17 @@ body::before{
                                 </thead>
                                 <tbody>
                                     <tr class="bg-gray-900/40 border-b border-gray-700">
-                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Active App Users</th>
+                                        <th scope="row" class="py-4 px-6 font-medium text-black blackspace-nowrap">Active App Users</th>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">12,334</td>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">10,000+</td>
                                     </tr>
                                     <tr class="bg-gray-900/40 border-b border-gray-700">
-                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Monthly Refills via App</th>
+                                        <th scope="row" class="py-4 px-6 font-medium text-black blackspace-nowrap">Monthly Refills via App</th>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">16,476</td>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">11,250</td>
                                     </tr>
                                     <tr class="bg-gray-900/40">
-                                        <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Annual Labor Savings</th>
+                                        <th scope="row" class="py-4 px-6 font-medium text-black blackspace-nowrap">Annual Labor Savings</th>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">$702,000+</td>
                                         <td class="py-4 px-6 text-center font-bold text-lime-400">$1M</td>
                                     </tr>
@@ -710,11 +710,11 @@ body::before{
                     ],
                     overview:`<div class="text-left text-sm space-y-6">
                         <div>
-                            <h5 class="font-bold text-white text-lg">Background</h5>
+                            <h5 class="font-bold text-black text-lg">Background</h5>
                             <p class="text-gray-300 mt-1">Live Rooms is a conceptual feature aimed at enhancing real-time TV viewing with interactive social experiences. The idea is to allow users to chat, react with emojis, and participate in live trivia while watching their favorite shows or sport.</p>
                         </div>
                         <div>
-                            <h5 class="font-bold text-white text-lg">Research Goals</h5>
+                            <h5 class="font-bold text-black text-lg">Research Goals</h5>
                             <ul class="list-disc list-inside pl-4 space-y-2 mt-2">
                                 <li><b>Evaluate whether the Live Rooms concept resonates with users.</b></li>
                                 <li><b>Understand if real-time interaction can increase emotional investment, social connection, and engagement.</b></li>
@@ -744,43 +744,43 @@ body::before{
                         </div>`,
                     analysis:`<div class="space-y-8">
                         <div>
-                            <h4 class="font-bold text-white text-lg mb-4">Initial Concept Insights</h4>
+                            <h4 class="font-bold text-black text-lg mb-4">Initial Concept Insights</h4>
                             <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Interest in Social Features</h5>
+                                    <h5 class="font-bold text-black mb-2">Interest in Social Features</h5>
                                     <p class="text-sm text-gray-300">Users showed interest, but the ideal level and format of interaction remained unclear.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Second-Screen Behavior</h5>
+                                    <h5 class="font-bold text-black mb-2">Second-Screen Behavior</h5>
                                     <p class="text-sm text-gray-300">There is potential value in second-screen experiences, but we need to explore when and how users naturally engage.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Role of Interactive Elements</h5>
+                                    <h5 class="font-bold text-black mb-2">Role of Interactive Elements</h5>
                                     <p class="text-sm text-gray-300">Reactions and quizzes were received positively, but their role in sustained engagement is unknown.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">User Behavior & Content Type</h5>
+                                    <h5 class="font-bold text-black mb-2">User Behavior & Content Type</h5>
                                     <p class="text-sm text-gray-300">The concept raised questions about how different user types would navigate this experience.</p>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white text-lg mb-4">Live Testing Insights</h4>
+                            <h4 class="font-bold text-black text-lg mb-4">Live Testing Insights</h4>
                             <div class="grid md:grid-cols-2 gap-4 mt-4 text-left">
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Control is Key</h5>
+                                    <h5 class="font-bold text-black mb-2">Control is Key</h5>
                                     <p class="text-sm text-gray-300"><b>87%</b> of users liked interactive features but wanted control, like turning chat on/off.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Second-Screen Experience</h5>
+                                    <h5 class="font-bold text-black mb-2">Second-Screen Experience</h5>
                                     <p class="text-sm text-gray-300"><b>76%</b> preferred using their phone to interact while watching on TV.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Positive Feedback on Interactive Elements</h5>
+                                    <h5 class="font-bold text-black mb-2">Positive Feedback on Interactive Elements</h5>
                                     <p class="text-sm text-gray-300">Emoji reactions (<b>56%</b>) and quizzes (<b>41%</b>) boosted engagement and made the experience more fun.</p>
                                 </div>
                                 <div class="insight-card p-4">
-                                    <h5 class="font-bold text-white mb-2">Usability & Content Adaptation</h5>
+                                    <h5 class="font-bold text-black mb-2">Usability & Content Adaptation</h5>
                                     <p class="text-sm text-gray-300"><b>40%</b> felt chat was overwhelming. Sports fans liked fast chat, while reality TV fans preferred polls and quizzes.</p>
                                 </div>
                             </div>
@@ -788,33 +788,33 @@ body::before{
                     </div>`,
                     results:`<div class="space-y-8">
                         <p class="text-center text-lg text-gray-300">The Live Rooms concept was a clear win with high user engagement. The experience proved that interactive features can meaningfully enhance live TV viewing.</p>
-                        <h4 class="font-bold text-white text-lg">Business Impact</h4>
+                        <h4 class="font-bold text-black text-lg">Business Impact</h4>
                         <div class="grid md:grid-cols-3 gap-4 mt-4 text-gray-300 text-sm">
                             <div class="panel p-4">
-                                <h5 class="font-bold text-white text-base mb-2 text-center">Jersey Shore Family Vacation</h5>
+                                <h5 class="font-bold text-black text-base mb-2 text-center">Jersey Shore Family Vacation</h5>
                                 <ul class="list-none space-y-1.5">
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">13,668</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">43,017</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">3.1</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,822,664,704</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">13,668</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">43,017</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.1</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,822,664,704</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
-                                <h5 class="font-bold text-white text-base mb-2 text-center">BET Awards</h5>
+                                <h5 class="font-bold text-black text-base mb-2 text-center">BET Awards</h5>
                                 <ul class="list-none space-y-1.5">
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">14,889</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">33,054</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">2.2</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,082,710,213</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">14,889</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">33,054</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">2.2</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,082,710,213</span></li>
                                 </ul>
                             </div>
                             <div class="panel p-4">
-                                <h5 class="font-bold text-white text-base mb-2 text-center">The Chi</h5>
+                                <h5 class="font-bold text-black text-base mb-2 text-center">The Chi</h5>
                                 <ul class="list-none space-y-1.5">
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-white font-semibold">12,097</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-white font-semibold">38,207</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-white font-semibold">3.2</span></li>
-                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-white font-semibold">1,479,008,253</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Unique Viewers:</span><span class="text-black font-semibold">12,097</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">View Time (Hrs):</span><span class="text-black font-semibold">38,207</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Hrs per User:</span><span class="text-black font-semibold">3.2</span></li>
+                                    <li class="flex justify-between items-center"><span class="font-medium text-gray-400">Impact:</span><span class="text-black font-semibold">1,479,008,253</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -911,11 +911,11 @@ body::before{
                 tile.dataset.projectId=p.id;
                 tile.innerHTML=`
                     <div class="project-tile-content">
-                        <h4 class="text-2xl font-bold text-white mb-2">${p.title}</h4>
+                        <h4 class="text-2xl font-bold text-black mb-2">${p.title}</h4>
                         <p class="text-gray-300 mb-3">${p.hook}</p>
                         <p class="font-bold text-lime-400 mb-4">${p.outcome}</p>
                         <div class="flex flex-wrap gap-2 my-2">
-                            ${p.tags.map(tag=>`<span class="bg-white/10 text-lime-400 text-xs font-medium px-3 py-1 rounded-full border border-lime-400/40">${tag}</span>`).join('')}
+                            ${p.tags.map(tag=>`<span class="bg-black/10 text-lime-400 text-xs font-medium px-3 py-1 rounded-full border border-lime-400/40">${tag}</span>`).join('')}
                         </div>
                     </div>`;
                 projectListContainer.appendChild(tile);
@@ -932,8 +932,8 @@ body::before{
             const inner=document.createElement('div');
             inner.className='scroller-inner';
             const html=testimonials.map(t=>{
-                const badge=t.featured?`<span class="absolute top-4 right-4 bg-lime-500 text-white text-xs font-bold px-3 py-1 rounded-full">Leadership</span>`:'';
-                return `<div class="testimonial-card panel p-6 flex flex-col justify-center relative text-center h-full">${badge}<p class="text-base italic text-gray-300">"${t.quote}"</p><p class="font-semibold not-italic text-white mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div>`;
+                const badge=t.featured?`<span class="absolute top-4 right-4 bg-lime-500 text-black text-xs font-bold px-3 py-1 rounded-full">Leadership</span>`:'';
+                return `<div class="testimonial-card panel p-6 flex flex-col justify-center relative text-center h-full">${badge}<p class="text-base italic text-gray-300">"${t.quote}"</p><p class="font-semibold not-italic text-black mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div>`;
             }).join('');
             inner.innerHTML=html+html;
             scroller.appendChild(inner);
@@ -1049,7 +1049,7 @@ body::before{
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     ${project.content.metrics.map(m=>`<div class="metric-card"><div class="metric-card-value">${m.value}</div><div class="metric-card-label">${m.label}</div></div>`).join('')}
                 </div>
-                <div class="details-tabs flex flex-wrap items-center gap-2 border-b border-white/10 mb-6">
+                <div class="details-tabs flex flex-wrap items-center gap-2 border-b border-black/10 mb-6">
                     <button data-tab="overview" class="active">Overview</button>
                     <button data-tab="methodology">Methodology</button>
                     <button data-tab="analysis">Analysis</button>
@@ -1061,8 +1061,8 @@ body::before{
                 <div class="tab-content" data-tab-content="analysis">${project.content.analysis}</div>
                 <div class="tab-content" data-tab-content="results">${project.content.results}</div>
                 <div class="tab-content" data-tab-content="media">${project.content.media}</div>
-                <div class="text-center pt-6 mt-6 border-t border-white/10">
-                    <button class="close-details-btn text-lime-400 font-semibold hover:text-white transition-colors flex items-center gap-2 mx-auto">
+                <div class="text-center pt-6 mt-6 border-t border-black/10">
+                    <button class="close-details-btn text-lime-400 font-semibold hover:text-black transition-colors flex items-center gap-2 mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
                         Collapse
                     </button>
