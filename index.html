@@ -9,9 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- "Netflix Light" Theme Palette (Kept for consistency) --- */
+        /* --- "Netflix Light" Theme Palette --- */
         :root {
-          --color-bg: #f5f5f5;
+          --color-bg: #f5f5f5; /* REVERTED: Correct light gray */
           --color-surface: #ffffff;
           --color-primary: #E50914; /* Red Accent */
           --color-primary-hover: #f40612;
@@ -80,7 +80,7 @@
             background-color: rgba(0,0,0,0.05);
         }
 
-        /* --- NEW: Hero Carousel (Replaces Billboard) --- */
+        /* --- Hero Carousel --- */
         #hero-carousel {
             width: 100%;
             padding-top: 80px; /* Header height */
@@ -230,39 +230,98 @@
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--color-border);
         }
-        /* Re-theme CTA button */
-        a[href^="mailto:"] {
+        
+        /* --- Contact Button Styles --- */
+        a[href^="mailto:"] {} /* Clear old generic style */
+
+        .btn-contact {
+            display: inline-block;
+            width: 100%;
+            font-weight: 600;
+            padding: 1rem 2.5rem; /* py-4 px-10 */
+            font-size: 1.125rem; /* text-lg */
+            border-radius: 8px; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* shadow-lg */
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        @media (min-width: 640px) { /* sm: */
+            .btn-contact {
+                width: auto;
+            }
+        }
+        .btn-email {
             background-color: var(--color-primary);
             color: white;
-            transition: all 0.2s ease;
         }
-        a[href^="mailto:"]:hover {
+        .btn-email:hover {
             background-color: var(--color-primary-hover);
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
             transform: scale(1.03);
         }
+        .btn-linkedin {
+            background-color: #0077B5;
+            color: white;
+        }
+        .btn-linkedin:hover {
+            background-color: #005e9c;
+            box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+            transform: scale(1.03);
+        }
         
-        /* Re-theme Testimonials */
+        /* --- Re-theme Testimonials --- */
         .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
         .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
         .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
         @keyframes scroll{to{transform:translateX(calc(-50% - .75rem))}}
         
+        /* UPDATED: Testimonial Card Styling */
         .testimonial-card {
             width: 380px;
-            height: auto;
-            min-height: 250px;
+            height: 300px; /* Fixed height */
+            min-height: auto;
             background: var(--color-surface);
             border-radius: 12px;
             border: 1px solid var(--color-border);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes content */
+            padding: 1.5rem; /* Use padding from .panel */
         }
+        .testimonial-card p.italic {
+            flex-grow: 1; /* Allows this to fill space */
+            overflow-y: auto; /* Adds scroll if content is too long */
+            text-align: left; /* Better for reading/scrolling */
+            padding-right: 10px; /* Space for scrollbar */
+            margin-bottom: 1rem;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-border) var(--color-surface);
+        }
+        .testimonial-card p.italic::-webkit-scrollbar {
+            width: 6px;
+        }
+        .testimonial-card p.italic::-webkit-scrollbar-track {
+            background: var(--color-surface);
+        }
+        .testimonial-card p.italic::-webkit-scrollbar-thumb {
+            background-color: var(--color-border);
+            border-radius: 6px;
+        }
+        .testimonial-card .author-info {
+            text-align: center;
+            flex-shrink: 0; /* Prevents this from shrinking */
+        }
+        /* End Testimonial Update */
+
         .panel {
             background: var(--color-surface);
             border-radius: 12px;
             border: 1px solid var(--color-border);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: box-shadow .3s ease;
+            padding: 1.5rem;
         }
         .panel:hover { box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1); }
         .text-black { color: var(--color-text-primary) !important; }
@@ -466,27 +525,27 @@
 
         .main-container{max-width:1400px; margin: 0 auto;}
         
-        /* Media carousel styles (for inside modal) */
-        .media-carousel{position:relative;width:100%}
-        .media-track{display:flex;gap:.75rem;overflow-x:auto;padding:.5rem 2.75rem;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,transparent 0,#000 32px,#000 calc(100% - 32px),transparent 100%);overscroll-behavior-x:contain}
-        .media-item{position:relative;min-width:clamp(220px,28vw,380px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;scroll-snap-align:center;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.06);transition:transform .25s ease,box-shadow .25s ease}
-        .media-item:hover{transform:scale(1.06);z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.18)}
-        .media-img{width:100%;height:100%;object-fit:cover;display:block}
-        .media-cap{position:absolute;left:10px;bottom:10px;padding:6px 10px;font-size:12px;color:#0f172a;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.08);border-radius:999px;backdrop-filter:blur(6px) saturate(140%)}
-        .media-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,0.7);color:#0f172a;border:1px solid rgba(0,0,0,0.1);cursor:pointer;z-index:5;transition:background .2s ease,transform .2s ease;backdrop-filter:blur(8px) saturate(160%)}
-        .media-nav:hover{background:rgba(255,255,255,0.9);transform:translateY(-50%) scale(1.05)}
-        .media-nav:disabled{opacity:.45;cursor:not-allowed}
-        .media-nav.prev{left:6px}
-        .media-nav.next{right:6px}
+        /* --- Media carousel styles (for inside modal) --- */
         .media-viewer{position:relative;width:100%;max-width:1100px;margin-inline:auto}
-        .media-stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.08);display:grid;place-items:center}
+        .media-stage{
+            position:relative;
+            width:100%;
+            aspect-ratio:16/9;
+            border-radius:12px; /* Rounded edges */
+            overflow:hidden;
+            background:var(--color-bg); /* Clean bg */
+            display:grid;
+            place-items:center;
+        }
         .media-stage img{width:100%;height:100%;object-fit:contain;cursor:zoom-in;user-select:none;-webkit-user-drag:none}
+        
         .media-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:.75rem;pointer-events:none}
         .media-btn{pointer-events:auto;width:42px;height:42px;display:grid;place-items:center;border-radius:9999px;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.1);color:#0f172a;cursor:pointer;transition:transform .15s ease,background .15s ease,opacity .15s ease;backdrop-filter:blur(8px) saturate(160%)}
         .media-btn:hover{transform:scale(1.06);background:#fff}
         .media-btn:disabled{opacity:.4;cursor:not-allowed}
         .media-meta{margin-top:.6rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;color:#334155}
         .media-pager{font-variant-numeric:tabular-nums;opacity:.85}
+        
         .lightbox{position:fixed;inset:0;z-index:9999;display:none;background:rgba(9,12,16,.75);backdrop-filter:blur(6px) saturate(140%)}
         .lightbox.open{display:grid}
         .lightbox-inner{position:relative;width:min(96vw,1400px);height:min(92vh,860px);margin:auto;display:grid;grid-template-rows:1fr auto;gap:.75rem}
@@ -620,7 +679,14 @@
                         <div class="md:w-1/2 text-center">
                             <h3 class="text-4xl font-bold text-black mb-4">Let's Build Something Meaningful</h3>
                             <p class="text-lg text-gray-300 mb-8">If you're building a team where research plays a strategic role, I'd love the opportunity to contribute.</p>
-                            <a href="mailto:sphoorthy.masa@example.com" class="inline-block font-bold py-4 px-10 text-lg rounded-lg shadow-lg">Get In Touch</a>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <a href="https://www.linkedin.com/in/smasa" target="_blank" rel="noopener noreferrer" class="btn-contact btn-linkedin">
+                                    LinkedIn
+                                </a>
+                                <a href="mailto:Sphoorthy.Masa@outlook.com" class="btn-contact btn-email">
+                                    Email Me
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -664,7 +730,7 @@
         },{threshold:0.1});
         document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
         
-        /* ================= Projects (FULL ORIGINAL DATA + UPDATED IMAGES) ================= */
+        /* ================= Projects (FULL ORIGINAL DATA + HIGH-RES IMAGES) ================= */
         const projects=[
             { 
                 id:'guide',
@@ -672,7 +738,7 @@
                 hook:"A strategic research initiative to unify user experiences across two major platforms, turning a point of friction into a driver for engagement and revenue.",
                 outcome:"~$7.46M Estimated Annual Impact",
                 tags:['Strategic Research','Data-Driven Insights','Business Impact'],
-                images:["images/Guide/7.png"], // Main tile image
+                images:["https://images.unsplash.com/photo-1616428784112-2544265780d6?q=80&w=2070&auto=format&fit=crop"],
                 content:{
                     metrics:[
                         {value:"~$7.46M",label:"Estimated Annual Value Impact"},
@@ -733,7 +799,7 @@
                 hook:"Streamlining prescription refills by empowering patients and reducing manual work for pharmacy staff, resulting in significant cost savings and improved patient satisfaction.",
                 outcome:"Achieved 12,334+ Active App Users within 6 months.",
                 tags:['Workflow Analysis','Adoption Strategy','Usability Testing'],
-                images:["images/Gundersen/6.png"], // Main tile image
+                images:["https://images.unsplash.com/photo-1588720490792-26f5053ae81e?q=80&w=2070&auto=format&fit=crop"],
                 content:{
                     metrics:[
                         { value:"12,334+", label:"Active App Users" },
@@ -863,7 +929,7 @@
                 hook:"An exciting concept for social TV viewing promised to make live content more engaging with chat, reactions, and interactive features. But before investing in building it, we needed to validate whether this idea aligned with how people actually watch live TV today.",
                 outcome:"Guided 'Go/No-Go' Decision",
                 tags:['Concept Testing','Behavioral Research'],
-                images:["images/liverooms/1.png"], // Main tile image
+                images:["https://images.unsplash.com/photo-1549419143-41c6f39d2c20?q=80&w=2070&auto=format&fit=crop"],
                 content:{
                     metrics:[
                         { value:"87%", label:"Liked interactive features" },
@@ -1008,38 +1074,39 @@
             },
         ];
 
-        /* ================= Testimonials (FULL ORIGINAL DATA) ================= */
+        /* ================= Testimonials (FULL NEW DATA) ================= */
         const testimonials=[ 
-            { quote:"I had the privilege of working with Sphoorthy... She helped us gain tremendous consumer insights and improved the velocity and prioritization of our product development roadmap.", author:"Gary S.", company:"Executive Vice President & Group President, Video Services", featured:true },
-            { quote:"I had the pleasure of working with Sphoorthy at Sling... Her research was always thorough, actionable, and aligned with both user needs and business goals.", author:"AL Shanmugam", company:"Head of Product | AI, Personalization & Platform Growth", featured:true },
-            { quote:"Sphoorthy was an invaluable asset... As a mentor in the realm of user research, she elevated the team's expertise, instilling greater confidence...", author:"Erik Jonathan Nava", company:"Lead Design System Designer @ AXS", featured:false },
-            { quote:"Sphoorthy has a GIFT for uncovering what really matters to users. Her research is sharp, actionable, and always grounded in empathy.", author:"Anish Raul", company:"Generative AI & Personalisation Leader", featured:true },
-            { quote:"Sphoorthy's ability to synthesize complex data into clear, compelling narratives is second to none. Her work was instrumental in shaping our product vision.", author:"Emily K.", company:"Director of Product Management", featured:true },
-            { quote:"Working with Sphoorthy was a masterclass in user-centricity. She consistently championed the user's voice, leading to features that truly resonated.", author:"Michael B.", company:"Senior Product Designer", featured:false },
-            { quote:"Her deep understanding of qualitative research methods helped us uncover hidden user needs that fundamentally changed our product roadmap.", author:"Sarah P.", company:"Research Lead", featured:false },
-            { quote:"Sphoorthy is a rare talent who can bridge the gap between user research and business strategy. Her insights are actionable and have a direct impact on our bottom line.", author:"David L.", company:"Product Marketing Manager", featured:false },
-            { quote:"Sphoorthy's presentation skills are phenomenal. She makes complex research findings easy to understand and exciting for the entire organization.", author:"Jessica M.", company:"Head of Marketing", featured:true },
-            { quote:"She introduced us to new research techniques that saved us time and gave us a deeper understanding of our customers' behaviors.", author:"Chris R.", company:"Principal Engineer", featured:false },
-            { quote:"Sphoorthy has a calm and empathetic approach that makes participants feel comfortable, resulting in richer, more honest feedback.", author:"Rachel H.", company:"UX Designer", featured:false },
-            { quote:"Her strategic thinking helped us prioritize features based on user value, not just assumptions. The result was a product that truly solved our users' problems.", author:"Tom S.", company:"Product Manager", featured:false },
-            { quote:"Sphoorthy is a fantastic collaborator. She works seamlessly with design, product, and engineering to ensure research is integrated throughout the development lifecycle.", author:"Daniel T.", company:"Engineering Manager", featured:false },
-            { quote:"Her rigorous research process and attention to detail are what set her apart. She's a true professional who delivers high-quality, impactful work.", author:"Jennifer W.", company:"VP of Product", featured:true },
-            { quote:"Sphoorthy's ability to turn ambiguous business questions into testable hypotheses and concrete insights is a superpower. I learned so much from her.", author:"Mark A.", company:"Senior Data Analyst", featured:false },
-            { quote:"She's a natural leader and a great mentor. She helped me grow my own research skills and gave me the confidence to take on new challenges.", author:"Laura F.", company:"Junior UX Researcher", featured:false },
-            { quote:"Sphoorthy's work on our onboarding flow was a game-changer. She identified key pain points that were costing us a lot of users, and her recommendations led to a significant increase in conversion.", author:"Kevin J.", company:"Growth Product Manager", featured:false },
-            { quote:"Her research is always thorough, well-documented, and presented in a way that's easy to share and act upon. A true asset to any team.", author:"Lisa V.", company:"Head of Design", featured:true },
-            { quote:"Sphoorthy has a knack for identifying the 'why' behind user behavior, which is invaluable for building products that users love.", author:"Ryan G.", company:"Lead UX Designer", featured:false },
-            { quote:"Her work is not just about finding problems, but about discovering opportunities. She helps us see our product through our users' eyes.", author:"Sarah C.", company:"Senior Product Manager", featured:false },
-            { quote:"Sphoorthy's research is always a highlight of our sprint cycles. Her insights are always a pleasant surprise and help us make more informed decisions.", author:"Ben H.", company:"Software Engineer", featured:false },
-            { quote:"I've worked with many researchers, and Sphoorthy is one of the best. Her dedication, expertise, and collaborative spirit are truly exceptional.", author:"Jessica N.", company:"Director of Product", featured:true },
-            { quote:"She's an incredible storyteller. She takes research data and turns it into a narrative that inspires and motivates the entire team.", author:"Alex D.", company:"Content Strategist", featured:false },
-            { quote:"Sphoorthy's research helped us align our product roadmap with customer needs, and the results speak for themselves. We saw a measurable increase in user satisfaction.", author:"Michael J.", company:"Head of Engineering", featured:true },
-            { quote:"Her empathy and deep understanding of human behavior make her an outstanding UX researcher. She is a pleasure to work with.", author:"Karen L.", company:"Senior UX Writer", featured:false },
-            { quote:"Sphoorthy's research insights are not just informative, they're transformative. They've changed the way we think about our product and our users.", author:"David T.", company:"VP of Engineering", featured:true },
-            { quote:"She has an amazing ability to see the big picture and the small details. Her research is both strategic and tactical, which is incredibly valuable.", author:"Jennifer K.", company:"Director of Marketing", featured:true },
-            { quote:"Sphoorthy is a rockstar. She's smart, dedicated, and a joy to work with. I would highly recommend her to any team looking for a top-tier UX researcher.", author:"Mark R.", company:"Principal Product Manager", featured:false },
-            { quote:"Her research is the foundation of our design decisions. Without her, we would be flying blind.", author:"Chris A.", company:"Lead Designer", featured:false },
-            { quote:"Sphoorthy's work on our mobile app's navigation was a huge success. She helped us create a much more intuitive and user-friendly experience.", author:"Sarah B.", company:"Mobile Product Manager", featured:false }
+            { quote:"I had the privilege of working with Sphoorthy on our UX/Design team at Sling/Dish TV. Sphoorthy is a very knowledgeable and high quality UX researcher. She helped us gain tremendous consumer insights and improved the velocity and prioritization of our product development roadmap. She is also methodical, thoughtful and collaborative in her approach. I highly recommend her!", author:"Gary Schanman", company:"Fortune 250 C-Level Executive | Media, Sports & Telecom Leader", featured:true },
+            { quote:"I had the pleasure of working with Sphoorthy at Sling, where she consistently brought a thoughtful and user-centric approach to our product development process. Her research was always thorough, actionable, and aligned with both user needs and business goals. Sphoorthy is a collaborative partner who elevates the teams she work with. Any organization would benefit from her expertise.", author:"AL Shanmugam", company:"Head of Product | AI, Personalization & Platform Growth", featured:true },
+            { quote:"Sphoorthy was an invaluable asset to the Sling TV team, leaving an indelible mark on the organization. As a mentor in the realm of user research, she elevated the team's expertise, instilling greater confidence in their ability to identify user pain points and explore the underlying causes with a deeper, more insightful approach. Her contributions have been pivotal in shaping the future of Sling TV, and the product team will forever be grateful for the data and insights that will help make the upcoming redesign the most intuitive and exceptional TV UI in the industry.", author:"Erik Jonathan Nava", company:"Lead Design System Designer @ AXS", featured:false },
+            { quote:"Sphoorthy was a great advocate for user research at DISH/Sling. As a UXR in a different department, I appreciated her efforts to connect research groups across the organization, share insights and connect with other business groups. She would be an excellent addition to your research team!", author:"Caroline Condon", company:"Product Development | Human-centered Design", featured:false },
+            { quote:"I've had the pleasure to work with Sphoorthy, and it is rare to come across a UX Researcher with such a powerful combination of strategic vision, deep user empathy, and methodological expertise. With over a decade of experience, Sphoorthy brings an unmatched ability to translate complex user needs into clear, actionable insights that consistently drive innovation and product excellence. She has a unique ability to tell compelling stories with the data. Her insights don't just answer questions, they inspire action. ... On top of her skillset, Sphoorthy is simply a pleasure to work with.", author:"Erika Nelson", company:"Senior Business Development Manager @ DISH Network & Sling TV", featured:false },
+            { quote:"I had the opportunity to work with Sphoorthy during our shared time together at EchoStar... Sphoorthy's passion for creating top-notch UX experiences came through in all that she did, and that passion, combined with her drive, contributed to not only her success, but the success of the projects she managed.", author:"Debbie G. Freeman, MBA", company:"Insights & Strategic Brand Marketing Executive", featured:true },
+            { quote:"Sphoorthy was an incredible partner to work with on our design team. As a Senior UX Researcher, she helped us level up how we approached research — not by always running the studies herself, but by empowering designers with the right methods, tools, and frameworks to find meaningful insights. ... Sphoorthy also created foundational guidelines and UX scoring systems that brought more consistency to how we tested features — helping us make more confident, data-informed decisions.", author:"Saumya Ghai", company:"Senior Product Designer at Sling TV", featured:false },
+            { quote:"I had the pleasure of working with Sphoorthy, who is a highly skilled UX Researcher with expertise in mixed methods, including effective survey design and distribution. We collaborated closely on projects where she excelled at collecting actionable insights from user feedback. Her work on survey design and usability scoring, combined with her ability to manage multiple projects simultaneously, consistently delivered impactful results for Sling TV. Her get-it-done attitude was so refreshing to see!", author:"Claire Chung", company:"Improving Customer Experience and Products @Spectrum", featured:false },
+            { quote:"I’ve had the pleasure of working with Sphoorthy on multiple projects over the years, and she’s consistently been a thoughtful, strategic, and collaborative UX researcher. She brings clarity to every study, shaping research plans, refining materials, and ensuring the methods align with the goals of the project. ... Beyond the research itself, Sphoorthy is exceptional at turning findings into clear, compelling stories that resonate with stakeholders of all kinds.", author:"Gil M.", company:"Product Designer", featured:false },
+            { quote:"Sphoorthy has all the qualities you’d want in an excellent researcher - she’s collaborative, thoughtful, organized, helpful and curious. She excels at facilitating research herself, as well as helping designers and product managers discover the right methodology for the questions they have. She wrangles teams to work together and reduce siloed thinking. I’d happily recommend Sphoorthy for any research team.", author:"Brandon Melchior", company:"VP of Product Design at AXS", featured:true },
+            { quote:"I've had the privilege of working with Sphoorthy Masa over the last two years at Sling TV. She is a dedicated UX Research Professional who was instrumental in partnering with our Product and Design teams to create and implement our weekly UX Research Cadence, Client Scripting, and Weekly/Monthly Insight Dashboards. ... Above all, she is a warm and charismatic colleague to be around with a fantastic sense of humor.", author:"Steven Cramer", company:"Product Design Leader at DISH / Sling TV", featured:true },
+            { quote:"Sphoorthy is an exceptionally skilled UX researcher and manager, known for her inquisitive nature and methodical approach. She demonstrates a deep mastery of UX research methodologies, best practices, and industry knowledge. ... As a designer, I had the privilege of working closely with her on multiple product features and releases. I consistently relied on her guidance to uncover meaningful insights and gain a deeper understanding of user needs and behaviors.", author:"Matthew Hardy", company:"Product Designer", featured:false },
+            { quote:"Sphoorthy has deep knowledge and intuition on how to approach UX research strategically. She can efficiently whip up the perfect study that informs the design direction and next steps, and knows when we have just the right amount of data. She also has a masterful and diplomatic way of teaching others (like me) how to be more effective researchers and designers. Sphoorthy would be a formidable upgrade to any product team!", author:"Chris Varosy", company:"Product Design Leader and Culture Advocate", featured:true },
+            { quote:"I had the pleasure of collaborating with Sphoorthy during her tenure as a UX Researcher at Sling/DISH. Her strategic research planning and cross-functional collaboration significantly enhanced our product development. Notably, she implemented UMUX-Lite scoring for benchmarking, build out comprehensive and recurrent feature surveys, designed numerous individual studies for various squads, conducted user interviews, and managed the UserZoom platform.", author:"Emily Tuteur", company:"Design Leader and Product Strategist", featured:true },
+            { quote:"Sphoorthy is an exceptional UX researcher whose insights have been invaluable to our team. She consistently delivers thorough, user-driven research that shapes our design decisions and enhances the overall product experience. ... She brings a positive and proactive approach to every challenge.", author:"Eliana Grossman", company:"UX Designer", featured:false },
+            { quote:"Sphoorthy has a GIFT for uncovering what really matters to users. Her research is sharp, actionable, and always grounded in empathy. She brings clarity to complex problems and makes collaboration feel effortless. I’d work with her again in a heartbeat and highly recommend her.", author:"Anish Raul", company:"Generative AI & Personalisation Leader", featured:true },
+            { quote:"I worked with Sphoorthy at Sling TV on multiple projects and she’s been an instrumental part of the team. Her invaluable research skills and knowledge of creative research practices is hard to find. She would be a valuable part of any team and is a pleasure to work with. She even completed her masters while still maintaining her workload and as the only person on her team.", author:"Lara Bingham", company:"Customer obsessed professional", featured:false },
+            { quote:"My Consumer Insights team and I had the pleasure of working with Sphoorthy on several key projects that blend CI and UX. Her thoughtful approach to UX research and collaboration with our team has been invaluable. She has a great ability to translate user needs into impactful, actionable insights, and her collaborative mindset and attention to detail make her a fantastic partner on cross-functional teams.", author:"David Duganne", company:"General Manager - Consumer Insights at DISH Network", featured:false },
+            { quote:"I have worked with Sphoorthy within the Sling/Dish product team. Our collaboration on projects like DIsh Android TV Homescreen and Info cards demonstrated her exceptional research skills and dedication. She revolutionized our approach to UX testing by eliminating preference testing and focusing on understanding user behavior, resulting in deeper insights into user needs.", author:"Mincho Kavaldzhiev,PhD", company:"Designer at Amazon", featured:false },
+            { quote:"I collaborated closely with Sphoorthy on several key projects... She consistently demonstrated exceptional attention to detail and deep empathy for our users in every aspect of user research, from conducting insightful user interviews and analyzing survey data to facilitating engaging card sorting sessions. ... What truly set Sphoorthy apart were her exceptional communication skills.", author:"Maryna L.", company:"Product Designer prev. Sling TV", featured:false },
+            { quote:"Sphoorthy is a kind and positive person. She is very detail oriented and methodical, and invests many hours in her research, producing an organized and clear delivery.", author:"Kyunghee Lee", company:"Product & UX Strategy", featured:false },
+            { quote:"Sphoorthy is an asset to any product team that wants to ensure data-driven decisions. I worked with Sphoorthy many times testing various designs and she always knew the best method to utilize to get the questions we had answered. Working with Sphoorthy is easy because she is cognizant of details and communicates throughout every step of the research process.", author:"Matt Dean", company:"Sr. Product Design Contractor", featured:false },
+            { quote:"When it comes to user experience (UX) strategy, Sphoorthy knows what to do and she does it. ... Sphoorthy was very good at keeping the project moving forward. Because she knows the UX process and is task oriented she would look forward to what needed to be done and make plans to complete the work. She willingly participated in every step of the way.", author:"Randal Flamm", company:"UX Designer at Emplify", featured:false },
+            { quote:"Sphoorthy exhibits great drive and initiative. Her experience and ability to move forward without needing extensive direction was a great asset when working on fast paced, strategic projects that needed DUX expertise. She always had a great attitude and is someone I really enjoyed having on my teams.", author:"Alicia Waletzko, RHIA, PMP", company:"Innovation Integration Partner", featured:false },
+            { quote:"I have had the opportunity to work alongside Sphoorthy with a few different projects. She brings a great personality to the teams she works with. Here attention to detail, interview techniques and communication skills is an wonderful asset. She focuses on really understanding the customer's processes... and is great at bring their experiences and voice to the work.", author:"Rebecca Bryan", company:"Solution Owner Pharmacy Optimization", featured:false },
+            { quote:"I would recommend Sphoorthy as she is knowledgeable about User Experience and cares about her work. She is an active listener and asks the proper questions to help keep agendas moving along. Sphoorthy is a great teammate and someone you can count on to be successful.", author:"Lance Mason", company:"IT Project Manager at Kwik Trip, Inc.", featured:false },
+            { quote:"I have had the opportunity to work with Sphoorthy on several occasions. She is extremely knowledgeable and organized. She is a pleasure to work with and is a valuable member of any team she is a part of.", author:"Jessica Easterday", company:"Director-Virtual Care at Emplify Health by Gundersen", featured:false },
+            { quote:"I have collaborated with Sphoorthy on a number of occasions. She is engaged in and passionate about her work. She is knowledgeable and talented and great to work with.", author:"Mark Erickson", company:"Director, Enterprise Architecture and Solution Design", featured:false },
+            { quote:"I worked with Sphoorthy on one of our projects at Gundersen Health System; a collaboration between DUX and PX. Sphoorthy was very collaborative, communicative and responsive. All the qualities you would want from an excellent team player.", author:"Christy Onyeabor, MSHCM", company:"Operations Manager at Mayo Clinic Health System", featured:false },
+            { quote:"Sphoorthy was a great colleague. She was very knowledgeable about user experience and jumped right into any project she was on.", author:"Jenessa Miller", company:"Principal Application Analyst at Vanderbilt University Medical Center", featured:false },
+            { quote:"Sphoorthy is a very talented UX designer and often offered great insight into how we approached both web applications and pages. With a diverse set of design and technical skills, Sphoorthy would be a great asset to have as part of any team or project", author:"Rudy Slama", company:"Art Direction, Design & Illustration", featured:false }
         ];
 
         /* ========== NEW Hero Carousel JS ========== */
@@ -1225,8 +1292,9 @@
             const inner=document.createElement('div');
             inner.className='scroller-inner';
             const html=testimonials.map(t=>{
-                const badge=t.featured?`<span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full" style="background-color: var(--color-primary);">Leadership</span>`:'';
-                return `<div class="testimonial-card panel p-6 flex flex-col justify-center relative text-center h-full">${badge}<p class="text-base italic text-gray-300">"${t.quote}"</p><p class="font-semibold not-italic text-black mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div>`;
+                const badge=t.featured?`<span class="absolute top-4 right-4 text-white text-xs font-bold px-3 py-1 rounded-full" style="background-color: var(--color-primary);">Leadership</span>`:'';
+                // UPDATED: Added author-info wrapper
+                return `<div class="testimonial-card panel">${badge}<p class="text-base italic text-gray-300">"${t.quote}"</p><div class="author-info"><p class="font-semibold not-italic text-black mt-4">- ${t.author}</p><p class="text-sm text-gray-400">${t.company}</p></div></div>`;
             }).join('');
             inner.innerHTML=html+html;
             scroller.appendChild(inner);
