@@ -83,49 +83,97 @@
         /* --- Hero Carousel --- */
         #hero-carousel {
             width: 100%;
-            padding-top: 80px; /* Header height */
+            padding: 120px 5% 60px; /* Offset for fixed header */
             position: relative;
-            overflow: hidden;
         }
         .hero-track {
-            display: flex;
-            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        .hero-slide {
-            width: 100%;
-            flex-shrink: 0;
             display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            align-items: center;
-            height: 80vh; /* Full viewport height */
-            min-height: 600px;
-            max-height: 750px;
-            padding: 2rem 5%;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        @media (min-width: 768px) {
-            .hero-slide {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 4rem;
+        .hero-card {
+            background: var(--color-surface);
+            border-radius: 16px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hero-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 55px rgba(15, 23, 42, 0.12);
+        }
+        .hero-card .hero-image-container {
+            height: 220px;
+            width: 100%;
+        }
+        .hero-card .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-card .hero-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            flex: 1;
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .hero-meta span {
+            background-color: rgba(229, 9, 20, 0.1);
+            color: var(--color-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+        }
+        @media (max-width: 1023px) {
+            .hero-track {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .hero-card .hero-image-container {
+                height: 200px;
+            }
+        }
+        @media (max-width: 767px) {
+            #hero-carousel {
+                padding: 100px 1.5rem 40px;
+            }
+            .hero-track {
+                grid-template-columns: 1fr;
+            }
+            .hero-card .hero-image-container {
+                height: 180px;
             }
         }
 
         .hero-content h2 {
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(1.5rem, 2.8vw, 2.5rem);
             font-weight: 800;
             color: var(--color-text-primary);
             line-height: 1.1;
         }
         .hero-content p {
-            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            font-size: clamp(0.95rem, 1.4vw, 1.1rem);
             color: var(--color-text-secondary);
-            margin-top: 1rem;
-            max-width: 600px;
+            margin-top: 0.25rem;
         }
         .hero-buttons {
-            margin-top: 1.5rem;
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+            padding-top: 0.75rem;
         }
         .btn {
             display: inline-flex;
@@ -150,40 +198,6 @@
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
-        .hero-image-container {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .hero-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .hero-nav-dots {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.75rem;
-            z-index: 5;
-        }
-        .hero-nav-dots .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .hero-nav-dots .dot.active {
-            background: var(--color-text-primary);
-            transform: scale(1.1);
-        }
         
         /* --- REMOVED: Project Carousel Section --- */
         #portfolio { display: none; }
@@ -576,10 +590,7 @@
 
         <main>
             <section id="hero-carousel" class="reveal">
-                <div class="hero-track">
-                    </div>
-                <div class="hero-nav-dots">
-                    </div>
+                <div class="hero-track"></div>
             </section>
 
             <div class="main-container">
@@ -1113,87 +1124,43 @@
             { quote:"Sphoorthy is a very talented UX designer and often offered great insight into how we approached both web applications and pages. With a diverse set of design and technical skills, Sphoorthy would be a great asset to have as part of any team or project", author:"Rudy Slama", company:"Art Direction, Design & Illustration", featured:false }
         ];
 
-        /* ========== NEW Hero Carousel JS ========== */
+        /* ========== NEW Hero Showcase JS ========== */
 
         const heroTrack = document.querySelector('.hero-track');
-        const dotsContainer = document.querySelector('.hero-nav-dots');
-        let heroCurrentIndex = 0;
-        let heroSlides = [];
-        let heroDots = [];
-        let heroCarouselInterval;
 
-        function initHeroCarousel() {
-            if (!heroTrack || !dotsContainer) return;
+        function initHeroShowcase() {
+            if (!heroTrack) return;
 
-            // 1. Create slides from project data
+            heroTrack.innerHTML = '';
             const projectsToShow = projects.slice(0, 3);
-            projectsToShow.forEach((project, index) => {
-                // Create Slide
-                const slide = document.createElement('div');
-                slide.className = 'hero-slide';
-                slide.innerHTML = `
+
+            projectsToShow.forEach((project) => {
+                const card = document.createElement('article');
+                card.className = 'hero-card';
+                card.innerHTML = `
+                    <div class="hero-image-container">
+                        <img src="${project.images[0]}" alt="${project.title} screenshot">
+                    </div>
                     <div class="hero-content">
+                        <div class="hero-meta">
+                            ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
+                        </div>
                         <h2>${project.title}</h2>
                         <p>${project.hook}</p>
                         <div class="hero-buttons">
                             <button class="btn btn-primary" data-project-id="${project.id}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
                                 View Details
                             </button>
                         </div>
                     </div>
-                    <div class="hero-image-container">
-                        <img src="${project.images[0]}" alt="${project.title} screenshot">
-                    </div>
                 `;
-                heroTrack.appendChild(slide);
 
-                // Create Dot
-                const dot = document.createElement('button');
-                dot.className = 'dot';
-                dot.dataset.index = index;
-                if (index === 0) dot.classList.add('active');
-                dotsContainer.appendChild(dot);
+                heroTrack.appendChild(card);
             });
-
-            heroSlides = Array.from(heroTrack.children);
-            heroDots = Array.from(dotsContainer.children);
-
-            // 2. Add Dot click listeners
-            dotsContainer.addEventListener('click', e => {
-                if (e.target.matches('.dot')) {
-                    const index = parseInt(e.target.dataset.index, 10);
-                    setHeroSlide(index);
-                    resetHeroCarouselInterval();
-                }
-            });
-
-            // 3. Start auto-advance
-            startHeroCarouselInterval();
         }
-        
-        function setHeroSlide(index) {
-            heroTrack.style.transform = `translateX(-${index * 100}%)`;
-            heroDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            heroCurrentIndex = index;
-        }
-
-        function nextHeroSlide() {
-            const nextIndex = (heroCurrentIndex + 1) % heroSlides.length;
-            setHeroSlide(nextIndex);
-        }
-        
-        function startHeroCarouselInterval() {
-            heroCarouselInterval = setInterval(nextHeroSlide, 7000); // 7 seconds
-        }
-        
-        function resetHeroCarouselInterval() {
-            clearInterval(heroCarouselInterval);
-            startHeroCarouselInterval();
-        }
-
 
         /* ========== Other JS (Modal, Testimonials, etc.) ========== */
         
@@ -1412,7 +1379,7 @@
         }
 
         /* ========== Kick it off ========== */
-        initHeroCarousel();
+        initHeroShowcase();
         initOtherJS();
 
     });
