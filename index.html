@@ -9,15 +9,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- "Netflix Light" Theme Palette --- */
+        /* --- "Cascade Breeze" Theme Palette --- */
         :root {
-          --color-bg: #f5f5f5; /* REVERTED: Correct light gray */
+          --color-bg: #f2fbff;
           --color-surface: #ffffff;
-          --color-primary: #E50914; /* Red Accent */
-          --color-primary-hover: #f40612;
-          --color-text-primary: #141414;
-          --color-text-secondary: #5a5a5a;
-          --color-border: #eaeaea;
+          --color-primary: #0ea5e9;
+          --color-primary-hover: #0284c7;
+          --color-text-primary: #0f172a;
+          --color-text-secondary: #475569;
+          --color-border: #cfe8f6;
+          --color-accent-soft: rgba(14, 165, 233, 0.12);
+          --color-accent-strong: rgba(14, 165, 233, 0.2);
         }
 
         body{
@@ -44,7 +46,7 @@
           left: 0;
           right: 0;
           z-index: 50;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+          background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(242,251,255,0.88));
           backdrop-filter: blur(8px);
           -webkit-backdrop-filter: blur(8px);
           border-bottom: 1px solid var(--color-border);
@@ -69,15 +71,21 @@
         }
         
         header nav a {
-            color: var(--color-text-primary);
+            color: var(--color-text-secondary);
             font-weight: 600;
             padding: 0.5rem 0.75rem;
             border-radius: 4px;
-            transition: background-color 0.2s ease;
+            transition: color 0.2s ease, background-color 0.2s ease;
         }
         header nav a:hover {
-            color: var(--color-text-primary);
-            background-color: rgba(0,0,0,0.05);
+            color: var(--color-primary);
+            background-color: var(--color-accent-soft);
+        }
+        header nav a:focus-visible {
+            outline: 3px solid var(--color-accent-strong);
+            outline-offset: 2px;
+            color: var(--color-primary);
+            background-color: var(--color-accent-soft);
         }
 
         /* --- Hero Carousel --- */
@@ -130,7 +138,7 @@
             gap: 0.5rem;
         }
         .hero-meta span {
-            background-color: rgba(229, 9, 20, 0.1);
+            background-color: var(--color-accent-soft);
             color: var(--color-primary);
             font-size: 0.75rem;
             font-weight: 600;
@@ -195,7 +203,11 @@
         .btn-primary:hover {
             background-color: var(--color-primary-hover);
             transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+        }
+        .btn:focus-visible {
+            outline: 3px solid var(--color-accent-strong);
+            outline-offset: 3px;
         }
         
         
@@ -277,8 +289,8 @@
             }
         }
         .about-highlight {
-            background: linear-gradient(135deg, rgba(229,9,20,0.08), rgba(229,9,20,0.02));
-            border: 1px solid rgba(229,9,20,0.15);
+            background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(14,165,233,0.06));
+            border: 1px solid rgba(14,165,233,0.25);
             border-radius: 12px;
             padding: 1.25rem;
             height: 100%;
@@ -305,24 +317,24 @@
                 width: min(280px, 80vw);
             }
         }
-        /* Re-theme Competency Tags */
+        /* Cascade Breeze Competency Tags */
         .bg-black\/10.text-lime-400 {
-            background-color: rgba(229, 9, 20, 0.1) !important;
+            background-color: var(--color-accent-soft) !important;
             color: var(--color-primary) !important;
-            border: 1px solid rgba(229, 9, 20, 0.2) !important;
+            border: 1px solid var(--color-accent-strong) !important;
             font-weight: 500;
         }
-        /* Re-theme Skill Tags */
+        /* Cascade Breeze Skill Tags */
         .tag-badge {
-            background-color: rgba(229, 9, 20, 0.1);
+            background-color: var(--color-accent-soft);
             color: var(--color-primary);
             font-size: .75rem;
             font-weight: 500;
             padding: .25rem .75rem;
             border-radius: 9999px;
-            border: 1px solid rgba(229, 9, 20, 0.2);
+            border: 1px solid var(--color-accent-strong);
         }
-        /* Re-theme Skills blocks */
+        /* Cascade Breeze Skills blocks */
         .p-6.bg-gray-800\/50 {
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--color-border);
@@ -353,7 +365,7 @@
         }
         .btn-email:hover {
             background-color: var(--color-primary-hover);
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
             transform: scale(1.03);
         }
         .btn-linkedin {
@@ -366,7 +378,7 @@
             transform: scale(1.03);
         }
         
-        /* --- Re-theme Testimonials --- */
+        /* --- Cascade Breeze Testimonials --- */
         .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
         .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
         .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
@@ -488,9 +500,13 @@
             transition: all .2s ease;
         }
         .modal-close-btn:hover {
-            background: #eee;
-            color: var(--color-text-primary);
+            background: var(--color-accent-soft);
+            color: var(--color-primary-hover);
             transform: scale(1.05);
+        }
+        .modal-close-btn:focus-visible {
+            outline: 3px solid var(--color-accent-strong);
+            outline-offset: 3px;
         }
         .modal-body {
             padding: 2rem;
@@ -644,7 +660,7 @@
             align-items: center;
             gap: 0.5rem;
             font-weight: 700;
-            box-shadow: 0 15px 35px rgba(229, 9, 20, 0.35);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.35);
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
@@ -654,10 +670,10 @@
         }
         .chat-launcher:hover {
             transform: translateY(-4px);
-            box-shadow: 0 18px 38px rgba(229, 9, 20, 0.45);
+            box-shadow: 0 18px 38px rgba(14, 165, 233, 0.45);
         }
-        .chat-launcher:focus {
-            outline: 3px solid rgba(229, 9, 20, 0.35);
+        .chat-launcher:focus-visible {
+            outline: 3px solid var(--color-accent-strong);
             outline-offset: 4px;
         }
 
@@ -683,7 +699,7 @@
             pointer-events: auto;
         }
         .chat-panel__header {
-            background: linear-gradient(135deg, rgba(229,9,20,0.94), rgba(229,9,20,0.75));
+            background: linear-gradient(135deg, rgba(14,165,233,0.95), rgba(8,145,178,0.85));
             color: #fff;
             padding: 1.25rem 1.5rem 1rem;
             position: relative;
@@ -714,7 +730,12 @@
             transition: background 0.2s ease;
         }
         .chat-close:hover {
-            background: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.4);
+            color: var(--color-primary-hover);
+        }
+        .chat-close:focus-visible {
+            outline: 3px solid rgba(255,255,255,0.75);
+            outline-offset: 3px;
         }
         .chat-body {
             padding: 1rem 1.25rem;
@@ -734,7 +755,7 @@
             width: 6px;
         }
         .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(229, 9, 20, 0.25);
+            background: rgba(14, 165, 233, 0.3);
             border-radius: 999px;
         }
         .chat-message {
@@ -751,9 +772,9 @@
             white-space: pre-wrap;
         }
         .chat-message.assistant .chat-message__bubble {
-            background: rgba(229, 9, 20, 0.1);
+            background: var(--color-accent-soft);
             color: var(--color-text-primary);
-            border: 1px solid rgba(229, 9, 20, 0.2);
+            border: 1px solid var(--color-accent-strong);
         }
         .chat-message.user {
             justify-content: flex-end;
@@ -781,8 +802,8 @@
         }
         .chat-form input[type="text"]:focus {
             outline: none;
-            border-color: rgba(229, 9, 20, 0.45);
-            box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+            border-color: rgba(14, 165, 233, 0.6);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
         }
         .chat-submit {
             background: var(--color-primary);
@@ -796,7 +817,11 @@
         }
         .chat-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.25);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.35);
+        }
+        .chat-submit:focus-visible {
+            outline: 3px solid var(--color-accent-strong);
+            outline-offset: 3px;
         }
         .chat-status {
             font-size: 0.75rem;
