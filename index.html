@@ -9,18 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- "Calm Slate" Theme Palette --- */
+        /* --- "Netflix Light" Theme Palette --- */
         :root {
-          --color-bg: #f6f7fb;
+          --color-bg: #f5f5f5; /* REVERTED: Correct light gray */
           --color-surface: #ffffff;
-          --color-primary: #4c6f88;
-          --color-primary-hover: #3b586e;
-          --color-primary-soft: rgba(76, 111, 136, 0.12);
-          --color-primary-soft-border: rgba(76, 111, 136, 0.24);
-          --shadow-primary: rgba(76, 111, 136, 0.3);
+          --color-primary: #E50914; /* Red Accent */
+          --color-primary-hover: #f40612;
           --color-text-primary: #141414;
           --color-text-secondary: #5a5a5a;
-          --color-border: #e0e5ea;
+          --color-border: #eaeaea;
         }
 
         body{
@@ -198,7 +195,7 @@
         .btn-primary:hover {
             background-color: var(--color-primary-hover);
             transform: scale(1.03);
-            box-shadow: 0 4px 15px var(--shadow-primary);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
         
         
@@ -310,20 +307,20 @@
         }
         /* Re-theme Competency Tags */
         .bg-black\/10.text-lime-400 {
-            background-color: var(--color-primary-soft) !important;
+            background-color: rgba(229, 9, 20, 0.1) !important;
             color: var(--color-primary) !important;
-            border: 1px solid var(--color-primary-soft-border) !important;
+            border: 1px solid rgba(229, 9, 20, 0.2) !important;
             font-weight: 500;
         }
         /* Re-theme Skill Tags */
         .tag-badge {
-            background-color: var(--color-primary-soft);
+            background-color: rgba(229, 9, 20, 0.1);
             color: var(--color-primary);
             font-size: .75rem;
             font-weight: 500;
             padding: .25rem .75rem;
             border-radius: 9999px;
-            border: 1px solid var(--color-primary-soft-border);
+            border: 1px solid rgba(229, 9, 20, 0.2);
         }
         /* Re-theme Skills blocks */
         .p-6.bg-gray-800\/50 {
@@ -356,7 +353,7 @@
         }
         .btn-email:hover {
             background-color: var(--color-primary-hover);
-            box-shadow: 0 4px 15px var(--shadow-primary);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
             transform: scale(1.03);
         }
         .btn-linkedin {
