@@ -222,6 +222,89 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             padding: 2.5rem;
         }
+        .about-card {
+            padding: clamp(2rem, 4vw, 3.5rem);
+        }
+        .about-photo-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+        .about-photo-frame {
+            position: relative;
+            width: min(320px, 100%);
+            aspect-ratio: 3 / 4;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+        }
+        .about-photo-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        .about-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .about-photo-label {
+            position: absolute;
+            left: 1.25rem;
+            bottom: 1.25rem;
+            background: rgba(20,20,20,0.85);
+            color: #fff;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .about-highlights {
+            display: grid;
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .about-highlights {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1024px) {
+            .about-highlights {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        .about-highlight {
+            background: linear-gradient(135deg, rgba(229,9,20,0.08), rgba(229,9,20,0.02));
+            border: 1px solid rgba(229,9,20,0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .about-highlight h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+        .about-highlight p {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+        @media (max-width: 767px) {
+            .about-photo-wrapper {
+                order: -1;
+                margin-bottom: 1.5rem;
+            }
+            .about-photo-frame {
+                width: min(280px, 80vw);
+            }
+        }
         /* Re-theme Competency Tags */
         .bg-black\/10.text-lime-400 {
             background-color: rgba(229, 9, 20, 0.1) !important;
@@ -595,29 +678,32 @@
 
             <div class="main-container">
                 <section id="about" class="content-section reveal">
-                    <div class="card">
-                        <div class="grid md:grid-cols-5 gap-12 items-center">
-                            <div class="md:col-span-3">
-                                <h3 class="text-3xl font-bold text-black mb-4">About Me</h3>
-                                <div class="text-lg text-gray-300 space-y-4">
-                                    <p>Hello, I'm Sphoorthy, a Lead UX Researcher with over a decade of experience turning ambiguous questions into sharp insights that address both user pain points and business strategy.</p>
-                                    <p>Most recently, I led UX Research at Sling TV and Boost Mobile, where I worked across product areas such as onboarding, content discovery, and interactive experiences. I helped teams untangle complex user behaviors, validate ideas, and design with intention</p>
-                                    <p>My goal is to help product, design, and engineering teams build experiences people love using, while also supporting business growth, retention, and new revenue opportunities. </p>
-                              <p>I don't just surface problems, I help teams prioritize the right ones to solve. Whether it's a strategic research roadmap or a scrappy mixed-methods study, I bring curiosity, empathy, and clarity to the chaos of product development.</p>
+                    <div class="card about-card">
+                        <div class="grid lg:grid-cols-[1fr,1.25fr] gap-12 items-center">
+                            <div class="about-photo-wrapper">
+                                <div class="about-photo-frame">
+                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=900&q=80" alt="Portrait of Sphoorthy Masa" class="about-photo">
+                                    <span class="about-photo-label">Lead UX Researcher</span>
                                 </div>
                             </div>
-                            <div class="md:col-span-2">
-                                <h4 class="text-xl font-bold text-black mb-4">Core Competencies</h4>
-                                <div class="flex flex-wrap gap-3">
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">User Interviews</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Survey Design</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Journey Mapping</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Usability Testing</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">A/B Testing</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Data Analysis</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Personas</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Quantitative Analysis</span>
-                                    <span class="bg-black/10 text-lime-400 text-sm font-medium px-4 py-2 rounded-full border border-lime-400/40">Strategic Planning</span>
+                            <div class="space-y-6">
+                                <div class="space-y-3">
+                                    <h3 class="text-3xl font-bold text-black">About Me</h3>
+                                    <p class="text-lg text-gray-300 max-w-2xl">I connect human stories to product decisions, helping cross-functional teams move from uncertainty to confident, insight-led action.</p>
+                                </div>
+                                <div class="about-highlights">
+                                    <article class="about-highlight">
+                                        <h4>Strategic Partner</h4>
+                                        <p>Builds roadmaps that align research momentum with business outcomes.</p>
+                                    </article>
+                                    <article class="about-highlight">
+                                        <h4>Mixed-Methods Expert</h4>
+                                        <p>Pairs generative and evaluative approaches to uncover opportunity and reduce risk.</p>
+                                    </article>
+                                    <article class="about-highlight">
+                                        <h4>Team Catalyst</h4>
+                                        <p>Translates insights into stories and rituals that energize designers, PMs, and engineers.</p>
+                                    </article>
                                 </div>
                             </div>
                         </div>
