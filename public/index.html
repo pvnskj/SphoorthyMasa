@@ -1059,6 +1059,7 @@
     </aside>
 
    <script>
+    let chatHistory = [];
     document.addEventListener('DOMContentLoaded', function() {
         /* ========== Header Scroll Effect ========== */
         const header=document.querySelector('header');
@@ -1152,44 +1153,50 @@
   if (!message) return;
 
   appendMessage('user', message);
-  if (chatStatus) chatStatus.textContent = 'Thinking…';
+  chatStatus && (chatStatus.textContent = 'Thinking…');
+
+  // push to local history (for context)
+  chatHistory.push({ role: 'user', content: message });
+
+  // keep only the last few turns so it doesn't grow forever
+  if (chatHistory.length > 10) {
+    chatHistory = chatHistory.slice(-10);
+  }
+
+  // optional: this logs your messages to Google Sheets
+  await sendQuestionToAdmin(message);
 
   try {
     const res = await fetch('/api/portfolio-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: message }),
+      body: JSON.stringify({
+        query: message,
+        history: chatHistory,
+      }),
     });
 
-    if (!res.ok) {
-      // Surface API errors clearly so you know what's wrong
-      const errorText = await res.text().catch(() => '');
-      console.error('API error', res.status, errorText);
-      appendMessage(
-        'assistant',
-        `I’m having trouble reaching my brain (API error ${res.status}).`
-      );
-      return;
-    }
-
-    const data = await res.json().catch((e) => {
-      console.error('JSON parse error', e);
-      return null;
-    });
-
-    const reply =
-      data && typeof data.text === 'string'
-        ? data.text
-        : 'Sorry, I could not generate a response from the API.';
+    const data = await res.json();
+    const reply = data?.text || 'Sorry, I could not generate a response.';
 
     appendMessage('assistant', reply);
+
+    // store assistant reply in history too
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (chatHistory.length > 10) {
+      chatHistory = chatHistory.slice(-10);
+    }
   } catch (err) {
-    console.error('Network or JS error', err);
-    // Fallback to your whimsical local reply only when network/JS fails
+    console.error(err);
     const fallback = craftResponse(message);
     appendMessage('assistant', fallback);
+
+    chatHistory.push({ role: 'assistant', content: fallback });
+    if (chatHistory.length > 10) {
+      chatHistory = chatHistory.slice(-10);
+    }
   } finally {
-    if (chatStatus) chatStatus.textContent = '';
+    chatStatus && (chatStatus.textContent = '');
   }
 };
 
