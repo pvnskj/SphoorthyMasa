@@ -1,22 +1,22 @@
-
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const cors = require('cors');
+// api/portfolio-chat.js
+import cors from 'cors';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const corsHandler = cors({
-  origin: 'https://sphoorthy-masa.vercel.app',  // your Vercel URL
+  origin: 'https://sphoorthy-masa.vercel.app', // your Vercel URL
   methods: ['POST', 'OPTIONS'],
 });
 
-const runMiddleware = (req, res, fn) => {
+function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {
     fn(req, res, (result) => {
       if (result instanceof Error) return reject(result);
       return resolve(result);
     });
   });
-};
+}
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   await runMiddleware(req, res, corsHandler);
 
   if (req.method === 'OPTIONS') {
@@ -32,13 +32,16 @@ module.exports = async (req, res) => {
   try {
     const { query } = req.body;
     if (!query) {
-      return res.status(400).json({ error: 'Query is required' });
+      res.status(400).json({ error: 'Query is required' });
+      return;
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: `You are Sporty, an AI assistant for Sphoorthy Masa's portfolio. Answer clearly.`,
+      systemInstruction:
+        "You are Sporty, an AI assistant for Sphoorthy Masa's portfolio. Answer clearly.",
     });
 
     const result = await model.generateContent(query);
@@ -50,4 +53,4 @@ module.exports = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Failed to generate response' });
   }
-};
+}
