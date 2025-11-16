@@ -1,10 +1,17 @@
 {
-  "name": "sphoorthy-portfolio-backend",
+  "name": "sphoorthy-masa-portfolio",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
-  {
+  "scripts": {
+    "build": "echo \"no build step\"",
+    "start": "echo \"start\""
+  },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
+    "@google/generative-ai": "^0.19.0",
     "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
