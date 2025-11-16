@@ -9,17 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* --- "Cascade Breeze" Theme Palette --- */
+        /* --- "Gilded Current" Theme Palette --- */
         :root {
-          --color-bg: #f2fbff;
-          --color-surface: #ffffff;
-          --color-primary: #0ea5e9;
-          --color-primary-hover: #0284c7;
-          --color-text-primary: #0f172a;
-          --color-text-secondary: #475569;
-          --color-border: #cfe8f6;
-          --color-accent-soft: rgba(14, 165, 233, 0.12);
-          --color-accent-strong: rgba(14, 165, 233, 0.2);
+          --color-bg: #f6f1ea;
+          --color-surface: #fdfaf5;
+          --color-primary: #0f766e;
+          --color-primary-hover: #0b5f59;
+          --color-text-primary: #1b1f24;
+          --color-text-secondary: #4b5563;
+          --color-border: #d9cbbd;
+          --color-accent-soft: rgba(15, 118, 110, 0.12);
+          --color-accent-strong: rgba(15, 118, 110, 0.28);
+          --color-amber: #b45309;
+          --color-amber-soft: rgba(180, 83, 9, 0.18);
+          --color-chip-bg: #fdf3e1;
+          --color-chip-text: #7c3412;
+          --color-chip-border: rgba(124, 52, 18, 0.35);
+          --color-shadow-primary: rgba(15, 118, 110, 0.35);
+          --color-shadow-strong: rgba(15, 118, 110, 0.45);
         }
 
         body{
@@ -138,12 +145,13 @@
             gap: 0.5rem;
         }
         .hero-meta span {
-            background-color: var(--color-accent-soft);
-            color: var(--color-primary);
+            background-color: var(--color-chip-bg);
+            color: var(--color-chip-text);
             font-size: 0.75rem;
             font-weight: 600;
             padding: 0.35rem 0.75rem;
             border-radius: 9999px;
+            border: 1px solid var(--color-chip-border);
         }
         @media (max-width: 1023px) {
             .hero-track {
@@ -203,7 +211,7 @@
         .btn-primary:hover {
             background-color: var(--color-primary-hover);
             transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 4px 15px var(--color-shadow-primary);
         }
         .btn:focus-visible {
             outline: 3px solid var(--color-accent-strong);
@@ -289,8 +297,8 @@
             }
         }
         .about-highlight {
-            background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(14,165,233,0.06));
-            border: 1px solid rgba(14,165,233,0.25);
+            background: linear-gradient(135deg, rgba(15,118,110,0.16), rgba(180,83,9,0.1));
+            border: 1px solid rgba(15,118,110,0.25);
             border-radius: 12px;
             padding: 1.25rem;
             height: 100%;
@@ -317,14 +325,14 @@
                 width: min(280px, 80vw);
             }
         }
-        /* Cascade Breeze Competency Tags */
+        /* Gilded Current Competency Tags */
         .bg-black\/10.text-lime-400 {
             background-color: var(--color-accent-soft) !important;
             color: var(--color-primary) !important;
             border: 1px solid var(--color-accent-strong) !important;
             font-weight: 500;
         }
-        /* Cascade Breeze Skill Tags */
+        /* Gilded Current Skill Tags */
         .tag-badge {
             background-color: var(--color-accent-soft);
             color: var(--color-primary);
@@ -334,7 +342,7 @@
             border-radius: 9999px;
             border: 1px solid var(--color-accent-strong);
         }
-        /* Cascade Breeze Skills blocks */
+        /* Gilded Current Skills blocks */
         .p-6.bg-gray-800\/50 {
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--color-border);
@@ -365,7 +373,7 @@
         }
         .btn-email:hover {
             background-color: var(--color-primary-hover);
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 4px 15px var(--color-shadow-primary);
             transform: scale(1.03);
         }
         .btn-linkedin {
@@ -378,7 +386,7 @@
             transform: scale(1.03);
         }
         
-        /* --- Cascade Breeze Testimonials --- */
+        /* --- Gilded Current Testimonials --- */
         .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
         .scroller-inner{display:flex;gap:1.5rem;width:max-content;animation:scroll 90s linear infinite}
         .testimonial-scroller:hover .scroller-inner{animation-play-state:paused}
@@ -660,7 +668,7 @@
             align-items: center;
             gap: 0.5rem;
             font-weight: 700;
-            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 15px 35px var(--color-shadow-primary);
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
@@ -670,7 +678,7 @@
         }
         .chat-launcher:hover {
             transform: translateY(-4px);
-            box-shadow: 0 18px 38px rgba(14, 165, 233, 0.45);
+            box-shadow: 0 18px 38px var(--color-shadow-strong);
         }
         .chat-launcher:focus-visible {
             outline: 3px solid var(--color-accent-strong);
@@ -699,7 +707,7 @@
             pointer-events: auto;
         }
         .chat-panel__header {
-            background: linear-gradient(135deg, rgba(14,165,233,0.95), rgba(8,145,178,0.85));
+            background: linear-gradient(135deg, rgba(15,118,110,0.95), rgba(180,83,9,0.85));
             color: #fff;
             padding: 1.25rem 1.5rem 1rem;
             position: relative;
@@ -755,7 +763,7 @@
             width: 6px;
         }
         .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(14, 165, 233, 0.3);
+            background: rgba(15, 118, 110, 0.35);
             border-radius: 999px;
         }
         .chat-message {
@@ -802,8 +810,8 @@
         }
         .chat-form input[type="text"]:focus {
             outline: none;
-            border-color: rgba(14, 165, 233, 0.6);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-accent-soft);
         }
         .chat-submit {
             background: var(--color-primary);
@@ -817,7 +825,7 @@
         }
         .chat-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 10px 20px var(--color-shadow-primary);
         }
         .chat-submit:focus-visible {
             outline: 3px solid var(--color-accent-strong);
@@ -859,7 +867,7 @@
         .media-stage img{width:100%;height:100%;object-fit:contain;cursor:zoom-in;user-select:none;-webkit-user-drag:none}
         
         .media-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:.75rem;pointer-events:none}
-        .media-btn{pointer-events:auto;width:42px;height:42px;display:grid;place-items:center;border-radius:9999px;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.1);color:#0f172a;cursor:pointer;transition:transform .15s ease,background .15s ease,opacity .15s ease;backdrop-filter:blur(8px) saturate(160%)}
+        .media-btn{pointer-events:auto;width:42px;height:42px;display:grid;place-items:center;border-radius:9999px;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.1);color:var(--color-text-primary);cursor:pointer;transition:transform .15s ease,background .15s ease,opacity .15s ease;backdrop-filter:blur(8px) saturate(160%)}
         .media-btn:hover{transform:scale(1.06);background:#fff}
         .media-btn:disabled{opacity:.4;cursor:not-allowed}
         .media-meta{margin-top:.6rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;color:#334155}
@@ -871,10 +879,10 @@
         .lightbox-stage{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;background:#0b1020;display:grid;place-items:center;border:1px solid rgba(255,255,255,.15)}
         .lightbox-stage img{width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
         .lightbox-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:1rem;pointer-events:none}
-        .lightbox-btn{pointer-events:auto;width:46px;height:46px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,.9);border:1px solid rgba(0,0,0,.15);color:#0f172a;cursor:pointer;transition:transform .15s ease,background .15s ease;backdrop-filter:blur(8px) saturate(160%)}
+        .lightbox-btn{pointer-events:auto;width:46px;height:46px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,.9);border:1px solid rgba(0,0,0,.15);color:var(--color-text-primary);cursor:pointer;transition:transform .15s ease,background .15s ease;backdrop-filter:blur(8px) saturate(160%)}
         .lightbox-btn:hover{transform:scale(1.06);background:#fff}
         .lightbox-topbar{display:flex;justify-content:space-between;align-items:center;color:#e5e7eb;font-size:.95rem}
-        .lightbox-topbar .close{width:42px;height:42px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,.88);color:#0f172a;border:1px solid rgba(0,0,0,.12);cursor:pointer;transition:transform .15s ease,background .15s ease}
+        .lightbox-topbar .close{width:42px;height:42px;border-radius:9999px;display:grid;place-items:center;background:rgba(255,255,255,.88);color:var(--color-text-primary);border:1px solid rgba(0,0,0,.12);cursor:pointer;transition:transform .15s ease,background .15s ease}
         .lightbox-topbar .close:hover{transform:scale(1.06);background:#fff}
     </style>
 </head>
@@ -1138,12 +1146,12 @@
                 btn.type = 'button';
                 btn.textContent = item.label;
                 btn.style.borderRadius = '999px';
-                btn.style.border = '1px solid #cfe8f6';
+                btn.style.border = '1px solid var(--color-border)';
                 btn.style.padding = '0.4rem 0.9rem';
                 btn.style.fontSize = '0.8rem';
                 btn.style.cursor = 'pointer';
-                btn.style.background = '#ffffff';
-                btn.style.color = '#0f172a';
+                btn.style.background = 'var(--color-surface)';
+                btn.style.color = 'var(--color-text-primary)';
                 btn.onclick = () => {
                     handleUserMessage(item.question);
                     wrap.remove();
