@@ -377,6 +377,18 @@
             box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
             transform: scale(1.03);
         }
+
+        .btn-resume {
+            background-color: transparent;
+            color: var(--color-text-secondary);
+            border: 2px dashed var(--color-border);
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+        .btn-resume:hover {
+            transform: none;
+        }
         
         /* --- Cascade Breeze Testimonials --- */
         .testimonial-scroller{max-width:1200px;margin:auto;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);mask:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
@@ -1008,6 +1020,10 @@
                                 </a>
                                 <a href="mailto:Sphoorthy.Masa@outlook.com" class="btn-contact btn-email">
                                     Email Me
+                                </a>
+                                <a href="#" class="btn-contact btn-resume" role="button" aria-label="Resume link coming soon. Hosting link will be published soon." aria-disabled="true">
+                                    Resume
+                                    <span class="sr-only">Resume link coming soon. Hosting link will be published soon.</span>
                                 </a>
                             </div>
                         </div>
