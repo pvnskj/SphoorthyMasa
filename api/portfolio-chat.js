@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const cors = require('cors');
 
 const corsHandler = cors({
-  origin: 'https://pvnskj.github.io', 
+  origin: 'https://sphoorthy-masa.vercel.app',  // your Vercel URL
   methods: ['POST', 'OPTIONS'],
 });
 
