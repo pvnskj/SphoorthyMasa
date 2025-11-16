@@ -1077,169 +1077,188 @@
         },{threshold:0.1});
         document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-        /* ========== Chat Companion ========== */
-        const chatToggleBtn=document.getElementById('chat-toggle');
-        const chatPanel=document.getElementById('chat-panel');
-        const chatCloseBtn=chatPanel?chatPanel.querySelector('.chat-close'):null;
-        const chatForm=document.getElementById('chat-form');
-        const chatInput=document.getElementById('chat-input');
-        const chatMessages=document.getElementById('chat-messages');
-        const chatStatus=document.getElementById('chat-status');
-        const adminEndpoint=(document.body&&document.body.dataset)?document.body.dataset.chatStore:'';
-        const whimsicalOpeners=[
-            "✨ Well hello there, curious comet!",
-            "🌟 Ahoy! You've summoned Sphoorthy's sparkly sidekick.",
-            "🎈 Boop! Let's float through these insights together.",
-            "🦄 Consider me your research unicorn on call.",
-            "🚀 Buckle up, we've got delightful data to explore!"
-        ];
-        let siteContext='';
-        let isChatOpen=false;
+               /* ========== Chat Companion ========== */
+        const chatToggleBtn = document.getElementById('chat-toggle');
+        const chatPanel     = document.getElementById('chat-panel');
+        const chatCloseBtn  = chatPanel ? chatPanel.querySelector('.chat-close') : null;
+        const chatForm      = document.getElementById('chat-form');
+        const chatInput     = document.getElementById('chat-input');
+        const chatMessages  = document.getElementById('chat-messages');
+        const chatStatus    = document.getElementById('chat-status');
+        const adminEndpoint = (document.body && document.body.dataset)
+          ? document.body.dataset.chatStore
+          : '';
 
-        const summarise=(text,maxLength=320)=>{
-            if(!text) return '';
-            if(text.length<=maxLength) return text.trim();
-            const clipped=text.slice(0,maxLength);
-            return `${clipped.replace(/\s+\S*$/,'').trim()}…`;
-        };
+        let isChatOpen = false;
 
-        const appendMessage=(role,text)=>{
-            if(!chatMessages) return;
-            const wrap=document.createElement('div');
-            wrap.className=`chat-message ${role}`;
-            const bubble=document.createElement('div');
-            bubble.className='chat-message__bubble';
-            bubble.textContent=text;
+        const appendMessage = (role, text) => {
+            if (!chatMessages) return;
+            const wrap   = document.createElement('div');
+            wrap.className = `chat-message ${role}`;
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-message__bubble';
+            bubble.textContent = text;
             wrap.appendChild(bubble);
             chatMessages.appendChild(wrap);
-            chatMessages.scrollTop=chatMessages.scrollHeight;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         };
 
-        const toggleChat=(force)=>{
-            if(!chatPanel||!chatToggleBtn) return;
-            const nextState=typeof force==='boolean'?force:!isChatOpen;
-            isChatOpen=nextState;
-            chatPanel.classList.toggle('open',isChatOpen);
-            chatPanel.setAttribute('aria-hidden',String(!isChatOpen));
-            chatToggleBtn.setAttribute('aria-expanded',String(isChatOpen));
-            if(isChatOpen){
-                window.requestAnimationFrame(()=>{
-                    chatInput&&chatInput.focus({preventScroll:true});
+        const addProjectStarters = () => {
+            if (!chatMessages) return;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'chat-quick-replies';
+            wrap.style.display = 'flex';
+            wrap.style.flexWrap = 'wrap';
+            wrap.style.gap = '0.5rem';
+            wrap.style.marginTop = '0.5rem';
+
+            const starters = [
+                {
+                    label: 'Reinventing the TV Guide',
+                    question: 'Can you walk me through the Reinventing the TV Guide project and the main outcomes?'
+                },
+                {
+                    label: 'Gundersen Pharmacy',
+                    question: 'Tell me about the Gundersen Pharmacy app project and what impact it had.'
+                },
+                {
+                    label: 'Live Rooms',
+                    question: 'What was the Live Rooms concept and what did the research show?'
+                }
+            ];
+
+            starters.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = item.label;
+                btn.style.borderRadius = '999px';
+                btn.style.border = '1px solid #cfe8f6';
+                btn.style.padding = '0.4rem 0.9rem';
+                btn.style.fontSize = '0.8rem';
+                btn.style.cursor = 'pointer';
+                btn.style.background = '#ffffff';
+                btn.style.color = '#0f172a';
+                btn.onclick = () => {
+                    handleUserMessage(item.question);
+                    wrap.remove();
+                };
+                wrap.appendChild(btn);
+            });
+
+            chatMessages.appendChild(wrap);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const toggleChat = (force) => {
+            if (!chatPanel || !chatToggleBtn) return;
+            const nextState = typeof force === 'boolean' ? force : !isChatOpen;
+            isChatOpen = nextState;
+            chatPanel.classList.toggle('open', isChatOpen);
+            chatPanel.setAttribute('aria-hidden', String(!isChatOpen));
+            chatToggleBtn.setAttribute('aria-expanded', String(isChatOpen));
+            if (isChatOpen) {
+                window.requestAnimationFrame(() => {
+                    chatInput && chatInput.focus({ preventScroll: true });
                 });
             }
         };
 
-        const sendQuestionToAdmin=async (question)=>{
-            if(!question||!adminEndpoint) return;
-            try{
-                await fetch(adminEndpoint,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({question,askedAt:new Date().toISOString()})
+        const sendQuestionToAdmin = async (question) => {
+            if (!question || !adminEndpoint) return;
+            try {
+                await fetch(adminEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, askedAt: new Date().toISOString() })
                 });
-            }catch(err){
-                console.warn('Chat archive request failed (safe to ignore for visitors).',err);
+            } catch (err) {
+                console.warn('Chat archive request failed (safe to ignore).', err);
             }
         };
 
-        const craftResponse=(userMessage)=>{
-            const opener=whimsicalOpeners[Math.floor(Math.random()*whimsicalOpeners.length)]||'Hello there!';
-            const contextLine=siteContext?`Here's a fresh nugget from Sphoorthy's world: ${summarise(siteContext)}`:'I have a whole galaxy of UX tales ready for you.';
-            const closing="Feel free to toss another question my way whenever inspiration strikes!";
-            return `${opener}\n\nYou asked: ${userMessage}\n\n${contextLine}\n\n${closing}`;
-        };
+        const handleUserMessage = async (message) => {
+            if (!message) return;
 
-       const handleUserMessage = async (message) => {
-  if (!message) return;
+            appendMessage('user', message);
+            chatStatus && (chatStatus.textContent = 'Thinking…');
 
-  appendMessage('user', message);
-  chatStatus && (chatStatus.textContent = 'Thinking…');
+            // update local history
+            chatHistory.push({ role: 'user', content: message });
+            if (chatHistory.length > 10) {
+                chatHistory = chatHistory.slice(-10);
+            }
 
-  // push to local history (for context)
-  chatHistory.push({ role: 'user', content: message });
+            // read numbers from the hidden project-data div
+            const projectData = getProjectData();
 
-  // keep only the last few turns so it doesn't grow forever
-  if (chatHistory.length > 10) {
-    chatHistory = chatHistory.slice(-10);
-  }
+            // optional: log to Google Apps Script
+            await sendQuestionToAdmin(message);
 
-  // optional: this logs your messages to Google Sheets
-  await sendQuestionToAdmin(message);
+            try {
+                const res = await fetch('/api/portfolio-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        query: message,
+                        history: chatHistory,
+                        projectData: projectData
+                    }),
+                });
 
-  try {
-    const res = await fetch('/api/portfolio-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: message,
-        history: chatHistory,
-      }),
-    });
+                const data  = await res.json();
+                const reply = data?.text || 'Sorry, I could not generate a response right now.';
 
-    const data = await res.json();
-    const reply = data?.text || 'Sorry, I could not generate a response.';
+                // short, simple assistant reply from Sporty
+                appendMessage('assistant', reply);
 
-    appendMessage('assistant', reply);
+                chatHistory.push({ role: 'assistant', content: reply });
+                if (chatHistory.length > 10) {
+                    chatHistory = chatHistory.slice(-10);
+                }
+            } catch (err) {
+                console.error(err);
+                // simple fallback, not whimsical
+                const fallback = 'Something went wrong on my side. You can refresh and try again, or ask a simpler question about Sphoorthy’s UX work.';
+                appendMessage('assistant', fallback);
 
-    // store assistant reply in history too
-    chatHistory.push({ role: 'assistant', content: reply });
-    if (chatHistory.length > 10) {
-      chatHistory = chatHistory.slice(-10);
-    }
-  } catch (err) {
-    console.error(err);
-    const fallback = craftResponse(message);
-    appendMessage('assistant', fallback);
-
-    chatHistory.push({ role: 'assistant', content: fallback });
-    if (chatHistory.length > 10) {
-      chatHistory = chatHistory.slice(-10);
-    }
-  } finally {
-    chatStatus && (chatStatus.textContent = '');
-  }
-};
-
-        const loadContext=async ()=>{
-            const fallback="Sphoorthy Masa is a senior UX researcher who transforms ambiguity into strategic clarity across entertainment, streaming, and SaaS platforms.";
-            try{
-                const response=await fetch('https://sphoorthymasa.webnode.page/');
-                if(!response.ok) throw new Error(`Status ${response.status}`);
-                const html=await response.text();
-                const parser=new DOMParser();
-                const doc=parser.parseFromString(html,'text/html');
-                const paragraphs=Array.from(doc.querySelectorAll('p'))
-                    .map(p=>p.textContent.trim())
-                    .filter(Boolean)
-                    .slice(0,8);
-                siteContext=paragraphs.join(' ');
-            }catch(err){
-                siteContext=fallback;
-                console.warn('Unable to fetch live portfolio context for chat. Using fallback.',err);
+                chatHistory.push({ role: 'assistant', content: fallback });
+                if (chatHistory.length > 10) {
+                    chatHistory = chatHistory.slice(-10);
+                }
+            } finally {
+                chatStatus && (chatStatus.textContent = '');
             }
         };
 
-        if(chatToggleBtn&&chatPanel&&chatForm&&chatInput&&chatMessages){
-            appendMessage('assistant',"Hi! I'm Sporty, your whimsical guide to Sphoorthy's research adventures. Ask away!");
-            loadContext();
-            chatToggleBtn.addEventListener('click',()=>toggleChat());
-            chatForm.addEventListener('submit',(event)=>{
+        // Initialize chat wiring
+        if (chatToggleBtn && chatPanel && chatForm && chatInput && chatMessages) {
+            appendMessage(
+                'assistant',
+                "Hi, I'm Sporty, Sphoorthy’s UX research assistant. I can walk you through key projects or answer questions about her work."
+            );
+            addProjectStarters();
+
+            chatToggleBtn.addEventListener('click', () => toggleChat());
+            chatForm.addEventListener('submit', (event) => {
                 event.preventDefault();
-                const value=(chatInput.value||'').trim();
-                if(!value) return;
-                chatInput.value='';
+                const value = (chatInput.value || '').trim();
+                if (!value) return;
+                chatInput.value = '';
                 handleUserMessage(value);
             });
-            chatPanel.addEventListener('transitionend',()=>{
-                if(isChatOpen){
-                    chatMessages.scrollTop=chatMessages.scrollHeight;
+
+            chatPanel.addEventListener('transitionend', () => {
+                if (isChatOpen) {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
                 }
             });
-            if(chatCloseBtn){
-                chatCloseBtn.addEventListener('click',()=>toggleChat(false));
+
+            if (chatCloseBtn) {
+                chatCloseBtn.addEventListener('click', () => toggleChat(false));
             }
-            document.addEventListener('keydown',(evt)=>{
-                if(evt.key==='Escape'&&isChatOpen){
+            document.addEventListener('keydown', (evt) => {
+                if (evt.key === 'Escape' && isChatOpen) {
                     toggleChat(false);
                 }
             });
