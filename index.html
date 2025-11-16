@@ -1148,36 +1148,35 @@
             return `${opener}\n\nYou asked: ${userMessage}\n\n${contextLine}\n\n${closing}`;
         };
 
-        const handleUserMessage = async (message) => {
+       const handleUserMessage = async (message) => {
     if (!message) return;
 
     appendMessage('user', message);
     chatStatus && (chatStatus.textContent = 'Thinking…');
+
+    // optional: this logs your messages to Google Sheets
     await sendQuestionToAdmin(message);
 
     try {
-        const res = await fetch('https://sphoorthy-masa.vercel.app/api/portfolio-chat', {
+        const res = await fetch('/api/portfolio-chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: message }),
         });
 
         const data = await res.json();
-
-        const reply =
-            (data && data.text) ||
-            'Sorry, I could not generate a response right now.';
+        const reply = data?.text || 'Sorry, I could not generate a response.';
 
         appendMessage('assistant', reply);
     } catch (err) {
         console.error(err);
-        // Fallback to your whimsical local reply if the API fails
-        const fallback = craftResponse(message);
+        const fallback = craftResponse(message); // your fun local fallback
         appendMessage('assistant', fallback);
     } finally {
         chatStatus && (chatStatus.textContent = '');
     }
 };
+
 
         const loadContext=async ()=>{
             const fallback="Sphoorthy Masa is a senior UX researcher who transforms ambiguity into strategic clarity across entertainment, streaming, and SaaS platforms.";
