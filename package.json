@@ -1,8 +1,9 @@
 {
   "name": "sphoorthy-portfolio-backend",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
-    "@google/generative-ai": "^0.14.1",
+    "@google/generative-ai": "latest",
     "cors": "^2.8.5"
   }
 }
