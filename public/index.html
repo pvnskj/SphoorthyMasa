@@ -60,21 +60,132 @@
             padding: 1rem 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
+            gap: 1rem;
         }
-        
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
         .header-logo {
-            font-family:'Inter',sans-serif;
-            font-size: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .header-logo .monogram {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--color-accent-soft);
+            border: 1px solid var(--color-accent-strong);
             color: var(--color-primary);
+            font-weight: 800;
+            font-size: 1.15rem;
+            display: grid;
+            place-items: center;
+            letter-spacing: -0.5px;
+        }
+
+        .header-logo .label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .header-logo .name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4rem;
+            color: var(--color-text-primary);
             font-weight: 800;
             letter-spacing: -0.5px;
         }
-        
+
+        .menu-trigger {
+            margin-left: auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .hamburger-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .hamburger-btn:hover,
+        .hamburger-btn:focus-visible {
+            border-color: var(--color-primary);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.2);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .hamburger-icon {
+            width: 22px;
+            height: 18px;
+            position: relative;
+        }
+
+        .hamburger-icon span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 999px;
+            background: var(--color-text-primary);
+            transition: transform 0.2s ease;
+        }
+
+        .hamburger-icon span:nth-child(1) { top: 0; }
+        .hamburger-icon span:nth-child(2) { top: 7.5px; }
+        .hamburger-icon span:nth-child(3) { bottom: 0; }
+
+        .menu-panel {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            right: 0;
+            min-width: 220px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            box-shadow: 0 25px 65px rgba(15, 23, 42, 0.18);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+            background-image: radial-gradient(circle at top, rgba(14,165,233,0.15), transparent 55%);
+        }
+
+        .menu-trigger:hover .menu-panel,
+        .menu-trigger:focus-within .menu-panel {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
         header nav a {
             color: var(--color-text-secondary);
             font-weight: 600;
             padding: 0.5rem 0.75rem;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: color 0.2s ease, background-color 0.2s ease;
         }
         header nav a:hover {
@@ -86,6 +197,16 @@
             outline-offset: 2px;
             color: var(--color-primary);
             background-color: var(--color-accent-soft);
+        }
+
+        @media (max-width: 640px) {
+            .header-inner {
+                padding-inline: 1rem;
+            }
+            .menu-panel {
+                min-width: min(320px, calc(100vw - 2rem));
+                right: 0;
+            }
         }
 
         /* --- Hero Carousel --- */
@@ -883,13 +1004,28 @@
     <div class="content-container">
         <header>
             <div class="header-inner">
-                <a href="#" class="header-logo">Sphoorthy Masa</a>
-                <nav class="hidden md:flex space-x-6 text-base font-medium items-center">
-                    <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#testimonials">Testimonials</a>
-                    <a href="#why-me-contact">Contact</a>
-                </nav>
+                <a href="#hero-carousel" class="header-brand">
+                    <div class="monogram" aria-hidden="true">SM</div>
+                    <div class="header-logo">
+                        <span class="label">Portfolio</span>
+                        <span class="name">Sphoorthy Masa</span>
+                    </div>
+                </a>
+                <div class="menu-trigger">
+                    <button class="hamburger-btn" aria-haspopup="true" aria-label="Open navigation menu">
+                        <span class="hamburger-icon" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                    <nav class="menu-panel" aria-label="Primary">
+                        <a href="#about">About</a>
+                        <a href="#skills">Skills</a>
+                        <a href="#testimonials">Testimonials</a>
+                        <a href="#why-me-contact">Contact</a>
+                    </nav>
+                </div>
             </div>
         </header>
 
