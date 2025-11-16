@@ -878,7 +878,7 @@
         .lightbox-topbar .close:hover{transform:scale(1.06);background:#fff}
     </style>
 </head>
-<body class="antialiased"
+<body class="antialiased">
 
     <div class="content-container">
         <header>
@@ -1060,7 +1060,7 @@
 
    <script>
     let chatHistory = [];
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
         /* ========== Header Scroll Effect ========== */
         const header=document.querySelector('header');
         let lastScrollTop=0;
@@ -1076,6 +1076,11 @@
             entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add('visible'); });
         },{threshold:0.1});
         document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+        // Prevent chatbot errors: a simple placeholder until we connect real data
+        const getProjectData = () => {
+            return {};  
+        };
 
                /* ========== Chat Companion ========== */
         const chatToggleBtn = document.getElementById('chat-toggle');
