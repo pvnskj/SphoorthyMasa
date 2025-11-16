@@ -878,7 +878,7 @@
         .lightbox-topbar .close:hover{transform:scale(1.06);background:#fff}
     </style>
 </head>
-<body class="antialiased" data-chat-store="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+<body class="antialiased"
 
     <div class="content-container">
         <header>
@@ -1149,34 +1149,49 @@
         };
 
        const handleUserMessage = async (message) => {
-    if (!message) return;
+  if (!message) return;
 
-    appendMessage('user', message);
-    chatStatus && (chatStatus.textContent = 'Thinking…');
+  appendMessage('user', message);
+  if (chatStatus) chatStatus.textContent = 'Thinking…';
 
-    // optional: this logs your messages to Google Sheets
-    await sendQuestionToAdmin(message);
+  try {
+    const res = await fetch('/api/portfolio-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: message }),
+    });
 
-    try {
-        const res = await fetch('/api/portfolio-chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query: message }),
-        });
-
-        const data = await res.json();
-        const reply = data?.text || 'Sorry, I could not generate a response.';
-
-        appendMessage('assistant', reply);
-    } catch (err) {
-        console.error(err);
-        const fallback = craftResponse(message); // your fun local fallback
-        appendMessage('assistant', fallback);
-    } finally {
-        chatStatus && (chatStatus.textContent = '');
+    if (!res.ok) {
+      // Surface API errors clearly so you know what's wrong
+      const errorText = await res.text().catch(() => '');
+      console.error('API error', res.status, errorText);
+      appendMessage(
+        'assistant',
+        `I’m having trouble reaching my brain (API error ${res.status}).`
+      );
+      return;
     }
-};
 
+    const data = await res.json().catch((e) => {
+      console.error('JSON parse error', e);
+      return null;
+    });
+
+    const reply =
+      data && typeof data.text === 'string'
+        ? data.text
+        : 'Sorry, I could not generate a response from the API.';
+
+    appendMessage('assistant', reply);
+  } catch (err) {
+    console.error('Network or JS error', err);
+    // Fallback to your whimsical local reply only when network/JS fails
+    const fallback = craftResponse(message);
+    appendMessage('assistant', fallback);
+  } finally {
+    if (chatStatus) chatStatus.textContent = '';
+  }
+};
 
         const loadContext=async ()=>{
             const fallback="Sphoorthy Masa is a senior UX researcher who transforms ambiguity into strategic clarity across entertainment, streaming, and SaaS platforms.";
@@ -1198,7 +1213,7 @@
         };
 
         if(chatToggleBtn&&chatPanel&&chatForm&&chatInput&&chatMessages){
-            appendMessage('assistant',"Hi! I'm Spark, your whimsical guide to Sphoorthy's research adventures. Ask away!");
+            appendMessage('assistant',"Hi! I'm Sporty, your whimsical guide to Sphoorthy's research adventures. Ask away!");
             loadContext();
             chatToggleBtn.addEventListener('click',()=>toggleChat());
             chatForm.addEventListener('submit',(event)=>{
